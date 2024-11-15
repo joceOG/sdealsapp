@@ -1,16 +1,24 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sdealsapp/web/view/homepage/homepagebloc/homePageState.dart';
 import 'package:sdealsapp/web/widget/AppBarWidget.dart';
 
 import '../../../widget/Footer.dart';
 import '../homepagebloc/homePageBloc.dart';
 
 
-class HomePageScreen extends StatelessWidget {
+class HomePageScreen extends StatefulWidget {
+  const HomePageScreen({super.key});
+
+  @override
+  State<HomePageScreen> createState() => _HomePageScreenState();
+}
+
+class _HomePageScreenState extends State<HomePageScreen> {
   @override
   Widget build(BuildContext context) {
-    final homePageBloc = BlocProvider.of<HomePageBloc>(context);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -65,6 +73,34 @@ class HomePageScreen extends StatelessWidget {
                   style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                 ),
               ),
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 40.0),
+              height: 300, // Set a height for the container
+              child:
+              BlocBuilder<HomePageBloc, HomePageState>(
+                builder: (context, state) {
+                  return
+                    state.listItems == null ?
+                    Center(child: CircularProgressIndicator()) :
+                    ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: state.listItems!.length, // Number of images
+                      itemBuilder: (context, index) {
+                        return Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: GestureDetector(
+                                onTap: () {
+                                  context.go('/prestataire');
+                                },
+                                child: Text(state.listItems![index].nomcategorie)
+                            )
+                        );
+                      },
+                    );
+                },
+              ),
+
             ),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 40.0),
