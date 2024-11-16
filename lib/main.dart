@@ -8,6 +8,7 @@ import 'package:sdealsapp/web/view/detailsprestataire/screens/detailsprestataire
 import 'package:sdealsapp/web/view/emarche/emarchebloc/emarcheBloc.dart';
 import 'package:sdealsapp/web/view/emarche/screens/emarcheScreen.dart';
 import 'package:sdealsapp/web/view/homepage/homepagebloc/homePageBloc.dart';
+import 'package:sdealsapp/web/view/homepage/homepagebloc/homePageEvent.dart';
 import 'package:sdealsapp/web/view/homepage/screens/homePageScreen.dart';
 import 'package:sdealsapp/web/view/prestataire/prestatairebloc/prestataireBloc.dart';
 import 'package:sdealsapp/web/view/prestataire/screens/prestataireScreen.dart';
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
         path: '/',
         builder: (context, state) {
           return BlocProvider(
-            create: (context) => HomePageBloc(),
+            create: (context) => HomePageBloc()..add(LoadCategorieData()),
             child: HomePageScreen(),
           );
         },
