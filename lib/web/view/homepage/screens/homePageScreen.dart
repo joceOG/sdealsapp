@@ -19,38 +19,37 @@ class HomePageScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Container with text
-            Container(
-              child: Center(
-                child: Container(
-                  padding: EdgeInsets.all(40.0),
-                  child: const Text(
-                    'Des centaines de services et autant de prestations de qualités',
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
-            ),
             // Stack with Image
             Stack(
               children: [
-                Center(
-                  child: Container(
-                    width: 1200,
+                  Container(
+                    width: 2000,
                     height: 300,
                     decoration: const BoxDecoration(
                       image: DecorationImage(
                         image: AssetImage(
-                            'assets/accueil.jpg'), // Chemin de l'image
+                            'assets/emarche.png'), // Chemin de l'image
                         fit: BoxFit
                             .fill, // Adapte l'image à la taille du container
                       ),
                     ),
                   ),
-                ),
-
                 // You can add other widgets like buttons or overlays here
               ],
+            ),
+            Container(
+              child: Container(
+                padding: const EdgeInsets.only(
+                  left: 80.0,
+                  right: 40.0,
+                  top: 20.0,
+                  bottom: 5.0,
+                ),
+                child: const Text(
+                  'Catégories',
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold ),
+                ),
+              ),
             ),
             Container(
               child: Container(
