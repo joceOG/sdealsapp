@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../widget/AppBarWidget.dart';
+import '../../../widget/Footer.dart';
 import '../emarchebloc/emarcheBloc.dart';
 
 
@@ -8,41 +10,91 @@ import '../emarchebloc/emarcheBloc.dart';
 class EmarcheScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final freelanceBloc = BlocProvider.of<EmarcheBloc>(context);
+    final emarcheBloc = BlocProvider.of<EmarcheBloc>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 100,
-        title: Container
-          (       padding : EdgeInsets.all(25),
-            child : Row (   children:<Widget>[
-              Image.asset('assets/logo.jpeg', width: 92,   // Largeur de l'image en pixels
-                height: 76, ),
-              Text( 'Soutrali Deals' , style: TextStyle ( fontSize: 27 , fontWeight: FontWeight.bold , color: Colors.black)) ,
-            ]
-            )
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.search),
-            tooltip: 'Show Snackbar',
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('This is a snackbar')));
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.add),
-            tooltip: 'Go to the next page', onPressed: () {  },
-          ),
-        ],
-      ),
-      body: Center(
-        child: Container(
-          child: Text(
-            'Home Page',
-            style: TextStyle(fontSize: 30),
-          ),
+      appBar:  AppBarWidget(),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Container with text
+            Container(
+              child: Center(
+                child: Container(
+                  padding: EdgeInsets.all(40.0),
+                  child: const Text(
+                    'Des centaines de services et autant de prestations de qualités',
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+            ),
+            // Stack with Image
+            Stack(
+              children: [
+                Center(
+                  child: Container(
+                    width: 1200,
+                    height: 300,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage(
+                            'assets/accueil.jpg'), // Chemin de l'image
+                        fit: BoxFit
+                            .fill, // Adapte l'image à la taille du container
+                      ),
+                    ),
+                  ),
+                ),
+
+                // You can add other widgets like buttons or overlays here
+              ],
+            ),
+            Container(
+              child: Container(
+                padding: const EdgeInsets.only(
+                  left: 80.0,
+                  right: 40.0,
+                  top: 20.0,
+                  bottom: 5.0,
+                ),
+                child: const Text(
+                  'Top catégories',
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 40.0),
+              height: 300, // Set a height for the container
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: 20, // Number of images
+                itemBuilder: (context, index) {
+                  return Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: GestureDetector(
+                        onTap: () {
+
+                        },
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(
+                              40.0), // Half of the container's height for a circular image
+                          child: Image.network(
+                            'https://via.placeholder.com/150', // Replace with your image URLs
+                            width: 220,
+                            height: 280,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      )
+                  );
+                },
+              ),
+            ),
+            Footer()
+          ],
         ),
       ),
     );

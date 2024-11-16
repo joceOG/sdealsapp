@@ -14,7 +14,7 @@ class NavigationBar extends StatelessWidget {
         children: [
           NavigationItem(title: 'Métiers'),
           NavigationItem(title: 'Freelance'),
-          NavigationItem(title: 'E-Marché'),
+          NavigationItem(title: 'Emarche'),
           NavigationItem(title: 'Autres'),
           NavigationItem(title: 'A propos'),
         ],
