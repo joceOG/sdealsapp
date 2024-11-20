@@ -1,22 +1,30 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sdealsapp/web/view/homepage/homepagebloc/homePageState.dart';
 import 'package:sdealsapp/web/widget/AppBarWidget.dart';
 
 import '../../../widget/Footer.dart';
 import '../homepagebloc/homePageBloc.dart';
 
 
-class HomePageScreen extends StatelessWidget {
+class HomePageScreen extends StatefulWidget {
+  const HomePageScreen({super.key});
+
+  @override
+  State<HomePageScreen> createState() => _HomePageScreenState();
+}
+
+class _HomePageScreenState extends State<HomePageScreen> {
   @override
   Widget build(BuildContext context) {
-    final homePageBloc = BlocProvider.of<HomePageBloc>(context);
 
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBarWidget(),
       body: SingleChildScrollView(
-        child: Column(
+        child:Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Container with text
@@ -48,51 +56,146 @@ class HomePageScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-
                 // You can add other widgets like buttons or overlays here
               ],
             ),
             Container(
-              child: Container(
-                padding: const EdgeInsets.only(
-                  left: 80.0,
-                  right: 40.0,
-                  top: 20.0,
-                  bottom: 5.0,
-                ),
-                child: const Text(
-                  'Top catégories',
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                ),
+              padding: const EdgeInsets.only(
+                left: 80.0,
+                right: 40.0,
+                top: 20.0,
+              ),
+              child: const Text(
+                'Top catégories',
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
               ),
             ),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 40.0),
-              height: 300, // Set a height for the container
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: 20, // Number of images
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: GestureDetector(
-                        onTap: () {
-                          context.go('/prestataire');
-                        },
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(
-                              40.0), // Half of the container's height for a circular image
-                          child: Image.network(
-                            'https://via.placeholder.com/150', // Replace with your image URLs
-                            width: 220,
-                            height: 280,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                    )
-                  );
+              padding: EdgeInsets.only(left: 40.0 , right: 40.0,),
+              height: 260, // Set a height for the container
+              child:
+              BlocBuilder<HomePageBloc, HomePageState>(
+                builder: (context, state) {
+                  return
+                    state.listItems == null ?
+                    Center(child: CircularProgressIndicator()) :
+                    ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: state.listItems!.length, // Number of images
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                            onTap: () {
+                              context.go('/prestataire');
+                            },
+                            child:
+                            Stack(
+                                children: [
+                              FractionallySizedBox(
+                              alignment: Alignment.bottomCenter, // Aligner en haut à gauche
+                            // Prendre la moitié de la largeur
+                              heightFactor: 0.7, // Prendre la moitié de la hauteur
+                              child: Image.network(
+                                state.listItems![index].imagecategorie, // Replace with your image URLs
+                                width: 215,
+                                height: 240,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Text('Failed to render image');
+                                },
+                              )
+                            ),
+                                      // Half of the container's height for a circular image
+                                  Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(bottom: 20.0),
+                                      child: Container(
+                                        width: 200,
+                                        padding: EdgeInsets.all(16),
+                                        color: Colors.white,
+                                        child:
+                                        Text(state.listItems![index].nomcategorie , style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                                      ),
+                                    ),
+                                  ),
+                                ]
+                            )
+
+                        );
+                      },
+                    );
                 },
               ),
+
+            ),
+            Container(
+              padding: const EdgeInsets.only(
+                left: 80.0,
+                right: 40.0,
+                top: 20.0,
+              ),
+              child: const Text(
+                'Top services',
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.only(left: 40.0 , right: 40.0,),
+              height: 260, // Set a height for the container
+              child:
+              BlocBuilder<HomePageBloc, HomePageState>(
+                builder: (context, state) {
+                  return
+                    state.listItems == null ?
+                    Center(child: CircularProgressIndicator()) :
+                    ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: state.listItems!.length, // Number of images
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                            onTap: () {
+                              context.go('/prestataire');
+                            },
+                            child:
+                            Stack(
+                                children: [
+                                  FractionallySizedBox(
+                                      alignment: Alignment.bottomCenter, // Aligner en haut à gauche
+                                      // Prendre la moitié de la largeur
+                                      heightFactor: 0.7, // Prendre la moitié de la hauteur
+                                      child: Image.network(
+                                        state.listItems![index].imagecategorie, // Replace with your image URLs
+                                        width: 215,
+                                        height: 240,
+                                        fit: BoxFit.cover,
+                                        errorBuilder: (context, error, stackTrace) {
+                                          return Text('Failed to render image');
+                                        },
+                                      )
+                                  ),
+                                  // Half of the container's height for a circular image
+                                  Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(bottom: 20.0),
+                                      child: Container(
+                                        width: 200,
+                                        padding: EdgeInsets.all(16),
+                                        color: Colors.white,
+                                        child:
+                                        Text(state.listItems![index].nomcategorie , style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                                      ),
+                                    ),
+                                  ),
+                                ]
+                            )
+
+                        );
+                      },
+                    );
+                },
+              ),
+
             ),
             Footer()
           ],
