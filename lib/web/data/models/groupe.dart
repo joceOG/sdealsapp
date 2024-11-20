@@ -1,5 +1,6 @@
 
 class Groupe {
+
   String idgroupe;
   String nomgroupe;
 
@@ -21,12 +22,10 @@ class Groupe {
         nomgroupe: json['nomgroupe'] as String);
   }
 
-
   Map<String, dynamic> toMap() {
     return {
       'idgroupe': idgroupe,
-      'nomgroupe': nomgroupe
-      ,
+      'nomgroupe': nomgroupe,
     };
   }
 }

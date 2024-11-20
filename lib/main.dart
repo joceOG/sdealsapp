@@ -6,6 +6,7 @@ import 'package:sdealsapp/web/view/connexion/screens/connexionScreen.dart';
 import 'package:sdealsapp/web/view/detailsprestataire/detailsprestatairebloc/detailsprestataireBloc.dart';
 import 'package:sdealsapp/web/view/detailsprestataire/screens/detailsprestataireScreen.dart';
 import 'package:sdealsapp/web/view/emarche/emarchebloc/emarcheBloc.dart';
+import 'package:sdealsapp/web/view/emarche/emarchebloc/emarcheEvent.dart';
 import 'package:sdealsapp/web/view/emarche/screens/emarcheScreen.dart';
 import 'package:sdealsapp/web/view/homepage/homepagebloc/homePageBloc.dart';
 import 'package:sdealsapp/web/view/homepage/homepagebloc/homePageEvent.dart';
@@ -60,7 +61,9 @@ class MyApp extends StatelessWidget {
         path: '/emarche',
         builder: (context, state) {
           return BlocProvider(
-            create: (context) => EmarcheBloc(),
+            create: (context) => EmarcheBloc()
+              ..add(LoadCategorieEData())
+              ..add(LoadServiceData()),
             child: EmarcheScreen(),
           );
         },
