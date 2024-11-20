@@ -15,7 +15,7 @@ class NavigationItem extends StatelessWidget {
       child: GestureDetector(
               onTap: () {
                if ( title == "Métiers")
-                 { context.go('/homepage');  }
+                 { context.go('/');  }
                else if ( title == "Freelance" )
                  { context.go('/freelance'); }
                else if ( title == 'Emarche' )
