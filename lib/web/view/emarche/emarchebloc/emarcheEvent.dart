@@ -7,5 +7,5 @@ abstract class EmarcheEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class Increment extends EmarcheEvent {}
-class Decrement extends EmarcheEvent {}
+class LoadCategorieEData extends EmarcheEvent {}
+class LoadServiceData extends EmarcheEvent {}
