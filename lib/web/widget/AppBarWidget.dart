@@ -3,6 +3,33 @@ import 'package:go_router/go_router.dart';
 
 import 'NavigationItem.dart';
 
+class AppBarWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Scaffold(
+      appBar: AppBar(
+        actions: [
+          Container(
+            child: Row(
+              children: [
+                Image.asset('assets/logo1.png'),
+                ElevatedButton(
+                    onPressed: () {}, child: Text('Deposer une annonce')),
+                TextField(
+                  decoration: InputDecoration(
+                      hintText: 'Rechercher', icon: Icon(Icons.search)),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+/*
 class NavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -38,7 +65,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
             },
             child: Row(children: <Widget>[
               Image.asset(
-                'assets/logo.jpeg', width: 92, // Largeur de l'image en pixels
+                'assets/logo1.png', width: 92, // Largeur de l'image en pixels
                 height: 76,
               ),
               const Text('Soutrali Deals',
@@ -84,8 +111,8 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
         ),
       ],
     );
-  }
-  // TODO: implement preferredSize
-  @override
-  Size get preferredSize => const Size.fromHeight(100);
-}
+  }}
+// TODO: implement preferredSize
+@override
+Size get preferredSize => const Size.fromHeight(100);
+*/

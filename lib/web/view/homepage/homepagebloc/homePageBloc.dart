@@ -11,5 +11,6 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     on<Decrement>((event, emit) {
       emit(HomePageState(state.counterValue - 1));
     });
+
   }
 }

@@ -3,8 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../freelancebloc/freelanceBloc.dart';
 
-
-
 class AutreScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -13,15 +11,19 @@ class AutreScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 100,
-        title: Container
-          (       padding : EdgeInsets.all(25),
-            child : Row (   children:<Widget>[
-              Image.asset('assets/logo.jpeg', width: 92,   // Largeur de l'image en pixels
-                height: 76, ),
-              Text( 'Soutrali Deals' , style: TextStyle ( fontSize: 27 , fontWeight: FontWeight.bold , color: Colors.black)) ,
-            ]
-            )
-        ),
+        title: Container(
+            padding: EdgeInsets.all(25),
+            child: Row(children: <Widget>[
+              Image.asset(
+                'assets/logo.jpeg', width: 92, // Largeur de l'image en pixels
+                height: 76,
+              ),
+              Text('Soutrali Deals',
+                  style: TextStyle(
+                      fontSize: 27,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black)),
+            ])),
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.search),
@@ -33,7 +35,8 @@ class AutreScreen extends StatelessWidget {
           ),
           IconButton(
             icon: const Icon(Icons.add),
-            tooltip: 'Go to the next page', onPressed: () {  },
+            tooltip: 'Go to the next page',
+            onPressed: () {},
           ),
         ],
       ),
