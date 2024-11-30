@@ -11,7 +11,7 @@ import '../models/service.dart';
 
 
 class ApiClient {
-  final String baseUrl='https://api.soutralideals.net/api';
+  final String baseUrl='http://180.149.197.115:3000/api';
 
   Future<List<Categorie>> fetchCategorie() async {
     print('Base Url' + baseUrl );

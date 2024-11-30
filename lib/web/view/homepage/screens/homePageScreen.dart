@@ -90,21 +90,21 @@ class _HomePageScreenState extends State<HomePageScreen> {
                             child:
                             Stack(
                                 children: [
-                              FractionallySizedBox(
-                              alignment: Alignment.bottomCenter, // Aligner en haut à gauche
-                            // Prendre la moitié de la largeur
-                              heightFactor: 0.7, // Prendre la moitié de la hauteur
-                              child: Image.network(
-                                state.listItems![index].imagecategorie, // Replace with your image URLs
-                                width: 215,
-                                height: 240,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return Text('Failed to render image');
-                                },
-                              )
-                            ),
-                                      // Half of the container's height for a circular image
+                                  FractionallySizedBox(
+                                      alignment: Alignment.bottomCenter, // Aligner en haut à gauche
+                                      // Prendre la moitié de la largeur
+                                      heightFactor: 0.7, // Prendre la moitié de la hauteur
+                                      child: Image.network(
+                                        state.listItems![index].imagecategorie, // Replace with your image URLs
+                                        width: 215,
+                                        height: 240,
+                                        fit: BoxFit.cover,
+                                        errorBuilder: (context, error, stackTrace) {
+                                          return Text('Failed to render image');
+                                        },
+                                      )
+                                  ),
+                                  // Half of the container's height for a circular image
                                   Align(
                                     alignment: Alignment.bottomCenter,
                                     child: Padding(
@@ -196,6 +196,140 @@ class _HomePageScreenState extends State<HomePageScreen> {
                 },
               ),
 
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                  child: Column(
+                    children: [
+                      Container(
+                        width: 550,
+                        height: 100,
+                        margin: EdgeInsets.only(
+                          top: 50.0,
+                        ),
+                        child: Text(
+                            'Que vous recherchiez un DJ, un plombier ou un avocat... '
+                                'Nous vous trouvons les meilleurs, gratuitement.',
+                            style: TextStyle(
+                                fontFamily: 'Krona One', fontSize: 24)),
+                      ),
+                      Container(
+                        width: 550,
+                        height: 50,
+                        margin: EdgeInsets.symmetric(vertical: 10),
+                        padding: EdgeInsets.only(bottom: 3),
+                        child: Text(
+                            'Consultez les profils, discutez avec les professionnels, aussi depuis notre application mobile.',
+                            style: TextStyle(
+                                fontFamily: 'Kumbh Sans', fontSize: 15)
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Expanded(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment
+                                  .spaceEvenly, // Espacement égal entre les widgets
+                              children: [
+                                Container(
+                                  width: 260,
+                                  height: 80,
+                                  child: Row(
+                                    children: [
+                                      Image.asset(
+                                        'assets/apple.png',
+                                        width: 65,
+                                        height: 63,
+                                      ),
+                                      Column(
+                                        children: [
+                                          Text(
+                                            'Télécharger sur AppStore',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 16,
+                                                fontFamily: 'Arial'),
+                                          ),
+                                          Text(
+                                            'AppStore',
+                                            style: TextStyle(
+                                                fontSize: 30,
+                                                color: Colors.white,
+                                                fontFamily: 'Arial Black'),
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.black,
+                                    border: Border.all(
+                                        color: Colors.black, width: 1),
+                                    borderRadius: BorderRadius.circular(
+                                        10), // Coins arrondis
+                                  ),
+                                ),
+                                Container(
+                                  width: 260,
+                                  height: 80,
+                                  child: Row(
+                                    children: [
+                                      Image.asset(
+                                        'assets/playstore.png',
+                                        width: 65,
+                                        height: 63,
+                                      ),
+                                      Column(
+                                        children: [
+                                          Text(
+                                            'Télécharger sur PlayStore',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 16,
+                                                fontFamily: 'Arial'),
+                                          ),
+                                          Text(
+                                            'PlayStore',
+                                            style: TextStyle(
+                                                fontSize: 30,
+                                                color: Colors.white,
+                                                fontFamily: 'Arial Black'),
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.black,
+                                    border: Border.all(
+                                        color: Colors.black, width: 1),
+                                    borderRadius: BorderRadius.circular(
+                                        10), // Coins arrondis
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                    child: Container(
+                      margin: EdgeInsets.only(
+                        top: 50.0
+                      ),
+    child: Image.asset(
+      'assets/image2.png',
+      width: 400,
+      height: 300,
+    )),
+    )
+              ],
             ),
             Footer()
           ],

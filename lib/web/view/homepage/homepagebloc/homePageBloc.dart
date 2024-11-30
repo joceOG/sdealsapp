@@ -17,7 +17,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
 
   Future<void> _onLoadCategorieData(LoadCategorieData event,
       Emitter<HomePageState> emit,) async {
-   // String nomgroupe = "Metiers";
+    // String nomgroupe = "Metiers";
     // emit(state.copyWith3(isLoading2: true));
     emit(state.copyWith(isLoading: true));
 
