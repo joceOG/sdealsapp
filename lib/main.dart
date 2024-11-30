@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sdealsapp/web/data/models/article.dart';
 import 'package:sdealsapp/web/view/connexion/connexionbloc/connexionBloc.dart';
 import 'package:sdealsapp/web/view/connexion/screens/connexionScreen.dart';
+import 'package:sdealsapp/web/view/detailsarticle/detailsarticlebloc/detailsarticleBloc.dart';
+import 'package:sdealsapp/web/view/detailsarticle/screens/detailsarticleScreen.dart';
 import 'package:sdealsapp/web/view/detailsprestataire/detailsprestatairebloc/detailsprestataireBloc.dart';
 import 'package:sdealsapp/web/view/detailsprestataire/screens/detailsprestataireScreen.dart';
 import 'package:sdealsapp/web/view/emarche/emarchebloc/emarcheBloc.dart';
@@ -54,6 +57,7 @@ class MyApp extends StatelessWidget {
           return BlocProvider(
             create: (context) => DetailsPrestataireBloc(),
             child: DetailsPrestataireScreen(),
+
           );
         },
       ),
@@ -68,7 +72,15 @@ class MyApp extends StatelessWidget {
           );
         },
       ),
-
+      GoRoute(
+        path: '/detailsarticle',
+        builder: (context, state) {
+          final article = state.extra as Article;          return BlocProvider(
+            create: (context) => DetailsArticleBloc(),
+            child: DetailsArticleScreen(article: article),
+          );
+        },
+      ),
     ],
   );
 

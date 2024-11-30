@@ -90,7 +90,7 @@ class EmarcheScreen extends StatelessWidget {
                       itemBuilder: (context, index) {
                         return GestureDetector(
                             onTap: () {
-                              context.go('/prestataire');
+                              context.go('/detailsarticle');
                             },
                             child:
                             Stack(
@@ -212,7 +212,11 @@ class EmarcheScreen extends StatelessWidget {
                       itemBuilder: (context, index) {
                         return GestureDetector(
                             onTap: () {
-                              context.go('/prestataire');
+                            //  context.go('/detailsarticle');
+                              context.push(
+                                '/detailsarticle',
+                                extra: state.listItems2![index], // Pass the article as extra
+                              );
                             },
                             child:
                             Column(
