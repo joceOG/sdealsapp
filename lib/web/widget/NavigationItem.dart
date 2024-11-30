@@ -17,7 +17,8 @@ class NavigationItem extends StatelessWidget {
                if ( title == "Métiers")
                  { context.go('/');  }
                else if ( title == "Freelance" )
-                 { context.go('/freelance'); }
+                 { print("Go to freelance");
+                   context.go('/freelance'); }
                else if ( title == 'Emarche' )
                { print("Go to emarche");
                  context.go('/emarche');

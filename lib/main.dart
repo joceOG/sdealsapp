@@ -8,6 +8,8 @@ import 'package:sdealsapp/web/view/detailsprestataire/screens/detailsprestataire
 import 'package:sdealsapp/web/view/emarche/emarchebloc/emarcheBloc.dart';
 import 'package:sdealsapp/web/view/emarche/emarchebloc/emarcheEvent.dart';
 import 'package:sdealsapp/web/view/emarche/screens/emarcheScreen.dart';
+import 'package:sdealsapp/web/view/freelance/freelancebloc/freelanceBloc.dart';
+import 'package:sdealsapp/web/view/freelance/screens/freelanceScreen.dart';
 import 'package:sdealsapp/web/view/homepage/homepagebloc/homePageBloc.dart';
 import 'package:sdealsapp/web/view/homepage/homepagebloc/homePageEvent.dart';
 import 'package:sdealsapp/web/view/homepage/screens/homePageScreen.dart';
@@ -65,6 +67,15 @@ class MyApp extends StatelessWidget {
               ..add(LoadCategorieEData())
               ..add(LoadServiceData()),
             child: EmarcheScreen(),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/freelance',
+        builder: (context, state) {
+          return BlocProvider(
+            create: (context) => FreelanceBloc()..add(LoadCategorieData()),
+            child: FreelanceScreen(),
           );
         },
       ),

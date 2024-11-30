@@ -9,6 +9,7 @@ import 'package:sdealsapp/web/widget/AppBarWidget.dart';
 import '../../../widget/Footer.dart';
 import '../prestatairebloc/prestataireBloc.dart';
 
+
 const List<String> list = <String>['One', 'Two', 'Three', 'Four'];
 
 class PrestataireScreen extends StatelessWidget {
@@ -16,21 +17,27 @@ class PrestataireScreen extends StatelessWidget {
   final List<Map<String, String>> serviceProviders = [
     {
       'name': 'Kouadio Jean',
-      'service': 'Mécanicien',
+      'service': 'Coiffeur',
       'location': 'Abidjan, Côte d’Ivoire',
-      'image': 'https://via.placeholder.com/150', // Placeholder image
+      'experiance':'Coiffeur depuis plus de 10ans',
+      'prix': '5000 FCFA',
+      'image': 'assets/coiffeur.jpeg', // Placeholder image
     },
     {
       'name': 'Yao Koffi',
       'service': 'Électricien',
       'location': 'Bouaké, Côte d’Ivoire',
-      'image': 'https://via.placeholder.com/150',
+      'experiance':'Coiffeur depuis plus de 10ans',
+      'prix': '5000 FCFA',
+      'image': 'assets/coiffuer2.jpeg',
     },
     {
       'name': 'Koné Mariam',
       'service': 'Coiffeuse',
       'location': 'Yamoussoukro, Côte d’Ivoire',
-      'image': 'https://via.placeholder.com/150',
+      'experiance':'Coiffeur depuis plus de 10ans',
+      'prix': '5000 FCFA',
+      'image': 'assets/coiffeur.jpeg',
     },
     // Ajoutez plus de prestataires ici
   ];
@@ -143,91 +150,113 @@ class PrestataireScreen extends StatelessWidget {
                       itemCount: serviceProviders.length,
                       itemBuilder: (context, index) {
                         final provider = serviceProviders[index];
-                        return Card(
-                          margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                          child: Padding(
-                            padding: EdgeInsets.all(16.0),
-                            child: Row(
-                              children: <Widget>[
-                                // Image à gauche
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  child: Image.network(
-                                    provider['image']!,
-                                    width: 150.0,
-                                    height: 150.0,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                                SizedBox(width: 16), // Espacement entre l'image et le container
-                                // Container à droite
-                                Expanded(
-                                  child: Container(
-                                    padding: EdgeInsets.all(16.0),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8.0),
+                        return GestureDetector(
+                          onTap: () {
+                            context.go('/detailsprestataire');
+                          },
+                          child: Card(
+                            margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                            child: Padding(
+                              padding: EdgeInsets.all(16.0),
+                              child: Row(
+                                children: <Widget>[
+                                  // Image à gauche
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    child: Image.asset(
+                                      provider['image']!,
+                                      width: 400.0,
+                                      height: 180.0,
+                                      fit: BoxFit.cover,
                                     ),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                                      children: <Widget>[
-                                        // Ligne supérieure avec détails à gauche et à droite
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            Text(
-                                              provider['name']! + ', ' +  provider['location']!,
-                                              style: const TextStyle(
-                                                fontSize: 18.0,
-                                                fontWeight: FontWeight.bold,
+                                  ),
+                                  SizedBox(width: 50), // Espacement entre l'image et le container
+                                  // Container à droite
+                                  Expanded(
+                                    child: Container(
+                                      padding: EdgeInsets.all(16.0),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8.0),
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          // Ligne supérieure avec détails à gauche et à droite
+
+                                          Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                provider['name']!,
+                                                style: const TextStyle(
+                                                  fontSize: 18.0,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
                                               ),
-                                            ),
-                                            Row(
-                                              children: [
-                                                Text(
-                                                     "3",
-                                                        style: TextStyle(
-                                                          fontSize: 16.0,
-                                                          color: Colors.grey[600],
-                                                        ),
-                                                      ),
-                                  SizedBox( width: 4,),
-                                  Icon(Icons.star),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(height: 20), // Espacement entre les détails et le bouton
-                                        // Bouton centré
-                                        Center(
-                                          child: FilledButton(
-                                            onPressed: () {
-                                              context.go('/detailsprestataire');
-                                              // Action à effectuer lors du clic sur le bouton
-                                            },
-                                            style: FilledButton.styleFrom(
-                                              backgroundColor: Colors.blue, // Couleur de fond verte
-                                              padding: const EdgeInsets.symmetric(
-                                                  horizontal: 20, vertical: 15), // Marges internes
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(15), // Bords arrondis
+                                              SizedBox(height: 10.0),
+                                          Row(
+                                            children: [
+                                              Icon(Icons.location_on),
+                                              Text(
+                                                provider['location']!,
+                                                style: const TextStyle(
+                                                  fontSize: 18.0,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
                                               ),
-                                            ),
-                                            child: const Text(
-                                              'Voir les détails',
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold), // Couleur du texte
-                                            ),
+                                            ],
                                           ),
-                                        ),
-                                      ],
+
+                                              SizedBox(height: 10.0),
+
+                                              Text(
+                                                provider['experiance']!,
+                                                style: const TextStyle(
+                                                  fontSize: 18.0,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+
+                                          SizedBox(height: 10.0),
+
+                                          Row(
+                                            children: [
+                                              Expanded(child: Row(
+                                                children: [
+                                                  Text(
+                                                    "3",
+                                                    style: TextStyle(
+                                                        fontSize: 20.0,
+                                                        color: Colors.black,
+                                                        fontFamily: 'arial',
+                                                        fontWeight: FontWeight.bold
+                                                    ),
+                                                  ),
+                                                  SizedBox( width: 4,),
+                                                  Icon(Icons.star),Icon(Icons.star),Icon(Icons.star),
+                                                ],
+                                              )),
+                                              Text(
+                                                provider['prix']!,
+                                                style: const TextStyle(
+                                                  fontSize: 18.0,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+
+
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                          );
+                            ),
+                        );
                       },
                     ),
                   ),

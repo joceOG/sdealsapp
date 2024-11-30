@@ -9,9 +9,9 @@ import '../detailsprestatairebloc/detailsprestataireBloc.dart';
 
 class DetailsPrestataireScreen extends StatelessWidget {
   @override
-
   Widget build(BuildContext context) {
-    final detailsPrestataireBloc = BlocProvider.of<DetailsPrestataireBloc>(context);
+    final detailsPrestataireBloc =
+        BlocProvider.of<DetailsPrestataireBloc>(context);
     final Size screenSize = MediaQuery.of(context).size;
     final double screenWidth = screenSize.width;
     final double screenHeight = screenSize.height;
@@ -22,92 +22,72 @@ class DetailsPrestataireScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(30.0),
+            Container(
+              width: 800,
+              margin: EdgeInsets.only(top: 100.0),
+              padding: EdgeInsets.all(25.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100.0),
+                border: Border.all(),
+              ),
               child: Row(
-                children: <Widget>[
+                children: [
                   // Section gauche : Image et description
+
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Image.asset(
+                        'assets/prestataire.jpeg',),
+                    ],
+                  ),
+                  SizedBox(width: 50.0,),
+                  // Section droite : Détails et bouton contacter
+
                   Expanded(
-                    flex: 2,
-                    child: Center(
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          // Grande image
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Voici une brève description du prestataire. Ce texte peut contenir des informations sur les services offerts, les compétences spécifiques, et d\'autres détails pertinents.',
+                        style: TextStyle(fontSize: 18.0, fontFamily: 'arial'),
+                      ),
+                      SizedBox(height: 10.0),
+                      Row(
+                        children: [
+                          Text('Prix'),
                           SizedBox(
-                            height: 480.0,
-                            child : Image.asset(
-                              'assets/prestataire.jpeg',
-                              width: 600, // Largeur de l'image en pixels
-                              height: 470,
-                              fit: BoxFit.fill,
-                            ),
-                            ),
-                          const SizedBox(height: 16.0),
-                          // Texte de description
-                          const Text(
-                            'Description du Prestataire',
-                            style: TextStyle(
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            width: 10.0,
                           ),
-                          const SizedBox(height: 8.0),
-                          const SizedBox(
-                            width: 300,
-                              child: Text(
-                                'Voici une brève description du prestataire. Ce texte peut contenir des informations sur les services offerts, les compétences spécifiques, et d\'autres détails pertinents.',
-                                style: TextStyle(fontSize: 14.0),
-                              ),
-                          ),
+                          Text('5000 FCFA')
                         ],
                       ),
-                    ),
-                  ),
-                  const SizedBox(width: 16.0),
-                  // Section droite : Détails et bouton contacter
-                  Expanded(
-                    flex: 2,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        const Text(
-                          'Nom : Jean Dupont',
-                          style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(height: 8.0),
-                        const Text(
-                          'Téléphone : +225 01 23 45 67 89',
-                          style: TextStyle(fontSize: 16.0 , fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(height: 8.0),
-                        const Text(
-                          'Email : jean.dupont@example.com',
-                          style: TextStyle(fontSize: 16.0 , fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(height: 8.0),
-                        const Text(
-                          'Adresse : Cocody, Abidjan',
-                          style: TextStyle(fontSize: 16.0 , fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox( height: 20,),
-                        // Bouton Contacter
-                        ElevatedButton(
-                          onPressed: () {
-                            // Action lors du clic sur le bouton
-                          },
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
-                            textStyle: const TextStyle(fontSize: 16.0),
+                      SizedBox(height: 10.0),
+                      Row(
+                        children: [
+                          Image.asset(
+                            'assets/coiffeur.jpeg',
+                            width: 50.0,
                           ),
-                          child: const Text('Contacter'),
-                        ),
-                      ],
-                    ),
-                  ),
+                          SizedBox(width: 10.0),
+                          Column(
+                            children: [
+                              Text('Kouassi Vincent'),
+                              SizedBox(height: 5.0),
+                              Text('Cooiffeur')
+                            ],
+                          ),
+                          SizedBox(width: 10.0),
+                          Icon(Icons.call),
+                          SizedBox(width: 10.0),
+                          Icon(Icons.perm_phone_msg),
+                        ],
+                      )
+                    ],
+                  ))
                 ],
               ),
-              ),
+            ),
             Footer(),
           ],
         ),
@@ -115,5 +95,3 @@ class DetailsPrestataireScreen extends StatelessWidget {
     );
   }
 }
-
-
