@@ -38,7 +38,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
             },
             child: Row(children: <Widget>[
               Image.asset(
-                'assets/logo.jpeg', width: 92, // Largeur de l'image en pixels
+                'assets/logo1.png', width: 92, // Largeur de l'image en pixels
                 height: 76,
               ),
               const Text('Soutrali Deals',

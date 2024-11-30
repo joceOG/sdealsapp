@@ -9,6 +9,8 @@ class GoToPrestataire extends NavigationEvent {}
 class GoToDetailsPrestataire extends NavigationEvent {}
 class GoToEmarche extends NavigationEvent {}
 class GoToDetailsArticle extends NavigationEvent {}
+class GoToFreeLance extends NavigationEvent {}
+
 
 // Define the Bloc for navigation
 class NavigationBloc extends Bloc<NavigationEvent, String> {
@@ -28,7 +30,10 @@ class NavigationBloc extends Bloc<NavigationEvent, String> {
     yield '/emarche';
     } else if (event is GoToEmarche) {
       yield '/detailsarticle';
+    }else if (event is GoToFreeLance) {
+      yield '/freelance';
     }
+
 
   }
 }

@@ -206,6 +206,9 @@ class _HomePageScreenState extends State<HomePageScreen> {
                       Container(
                         width: 550,
                         height: 100,
+                        margin: EdgeInsets.only(
+                          top: 50.0,
+                        ),
                         child: Text(
                             'Que vous recherchiez un DJ, un plombier ou un avocat... '
                                 'Nous vous trouvons les meilleurs, gratuitement.',
@@ -316,11 +319,16 @@ class _HomePageScreenState extends State<HomePageScreen> {
                   ),
                 ),
                 Expanded(
-                    child: Image.asset(
-                      'assets/image2.png',
-                      width: 400,
-                      height: 300,
-                    ))
+                    child: Container(
+                      margin: EdgeInsets.only(
+                        top: 50.0
+                      ),
+    child: Image.asset(
+      'assets/image2.png',
+      width: 400,
+      height: 300,
+    )),
+    )
               ],
             ),
             Footer()
