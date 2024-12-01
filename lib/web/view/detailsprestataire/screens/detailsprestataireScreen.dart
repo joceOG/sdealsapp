@@ -23,68 +23,138 @@ class DetailsPrestataireScreen extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              width: 800,
-              margin: EdgeInsets.only(top: 100.0),
-              padding: EdgeInsets.all(25.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100.0),
-                border: Border.all(),
+              margin: EdgeInsets.only(
+                top: 50.0,
+                  left: 50.0,
+                  right: 50.0,
+                  bottom: 50.0,
+
               ),
+              child: Row(crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(20.0),
+                    child: Image.asset('assets/img haut.jpeg',
+                      width: 1300,
+                      height: 200,
+                      fit: BoxFit.cover,),
+                  )
+                ],
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(
+                  top: 50.0,
+                  left: 50.0,
+                  right: 50.0,
+                  bottom: 50.0),
+
               child: Row(
                 children: [
                   // Section gauche : Image et description
-
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Image.asset(
-                        'assets/prestataire.jpeg',),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(20.0),
+                      child : Image.asset(
+                          'assets/prestataire.jpeg',
+                          width: 600.0,
+                          height: 300,
+                          fit: BoxFit.cover,),
+                      )
                     ],
                   ),
-                  SizedBox(width: 50.0,),
+                  const SizedBox(width: 30.0,),
                   // Section droite : Détails et bouton contacter
 
                   Expanded(
                       child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         'Voici une brève description du prestataire. Ce texte peut contenir des informations sur les services offerts, les compétences spécifiques, et d\'autres détails pertinents.',
-                        style: TextStyle(fontSize: 18.0, fontFamily: 'arial'),
+                        style: TextStyle(fontSize: 20.0, fontFamily: 'arial'),
                       ),
-                      SizedBox(height: 10.0),
-                      Row(
+                      const SizedBox(height: 15.0),
+                      const Row(
                         children: [
-                          Text('Prix'),
+                          Text('Prix',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 25,
+                            fontFamily: 'Neohead'
+                          ),),
                           SizedBox(
-                            width: 10.0,
+                            width: 35.0,
                           ),
-                          Text('5000 FCFA')
+                          Text('5000 FCFA',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 25,
+                                fontFamily: 'Neohead'
+                            ),)
                         ],
                       ),
-                      SizedBox(height: 10.0),
+                      const SizedBox(height: 15.0),
                       Row(
                         children: [
-                          Image.asset(
-                            'assets/coiffeur.jpeg',
-                            width: 50.0,
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(25.0),
+                           child: Image.asset(
+                              'assets/coiffeur.jpeg',
+                              width: 60,
+                            ),
                           ),
-                          SizedBox(width: 10.0),
-                          Column(
+                          const SizedBox(width: 50.0),
+                          const Column( crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Kouassi Vincent'),
-                              SizedBox(height: 5.0),
-                              Text('Cooiffeur')
+                              Text('Kouassi Vincent',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w300,
+                                fontSize: 25.0,
+
+                              ),),
+                              SizedBox(height: 10.0),
+                              Text('Cooiffeur',
+                              style: TextStyle(
+                                fontSize: 15.0,
+                              ),)
                             ],
                           ),
-                          SizedBox(width: 10.0),
-                          Icon(Icons.call),
-                          SizedBox(width: 10.0),
-                          Icon(Icons.perm_phone_msg),
+                          const SizedBox(width: 50.0),
+
+                          ElevatedButton(onPressed: (){},
+                            child: const Icon(Icons.phone,
+                            color: Colors.green,
+                            size: 45,),),
+
+                          const SizedBox(width: 20.0),
+
+                          ElevatedButton(onPressed: (){},
+                            child: const Icon(Icons.message,
+                            color: Colors.green,
+                            size: 45.0,),)
                         ],
                       )
                     ],
                   ))
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(
+                left: 50.0
+              ),
+              child: Row(crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(20.0),
+                    child: Image.asset('assets/map.png',
+                    width: 1300,
+                    height: 300,
+                    fit: BoxFit.cover,),
+                  )
                 ],
               ),
             ),
