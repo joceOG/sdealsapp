@@ -16,27 +16,27 @@ class PrestataireScreen extends StatelessWidget {
 
   final List<Map<String, String>> serviceProviders = [
     {
-      'name': 'Kouadio Jean',
+      'name': 'Kouadio   Jean',
       'service': 'Coiffeur',
-      'location': 'Abidjan, Côte d’Ivoire',
+      'location': 'Abidjan,       Côte d’Ivoire',
       'experiance':'Coiffeur depuis plus de 10ans',
       'prix': '5000 FCFA',
       'image': 'assets/coiffeur.jpeg', // Placeholder image
     },
     {
-      'name': 'Yao Koffi',
+      'name': 'Yao   Koffi',
       'service': 'Électricien',
-      'location': 'Bouaké, Côte d’Ivoire',
+      'location': 'Bouaké,       Côte d’Ivoire',
       'experiance':'Coiffeur depuis plus de 10ans',
-      'prix': '5000 FCFA',
+      'prix': '4000 FCFA',
       'image': 'assets/coiffuer2.jpeg',
     },
     {
-      'name': 'Koné Mariam',
+      'name': 'Koné   Mariam',
       'service': 'Coiffeuse',
-      'location': 'Yamoussoukro, Côte d’Ivoire',
+      'location': 'Yamoussoukro,       Côte d’Ivoire',
       'experiance':'Coiffeur depuis plus de 10ans',
-      'prix': '5000 FCFA',
+      'prix': '2000 FCFA',
       'image': 'assets/coiffeur.jpeg',
     },
     // Ajoutez plus de prestataires ici
@@ -188,14 +188,15 @@ class PrestataireScreen extends StatelessWidget {
                                               Text(
                                                 provider['name']!,
                                                 style: const TextStyle(
-                                                  fontSize: 18.0,
+                                                  fontSize: 20.0,
                                                   fontWeight: FontWeight.bold,
                                                 ),
                                               ),
-                                              SizedBox(height: 10.0),
+                                              SizedBox(height: 20.0),
                                           Row(
                                             children: [
                                               Icon(Icons.location_on),
+                                              SizedBox(width: 10.0),
                                               Text(
                                                 provider['location']!,
                                                 style: const TextStyle(
@@ -206,7 +207,7 @@ class PrestataireScreen extends StatelessWidget {
                                             ],
                                           ),
 
-                                              SizedBox(height: 10.0),
+                                              SizedBox(height: 20.0),
 
                                               Text(
                                                 provider['experiance']!,
@@ -222,28 +223,35 @@ class PrestataireScreen extends StatelessWidget {
 
                                           Row(
                                             children: [
-                                              Expanded(child: Row(
+                                              const Expanded(child: Row(
                                                 children: [
+
+                                                  SizedBox( width: 4,),
+                                                  Icon(Icons.star, color: Colors.amberAccent,),
+                                                  Icon(Icons.star, color: Colors.amberAccent,),
+                                                  Icon(Icons.star, color: Colors.amberAccent,),
+                                                  Icon(Icons.star_border,
+                                                    color: Colors.amberAccent,),
+
                                                   Text(
-                                                    "3",
+                                                    " 3",
                                                     style: TextStyle(
                                                         fontSize: 20.0,
-                                                        color: Colors.black,
+                                                        color: Colors.black45,
                                                         fontFamily: 'arial',
                                                         fontWeight: FontWeight.bold
                                                     ),
                                                   ),
-                                                  SizedBox( width: 4,),
-                                                  Icon(Icons.star),Icon(Icons.star),Icon(Icons.star),
                                                 ],
                                               )),
-                                              Text(
+                                              ElevatedButton(onPressed: (){},
+                                                child: Text(
                                                 provider['prix']!,
                                                 style: const TextStyle(
-                                                  fontSize: 18.0,
+                                                  fontSize: 25.0,
                                                   fontWeight: FontWeight.bold,
                                                 ),
-                                              ),
+                                              ),)
                                             ],
                                           ),
 
