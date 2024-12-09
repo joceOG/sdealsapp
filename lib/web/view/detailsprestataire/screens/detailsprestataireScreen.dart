@@ -103,7 +103,7 @@ class DetailsPrestataireScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(25.0),
                            child: Image.asset(
                               'assets/coiffeur.jpeg',
-                              width: 60,
+                              width: 70,
                             ),
                           ),
                           const SizedBox(width: 50.0),
