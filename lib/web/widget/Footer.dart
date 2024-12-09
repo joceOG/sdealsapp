@@ -10,7 +10,9 @@ class Footer extends StatelessWidget {
           margin: const EdgeInsets.only(
             top: 100.0,
           ),
-          padding: const EdgeInsets.all(40.0),
+          padding: const EdgeInsets.only(
+            top: 40.0
+          ),
           color: Colors.black,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -24,7 +26,7 @@ class Footer extends StatelessWidget {
                       backgroundColor: Colors.black,
                     ),
                     onPressed: () {},
-                    child: Text(
+                    child: const Text(
                       'Pour mieux nous connaître',
                       style: TextStyle(
                           color: Colors.white, fontFamily: 'Jost', fontSize: 16),
@@ -35,7 +37,7 @@ class Footer extends StatelessWidget {
                       backgroundColor: Colors.black,
                     ),
                     onPressed: () {},
-                    child: Text('Gagner de l’argent',
+                    child: const Text('Gagner de l’argent',
                         textAlign: TextAlign.left,
                         style: TextStyle(
                             color: Colors.white, fontFamily: 'Jost', fontSize: 16)),
@@ -45,7 +47,7 @@ class Footer extends StatelessWidget {
                       backgroundColor: Colors.black,
                     ),
                     onPressed: () {},
-                    child: Text('Moyens de paiement Soutrali ',
+                    child: const Text('Moyens de paiement Soutrali ',
                         textAlign: TextAlign.left,
                         style: TextStyle(
                             color: Colors.white, fontFamily: 'Jost', fontSize: 16)),
@@ -55,7 +57,7 @@ class Footer extends StatelessWidget {
                       backgroundColor: Colors.black,
                     ),
                     onPressed: () {},
-                    child: Text('Besoin d’aide ?',
+                    child: const Text('Besoin d’aide ?',
                         textAlign: TextAlign.start,
                         style: TextStyle(
                             color: Colors.white, fontFamily: 'Jost', fontSize: 16)),
@@ -67,8 +69,8 @@ class Footer extends StatelessWidget {
                     Expanded(child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'Newslettter',
+                        const Text(
+                          'Newsletter',
                           style: TextStyle(
                               fontSize: 17,
                               color: Colors.white,
@@ -118,65 +120,57 @@ class Footer extends StatelessWidget {
                             ),
                           ],
                         ),
-
                       ],
                     ),
                     ),
 
 
-        /*
-
-                      Expanded(
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                width: 555,
-                                height: 100,
-                                child: Row(
-                                  children: [
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.green,
-                                      ),
-                                      onPressed: () {
-                                        // Action à effectuer lors du clic
-                                      },
-                                      child: Text('Subscribe',
-                                          style: TextStyle(color: Colors.white)),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
-                          )),*/
-
             ],
           ),
         ),
+
         Container(
-            margin: EdgeInsets.only(
-              top: 2.0,
-            ),
-            color: Colors.black,
-            child:   Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(child: Column(
-                  children: [
-                    Image.asset('assets/logo1.png',
-                      width: 300,),
-                    Text('© Soutrali Deals 2024',
-                      style: TextStyle(
-                        fontFamily: 'Jost',
-                        color: Colors.white,
-                        fontSize: 15,
-                      ),)
-                  ],
-                )
-                )
-              ],
-            )
+          padding: const EdgeInsets.only(
+              top: 20.0
+          ),
+          color: Colors.black,
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  const Expanded(
+                    child: Divider(
+                      thickness: 4, // Épaisseur du trait
+                      color: Colors.white, // Couleur du trait
+                      endIndent: 15, // Espacement entre le trait et le texte
+                    ),
+                  ),
+
+                  Image.asset('assets/logo1.png',
+                    width: 300,),
+
+                  const SizedBox(width: 15.0,),
+                  const Expanded(
+                    child: Divider(
+                      thickness: 4, // Épaisseur du trait
+                      color: Colors.white, // Couleur du trait
+                      //endIndent: 15, // Espacement entre le trait et le texte
+                    ),
+                  ),
+
+                ],
+              ),
+
+              const Text('© Soutrali Deals 2024',
+                style: TextStyle(
+                  fontFamily: 'Jost',
+                  color: Colors.white,
+                  fontSize: 15,
+                ),)
+            ],
+          ),
         )
+        
       ],
     );
   }

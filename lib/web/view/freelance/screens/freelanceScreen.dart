@@ -71,7 +71,7 @@ class _FreelanceScreenState extends State<FreelanceScreen> {
               ),
             ),
             Container(
-              padding: EdgeInsets.only(left: 40.0 , right: 40.0,),
+              padding: const EdgeInsets.only(left: 40.0 , right: 40.0,),
               height: 260, // Set a height for the container
               child:
               BlocBuilder<FreelanceBloc, FreelanceState>(
@@ -140,7 +140,7 @@ class _FreelanceScreenState extends State<FreelanceScreen> {
               ),
             ),
             Container(
-              padding: EdgeInsets.only(left: 40.0 , right: 40.0,),
+              padding: const EdgeInsets.only(left: 40.0 , right: 40.0,),
               height: 260, // Set a height for the container
               child:
               BlocBuilder<FreelanceBloc, FreelanceState>(
@@ -201,15 +201,15 @@ class _FreelanceScreenState extends State<FreelanceScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Expanded(
-                  child: Column(
+                  child:  Column(
                     children: [
                       Container(
                         width: 550,
                         height: 100,
-                        margin: EdgeInsets.only(
+                        margin: const EdgeInsets.only(
                           top: 50.0,
                         ),
-                        child: Text(
+                        child: const Text(
                             'Que vous recherchiez un DJ, un plombier ou un avocat... '
                                 'Nous vous trouvons les meilleurs, gratuitement.',
                             style: TextStyle(
@@ -220,7 +220,7 @@ class _FreelanceScreenState extends State<FreelanceScreen> {
                         height: 50,
                         margin: EdgeInsets.symmetric(vertical: 10),
                         padding: EdgeInsets.only(bottom: 3),
-                        child: Text(
+                        child: const Text(
                             'Consultez les profils, discutez avec les professionnels, aussi depuis notre application mobile.',
                             style: TextStyle(
                                 fontFamily: 'Kumbh Sans', fontSize: 15)
@@ -237,6 +237,13 @@ class _FreelanceScreenState extends State<FreelanceScreen> {
                                 Container(
                                   width: 260,
                                   height: 80,
+                                  decoration: BoxDecoration(
+                                    color: Colors.black,
+                                    border: Border.all(
+                                        color: Colors.black, width: 1),
+                                    borderRadius: BorderRadius.circular(
+                                        10), // Coins arrondis
+                                  ),
                                   child: Row(
                                     children: [
                                       Image.asset(
@@ -244,7 +251,7 @@ class _FreelanceScreenState extends State<FreelanceScreen> {
                                         width: 65,
                                         height: 63,
                                       ),
-                                      Column(
+                                      const Column(
                                         children: [
                                           Text(
                                             'Télécharger sur AppStore',
@@ -264,6 +271,10 @@ class _FreelanceScreenState extends State<FreelanceScreen> {
                                       ),
                                     ],
                                   ),
+                                ),
+                                Container(
+                                  width: 260,
+                                  height: 80,
                                   decoration: BoxDecoration(
                                     color: Colors.black,
                                     border: Border.all(
@@ -271,10 +282,6 @@ class _FreelanceScreenState extends State<FreelanceScreen> {
                                     borderRadius: BorderRadius.circular(
                                         10), // Coins arrondis
                                   ),
-                                ),
-                                Container(
-                                  width: 260,
-                                  height: 80,
                                   child: Row(
                                     children: [
                                       Image.asset(
@@ -282,7 +289,7 @@ class _FreelanceScreenState extends State<FreelanceScreen> {
                                         width: 65,
                                         height: 63,
                                       ),
-                                      Column(
+                                      const Column(
                                         children: [
                                           Text(
                                             'Télécharger sur PlayStore',
@@ -302,13 +309,6 @@ class _FreelanceScreenState extends State<FreelanceScreen> {
                                       ),
                                     ],
                                   ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.black,
-                                    border: Border.all(
-                                        color: Colors.black, width: 1),
-                                    borderRadius: BorderRadius.circular(
-                                        10), // Coins arrondis
-                                  ),
                                 ),
                               ],
                             ),
@@ -320,7 +320,7 @@ class _FreelanceScreenState extends State<FreelanceScreen> {
                 ),
                 Expanded(
                   child: Container(
-                      margin: EdgeInsets.only(
+                      margin: const EdgeInsets.only(
                           top: 50.0
                       ),
                       child: Image.asset(
@@ -338,3 +338,4 @@ class _FreelanceScreenState extends State<FreelanceScreen> {
     );
   }
 }
+ 
