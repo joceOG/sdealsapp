@@ -18,6 +18,8 @@ import 'package:sdealsapp/web/view/freelance/screens/freelanceScreen.dart';
 import 'package:sdealsapp/web/view/homepage/homepagebloc/homePageBloc.dart';
 import 'package:sdealsapp/web/view/homepage/homepagebloc/homePageEvent.dart';
 import 'package:sdealsapp/web/view/homepage/screens/homePageScreen.dart';
+import 'package:sdealsapp/web/view/inscription/inscriptionbloc/inscriptionBloc.dart';
+import 'package:sdealsapp/web/view/inscription/screens/inscriptionScreen.dart';
 import 'package:sdealsapp/web/view/prestataire/prestatairebloc/prestataireBloc.dart';
 import 'package:sdealsapp/web/view/prestataire/screens/prestataireScreen.dart';
 
@@ -101,6 +103,15 @@ class MyApp extends StatelessWidget {
           );
         },
       ),
+      GoRoute(
+        path: '/inscription',
+        builder: (context, state) {
+          return BlocProvider(
+            create: (context) => InscriptionBloc(),
+            child: InscriptionScreen(),
+          );
+        },
+      ),
 
     ],
   );
@@ -122,7 +133,7 @@ class MyApp extends StatelessWidget {
         builder: (context, state) {
           return BlocProvider(
             create: (_) => HomePageBlocM()..add(LoadCategorieDataM()),
-            child: HomePageScreenM(),
+            child: const HomePageScreenM(),
           );
         },
       ),

@@ -95,8 +95,10 @@ class Footer extends StatelessWidget {
                              height: 50,
                              child: ElevatedButton(
                                style: ElevatedButton.styleFrom(
-
                                  backgroundColor: Colors.green,
+                                 shape: RoundedRectangleBorder(
+                                   borderRadius: BorderRadius.circular(6.0),
+                                 ),
                                ),
                                onPressed: () {
                                  // Action à effectuer lors du clic
