@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-
-import '../../../widget/AppBarWidget.dart';
 import '../../../widget/Footer.dart';
+import '../../../widget/appbarwIdget/screens/AppBarWidget.dart';
 import '../emarchebloc/emarcheBloc.dart';
 import '../emarchebloc/emarcheState.dart';
-
 
 
 class EmarcheScreen extends StatelessWidget {

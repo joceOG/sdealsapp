@@ -4,9 +4,9 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sdealsapp/web/widget/AppBarWidget.dart';
 
 import '../../../widget/Footer.dart';
+import '../../../widget/appbarwIdget/screens/AppBarWidget.dart';
 import '../prestatairebloc/prestataireBloc.dart';
 
 

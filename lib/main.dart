@@ -20,13 +20,16 @@ import 'package:sdealsapp/web/view/homepage/homepagebloc/homePageEvent.dart';
 import 'package:sdealsapp/web/view/homepage/screens/homePageScreen.dart';
 import 'package:sdealsapp/web/view/prestataire/prestatairebloc/prestataireBloc.dart';
 import 'package:sdealsapp/web/view/prestataire/screens/prestataireScreen.dart';
+import 'package:sdealsapp/web/view/splashcreen/screens/splashScreen.dart';
+import 'package:sdealsapp/web/view/splashcreen/splashscreenbloc/splashscreenBloc.dart';
+import 'package:sdealsapp/web/view/splashcreen/splashscreenbloc/splashscreenEvent.dart';
 
 import 'mobile/view/homepagem/homepageblocm/homePageBlocM.dart';
 import 'mobile/view/homepagem/homepageblocm/homePageEventM.dart';
 import 'mobile/view/homepagem/screens/homePageScreenM.dart';
-import 'mobile/view/splashcreen/screens/splashScreen.dart';
-import 'mobile/view/splashcreen/splashscreenbloc/splashscreenBloc.dart';
-import 'mobile/view/splashcreen/splashscreenbloc/splashscreenEvent.dart';
+import 'mobile/view/splashcreenm/screens/splashScreenM.dart';
+import 'mobile/view/splashcreenm/splashscreenblocm/splashscreenBlocM.dart';
+import 'mobile/view/splashcreenm/splashscreenblocm/splashscreenEventM.dart';
 
 void main() {
   runApp(MyApp());
@@ -37,6 +40,15 @@ class MyApp extends StatelessWidget {
     routes: [
       GoRoute(
         path: '/',
+        builder: (context, state) {
+          return BlocProvider(
+            create: (_) => SplashscreenBloc()..add(LoadSplash()),
+            child: SplashScreen(),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/homepage',
         builder: (context, state) {
           return BlocProvider(
             create: (context) => HomePageBloc()..add(LoadCategorieData()),
@@ -112,8 +124,8 @@ class MyApp extends StatelessWidget {
         path: '/',
         builder: (context, state) {
           return BlocProvider(
-          create: (_) => SplashscreenBloc()..add(LoadSplash()),
-          child: SplashScreen(),
+          create: (_) => SplashscreenBlocM()..add(LoadSplashM()),
+          child: SplashScreenM(),
           );
         },
       ),

@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sdealsapp/web/widget/AppBarWidget.dart';
 import 'package:sdealsapp/web/widget/Footer.dart';
 
 import '../../../data/models/article.dart';
+import '../../../widget/appbarwIdget/screens/AppBarWidget.dart';
 import '../detailsarticlebloc/detailsarticleBloc.dart';
 
 class DetailsArticleScreen extends StatelessWidget {
