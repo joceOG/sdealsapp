@@ -38,7 +38,7 @@ class ConnexionScreen extends StatelessWidget {
                       const SizedBox(width: 80.0,),
                       Container(
                         width: 500,
-                        height: 500,
+                        height: 550,
                         padding: const EdgeInsets.all(25.0),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10.0),
@@ -59,7 +59,8 @@ class ConnexionScreen extends StatelessWidget {
                                 'Bienvenue',
                                 style: TextStyle(
                                     fontSize: 30,
-                                    color: Colors.black),
+                                    color: Colors.black45,
+                                    fontWeight: FontWeight.bold),
                               ),
                               const Text(
                                 'Connecté vous pour decouvrir toutes nos fonctionnalités',
@@ -68,17 +69,7 @@ class ConnexionScreen extends StatelessWidget {
                                     fontSize: 15,
                                     color: Colors.black),
                               ),
-                              const Text(
-                                'Nom *',
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              TextFormField(
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  hintText: 'Entrez votre nom',
-                                ),
-                              ),
-                              SizedBox(height: 20), // Espacement entre les champs
+                              const SizedBox(height: 15.0,),
                               const Text(
                                 'Email *',
                                 style: TextStyle(fontSize: 18),
@@ -89,6 +80,12 @@ class ConnexionScreen extends StatelessWidget {
                                   hintText: 'Entrez votre email',
                                 ),
                               ),
+                              SizedBox(height: 20), // Espacement entre les champs
+                              const Text(
+                                'Password *',
+                                style: TextStyle(fontSize: 18),
+                              ),
+                              passwordFileidExample(),
                               const SizedBox(height: 20),
 
                               FilledButton(
@@ -108,13 +105,15 @@ class ConnexionScreen extends StatelessWidget {
                                   ),
                                   child: const Row(
                                     children: [
-                                      SizedBox(width: 10.0,),
-                                      Icon(Icons.navigation),
-                                      SizedBox(width: 120.0,),
+                                      SizedBox(width: 90.0,),
+                                      Icon(Icons.navigation,
+                                      size: 30.0,),
+                                      SizedBox(width: 30.0,),
                                       Text(
                                         'Se connecter',
                                         style: TextStyle(
                                             color: Colors.white,
+                                            fontSize: 17.0,
                                             fontWeight:
                                             FontWeight.bold), // Couleur du texte
                                       ),
@@ -144,10 +143,21 @@ class ConnexionScreen extends StatelessWidget {
                               const SizedBox(
                                 height: 30.0,
                               ),
-                              ElevatedButton(onPressed: (){},
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.zero,
+                                  ),
+                                  side: BorderSide(color: Colors.black12),
+
+                                ),
+                                onPressed: (){},
                                 child: Row(
                                   children: [
-                                    Image.asset('assets/google.png'),
+                                    SizedBox(width: 60.0,),
+                                    Image.asset('assets/google.png',
+                                    width: 40.0,),
 
                                     SizedBox(width: 30.0,),
 
@@ -156,15 +166,34 @@ class ConnexionScreen extends StatelessWidget {
                                       style: TextStyle(
                                         color: Colors.black45,
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 20.0,
+                                        fontSize: 17.0,
                                       ), // Couleur du texte
                                     ),
                                   ],
-                                ),)
+                                ),),
+                              SizedBox(height: 20.0,),
+
+                              Row(
+                                children: [
+                                  SizedBox(width: 70.0,),
+                                  Text('Vous n’avez pas de compte ? '),
+
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.white,
+                                    ),
+                                      onPressed: (){
+                                      context.go('/inscription');
+                                      },
+                                      child: Text('Créer un compte'))
+                                ],
+                              )
+
                             ],
                           ),
                         ),
                       ),
+
                     ],
                   ),
                 ),
@@ -175,4 +204,42 @@ class ConnexionScreen extends StatelessWidget {
         ),
         );
   }
+}
+
+class passwordFileid extends State<passwordFileidExample> {
+  bool textVue=true;
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return   Container(
+
+      child: TextField(
+        obscureText: textVue,
+        decoration: InputDecoration(
+            hintText: 'Entrez le mot de passe',
+            border: const OutlineInputBorder(),
+            suffixIcon: IconButton(onPressed: (){
+              setState(() {
+                textVue=!textVue;
+              });
+            },
+                icon: Icon(
+                    textVue?
+                    Icons.visibility:
+                    Icons.visibility_off
+                ))
+        ),
+      ),
+    );
+
+  }
+
+
+
+}
+
+class passwordFileidExample  extends StatefulWidget{
+  @override
+  passwordFileid createState()=> passwordFileid();
 }
