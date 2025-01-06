@@ -7,10 +7,15 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
 
 
   MenuBloc(): super(MenuInitialState()) {
+
     on<HoverMenuEvent>((event, emit) async {
-      emit(MenuVisibleState());
       print("Emit Visible") ;
     });
+
+    on<HoverMenuMetiers>((event, emit) async {
+      print("Menu Metiers") ;
+    });
+
   }
 
 

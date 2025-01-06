@@ -16,25 +16,25 @@ class PrestataireScreen extends StatelessWidget {
 
   final List<Map<String, String>> serviceProviders = [
     {
-      'name': 'Kouadio   Jean',
+      'name': 'Kouadio Jean',
       'service': 'Coiffeur',
-      'location': 'Abidjan,       Côte d’Ivoire',
+      'location': 'Abidjan, Côte d’Ivoire',
       'experiance':'Coiffeur depuis plus de 10ans',
       'prix': '5000 FCFA',
       'image': 'assets/coiffeur.jpeg', // Placeholder image
     },
     {
-      'name': 'Yao   Koffi',
+      'name': 'Yao Koffi',
       'service': 'Électricien',
-      'location': 'Bouaké,       Côte d’Ivoire',
+      'location': 'Bouaké, Côte d’Ivoire',
       'experiance':'Coiffeur depuis plus de 10ans',
       'prix': '4000 FCFA',
       'image': 'assets/coiffuer2.jpeg',
     },
     {
-      'name': 'Koné   Mariam',
+      'name': 'Koné Mariam',
       'service': 'Coiffeuse',
-      'location': 'Yamoussoukro,       Côte d’Ivoire',
+      'location': 'Yamoussoukro, Côte d’Ivoire',
       'experiance':'Coiffeur depuis plus de 10ans',
       'prix': '2000 FCFA',
       'image': 'assets/coiffeur.jpeg',
@@ -48,7 +48,6 @@ class PrestataireScreen extends StatelessWidget {
     final Size screenSize = MediaQuery.of(context).size;
     final double screenWidth = screenSize.width;
     final double screenHeight = screenSize.height;
-
 
     return Scaffold(
       backgroundColor: Colors.white,

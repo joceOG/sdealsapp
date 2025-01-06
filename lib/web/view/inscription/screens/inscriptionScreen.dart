@@ -3,10 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sdealsapp/web/view/inscription/inscriptionbloc/inscriptionBloc.dart';
-import 'package:sdealsapp/web/widget/AppBarWidget.dart';
 import 'package:sdealsapp/web/widget/Footer.dart';
-
-import '../screens/inscriptionScreen.dart';
+import '../../../widget/appbarwIdget/screens/AppBarWidget.dart';
 
 class InscriptionScreen extends StatelessWidget {
 

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
@@ -22,10 +23,8 @@ class AppbarItem extends StatelessWidget {
 }
 
 class MyStatefulWidget extends StatelessWidget {
-
   final String title;
   const MyStatefulWidget ({required this.title});
-
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
@@ -35,22 +34,87 @@ class MyStatefulWidget extends StatelessWidget {
           return MouseRegion(
             onHover: (_) async {
               context.read<MenuBloc>().add(HoverMenuEvent());
-              if (state is MenuVisibleState) {
-                await showMenu(
-                  context: context,
-                  position: RelativeRect.fromLTRB(100, 100, 100, 100),
-                  items: [
-                    const PopupMenuItem(
-                      child: Text("View"),
+              if(title == "Métiers") {
+                context.read<MenuBloc>().add(HoverMenuMetiers());
+                  await showMenu(
+                    context: context,
+                    constraints: const BoxConstraints(
+                      minWidth: 1200, // Set the desired width here
+                      maxWidth: 1200,
                     ),
-                    const PopupMenuItem(
-                      child: Text("Edit"),
-                    ),
-                    const PopupMenuItem(
-                      child: Text("Delete"),
-                    ),
-                  ],
-                );
+                    position: const RelativeRect.fromLTRB(100, 100, 100, 100),
+                    items: [
+                      PopupMenuItem(
+                        enabled: false,
+                        child: SizedBox(
+                            width: 1100,
+                            height: 600,
+                            child: Row(
+                              children: [
+                                // Part 1: Elevated Button
+                                SizedBox(
+                                  width : 350,
+                                  child: Stack(
+                                    children: [
+                                      Positioned(
+                                        top: 20,
+                                        child: SizedBox(
+                                          width: 350,
+                                          height: 70,
+                                          child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.green,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(0), // Bords arrondis
+                                            ),
+                                          ),
+                                          onPressed: () {
+                                            // Handle button press
+                                          },
+                                          child:  Row(
+                                            children: [
+                                              Image.asset('assets/business.png',
+                                                width: 30,),
+                                              const SizedBox(width: 8),
+                                              const Text('Prestataires de services',
+                                                  style: TextStyle(
+                                                      color: Colors.white, fontFamily: 'Jost', fontSize: 20 , fontWeight: FontWeight.bold) ),
+                                            ],
+                                          ),
+                                          ),
+                                        ),
+                                      ),
+                                    ]
+                                  ),
+                                ),
+                                const SizedBox(width: 16), // Add spacing between parts
+                                // Part 2: First List of Text
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: List.generate(
+                                      5,
+                                          (index) => Text('Item ${index + 1}', style: TextStyle(fontSize: 16)),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: 16), // Add spacing between parts
+                                // Part 3: Second List of Text
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: List.generate(
+                                      5,
+                                          (index) => Text('Element ${index + 1}', style: TextStyle(fontSize: 16)),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                  ),
+                        ),
+                    ],
+                  );
               }
             },
             child: Padding(
@@ -66,10 +130,6 @@ class MyStatefulWidget extends StatelessWidget {
                   { print("Go to emarche");
                   context.go('/emarche');
                   }
-                  else if ( title == "Autres" )
-                  { context.go('/autre'); }
-                  else if ( title == "A propos" )
-                  { context.go('/'); }
                 },
                 child: Text(
                   title,

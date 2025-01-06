@@ -26,6 +26,7 @@ import 'package:sdealsapp/web/view/splashcreen/screens/splashScreen.dart';
 import 'package:sdealsapp/web/view/splashcreen/splashscreenbloc/splashscreenBloc.dart';
 import 'package:sdealsapp/web/view/splashcreen/splashscreenbloc/splashscreenEvent.dart';
 
+import 'mobile/view/home.dart';
 import 'mobile/view/homepagem/homepageblocm/homePageBlocM.dart';
 import 'mobile/view/homepagem/homepageblocm/homePageEventM.dart';
 import 'mobile/view/homepagem/screens/homePageScreenM.dart';
@@ -140,16 +141,11 @@ class MyApp extends StatelessWidget {
           );
         },
       ),
+
       GoRoute(
         path: '/homepage',
-        builder: (context, state) {
-          return BlocProvider(
-            create: (_) => HomePageBlocM()..add(LoadCategorieDataM()),
-            child: const HomePageScreenM(),
-          );
-        },
+        builder: (context, state) => const Home(),
       ),
-
     ],
   );
 
@@ -159,7 +155,6 @@ class MyApp extends StatelessWidget {
         builder: (context, sizingInformation)
     {
       GoRouter router;
-
       // Configure the router based on screen size
       if (sizingInformation.isDesktop) {
         router = desktopRouter;
