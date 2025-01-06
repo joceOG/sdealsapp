@@ -29,12 +29,9 @@ Widget build(BuildContext context) {
                     child: Container(
                       width: 400,
                       height: 400,
-                      decoration: BoxDecoration(
-
+                      decoration: const BoxDecoration(
                         image: DecorationImage(
-
                           image: AssetImage('assets/logo1.png'),
-
                         ),
                       ),
                     ),

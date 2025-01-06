@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import 'NavigationItem.dart';
+import 'NavigationItem2.dart';
 
 class NavigationBar extends StatelessWidget {
   @override
@@ -15,8 +16,8 @@ class NavigationBar extends StatelessWidget {
           NavigationItem(title: 'Métiers'),
           NavigationItem(title: 'Freelance'),
           NavigationItem(title: 'Emarche'),
-          NavigationItem(title: 'Autres'),
-          NavigationItem(title: 'A propos'),
+          NavigationItem2(title: 'Autres'),
+          NavigationItem2(title: 'A propos'),
         ],
       ),
     );

@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sdealsapp/mobile/view/homepagem/homepageblocm/homePageStateM.dart';
-
 import '../homepageblocm/homePageBlocM.dart';
-
+import '../homepageblocm/homePageEventM.dart';
 
 class HomePageScreenM extends StatefulWidget {
   const HomePageScreenM({super.key});
@@ -15,6 +14,10 @@ class HomePageScreenM extends StatefulWidget {
 
 class _HomePageScreenStateM extends State<HomePageScreenM> {
   @override
+  void initState() {
+    BlocProvider.of<HomePageBlocM>(context).add(LoadCategorieDataM());
+    super.initState();
+  }
   Widget build(BuildContext context) {
 
     return Scaffold(
@@ -31,10 +34,10 @@ class _HomePageScreenStateM extends State<HomePageScreenM> {
                 child: Row(
                   children: [
                     const CircleAvatar(
-                      backgroundImage: AssetImage('assets/images/logo.png'), // Exemple d'image
+                      backgroundImage: AssetImage('assets/logo.jpeg'), // Exemple d'image
                     ),
                     SizedBox(width: 20),
-                    Text(
+                    const Text(
                       "SOUTRALI DEALS",
                       style: TextStyle(
                         color: Colors.white,
@@ -42,7 +45,7 @@ class _HomePageScreenStateM extends State<HomePageScreenM> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Spacer(),
+                    const Spacer(),
                     IconButton(
                       icon: Icon(Icons.notifications),
                       onPressed: () {},
@@ -68,7 +71,7 @@ class _HomePageScreenStateM extends State<HomePageScreenM> {
                   ),
                   child: Row(
                     children: [
-                      Expanded(
+                      const Expanded(
                         child: TextField(
                           decoration: InputDecoration(
                             prefixIcon: Icon(Icons.search, color: Colors.grey),
@@ -101,7 +104,7 @@ class _HomePageScreenStateM extends State<HomePageScreenM> {
                     elevation: 5,
                     padding: EdgeInsets.symmetric(vertical: 16.0),
                   ),
-                  child: Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(Icons.map),
@@ -123,17 +126,15 @@ class _HomePageScreenStateM extends State<HomePageScreenM> {
         ),
       ),
       body: Padding(
-
-        padding: EdgeInsets.all(1.0),
+        padding: const EdgeInsets.all(1.0),
         child: Column(
           children: [
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Expanded(
               child: Stack(
                 children: [
                   Container(
                       height: 3,
-
                       decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),color: Colors.green)
                   ),
                   GridView.count(
@@ -141,64 +142,50 @@ class _HomePageScreenStateM extends State<HomePageScreenM> {
                     crossAxisSpacing: 10.0,
                     mainAxisSpacing: 20.0,
                     children: [
-                      Container(
-                        child: Image.asset('assets/images/chat.png' ,fit: BoxFit.cover,),
+                      SizedBox(
+                        child: Image.asset('assets/chat.png' ,fit: BoxFit.cover,),
                         width: 70,
                         height: 50,
                       ),
-                      Container(
-                        child: Image.asset('assets/images/cuisinier.png' ,fit: BoxFit.cover,),
+                      SizedBox(
+                        child: Image.asset('assets/cuisinier.png' ,fit: BoxFit.cover,),
                         width: 70,
                         height: 50,
                       ),
-                      Container(
-                        child: Image.asset('assets/images/photographe.png' ,fit: BoxFit.cover,),
+                      SizedBox(
+                        child: Image.asset('assets/photographe.png' ,fit: BoxFit.cover,),
                         width: MediaQuery.of(context).size.width / 10.0,
                         height: MediaQuery.of(context).size.width / 10.0,
                       ),
-                      Container(
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width / 10.0,
+                        height: MediaQuery.of(context).size.width / 10.0,
 
-                        child: Image.asset('assets/images/peintre.png' ,fit: BoxFit.cover,),
+                        child: Image.asset('assets/peintre.png' ,fit: BoxFit.cover,),
+                      ),
+                      SizedBox(
+
+                        child: Image.asset('assets/phone.png' ,fit: BoxFit.cover,),
+                        width: MediaQuery.of(context).size.width / 10.0,
+                        height: MediaQuery.of(context).size.width / 10.0,
+                      ),SizedBox(
+                        child: Image.asset('assets/profil.png' ,fit: BoxFit.cover,),
                         width: MediaQuery.of(context).size.width / 10.0,
                         height: MediaQuery.of(context).size.width / 10.0,
                       ),
-                      Container(
-
-                        child: Image.asset('assets/images/phone.png' ,fit: BoxFit.cover,),
-                        width: MediaQuery.of(context).size.width / 10.0,
-                        height: MediaQuery.of(context).size.width / 10.0,
-                      ),Container(
-
-                        child: Image.asset('assets/images/profil.png' ,fit: BoxFit.cover,),
-                        width: MediaQuery.of(context).size.width / 10.0,
-                        height: MediaQuery.of(context).size.width / 10.0,
-                      ),
-
                     ],
-
                   ),
-
-
                 ],
-
-
               ),
-
             ),
-            SizedBox(height: 10, child: Container(
-              child: Text(
-                "Nos Produits",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                  fontSize: 20,
-                ),
+            const SizedBox(height: 10, child: Text(
+              "Nos Produits",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+                fontSize: 20,
               ),
             ),),
-
-
-
-
           ],
         ),
 

@@ -16,7 +16,7 @@ class Footer2 extends StatelessWidget {
               children: [
                 Image.asset('assets/logo1.png',
                 width: 300,),
-                Text('© Soutrali Deals 2024',
+                const Text('© Soutrali Deals 2024',
                 style: TextStyle(
                   fontFamily: 'Jost',
                   color: Colors.white,
