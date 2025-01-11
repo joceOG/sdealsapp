@@ -1,4 +1,3 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -79,7 +78,7 @@ class _HomePageScreenStateM extends State<HomePageScreenM> {
                         child: TextField(
                           decoration: InputDecoration(
                             prefixIcon: Icon(Icons.search, color: Colors.grey),
-                            hintText: "Rechercher un service",
+                            hintText: "Rechercher sur Soutralideals",
                             border: InputBorder.none,
                             contentPadding: EdgeInsets.symmetric(vertical: 15),
                           ),
@@ -117,7 +116,7 @@ class _HomePageScreenStateM extends State<HomePageScreenM> {
                         "Toute la Cote d'ivoire",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: Colors.black,
                         ),
                       ),
                       Icon(Icons.gps_fixed),
@@ -129,91 +128,85 @@ class _HomePageScreenStateM extends State<HomePageScreenM> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        //padding: const EdgeInsets.all(1.0),
+      body: Padding(
+        padding: const EdgeInsets.all(1.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const SizedBox(height: 10),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text(
-                "Services Populaires",
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text(
-                "Top Catégories",
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            CarouselSlider.builder(
-              itemCount: categoriesSoutraliData.length,
-              options: CarouselOptions(
-                height: 200.0,
-                autoPlay: true,
-                autoPlayInterval: const Duration(seconds: 3),
-                enlargeCenterPage: true,
-                viewportFraction: 0.8,
-              ),
-              itemBuilder: (context, index, realIndex) {
-                final item = categoriesSoutraliData[index];
-                return Card(
-                  elevation: 5,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12.0),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            Expanded(
+              child: Stack(
+                children: [
+                  Container(
+                      height: 3,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.green)),
+                  GridView.count(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 10.0,
+                    mainAxisSpacing: 20.0,
                     children: [
-                      Expanded(
-                        child: ClipRRect(
-                          borderRadius: const BorderRadius.vertical(
-                            top: Radius.circular(12.0),
-                          ),
-                          child: Image.asset(
-                            item['image']!,
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                          ),
+                      SizedBox(
+                        child: Image.asset(
+                          'assets/chat.png',
+                          fit: BoxFit.cover,
+                        ),
+                        width: 70,
+                        height: 50,
+                      ),
+                      SizedBox(
+                        child: Image.asset(
+                          'assets/cuisinier.png',
+                          fit: BoxFit.cover,
+                        ),
+                        width: 70,
+                        height: 50,
+                      ),
+                      SizedBox(
+                        child: Image.asset(
+                          'assets/photographe.png',
+                          fit: BoxFit.cover,
+                        ),
+                        width: MediaQuery.of(context).size.width / 10.0,
+                        height: MediaQuery.of(context).size.width / 10.0,
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width / 10.0,
+                        height: MediaQuery.of(context).size.width / 10.0,
+                        child: Image.asset(
+                          'assets/peintre.png',
+                          fit: BoxFit.cover,
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              item['title']!,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18.0,
-                              ),
-                            ),
-                          ],
+                      SizedBox(
+                        child: Image.asset(
+                          'assets/phone.png',
+                          fit: BoxFit.cover,
                         ),
+                        width: MediaQuery.of(context).size.width / 10.0,
+                        height: MediaQuery.of(context).size.width / 10.0,
+                      ),
+                      SizedBox(
+                        child: Image.asset(
+                          'assets/profil.png',
+                          fit: BoxFit.cover,
+                        ),
+                        width: MediaQuery.of(context).size.width / 10.0,
+                        height: MediaQuery.of(context).size.width / 10.0,
                       ),
                     ],
                   ),
-                );
-              },
+                ],
+              ),
             ),
-            const SizedBox(height: 10),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
+            const SizedBox(
+              height: 10,
               child: Text(
-                "Top Services",
+                "Nos Produits",
                 style: TextStyle(
-                  fontSize: 20.0,
                   fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontSize: 20,
                 ),
               ),
             ),
@@ -223,28 +216,3 @@ class _HomePageScreenStateM extends State<HomePageScreenM> {
     );
   }
 }
-
-// Liste des données du carousel (à remplacer par les données réelles) soutralideals
-const List<Map<String, String>> categoriesSoutraliData = [
-  {
-    "image": "assets/categories/Image1.png",
-    "title": "Plombier",
-  },
-  {
-    "image": "assets/categories/Image2.png",
-    "title": "Coiffeurs",
-  },
-  {
-    "image": "assets/categories/Image3.png",
-    "title": "Photographes",
-  },
-  {
-    "image": "assets/categories/Image4.png",
-    "title": "Nettoyage",
-  },
-  {
-    "image": "assets/categories/Image5.png",
-    "title": "Menuiserie",
-  },
-  // Ajoutez les autres éléments ici...
-];
