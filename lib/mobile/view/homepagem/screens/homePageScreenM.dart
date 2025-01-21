@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sdealsapp/mobile/view/homepagem/homepageblocm/homePageStateM.dart';
+import '../../profilpagem/screens/profilPageScreenM.dart';
 import '../homepageblocm/homePageBlocM.dart';
 import '../homepageblocm/homePageEventM.dart';
 
@@ -19,65 +20,85 @@ class _HomePageScreenStateM extends State<HomePageScreenM> {
     super.initState();
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(
-            180.0), // Augmente la hauteur de l'AppBar pour inclure le bouton
+        // Augmente la hauteur de l'AppBar pour inclure le bouton
+        preferredSize: const Size.fromHeight(180.0),
         child: AppBar(
           backgroundColor: Colors.green,
           flexibleSpace: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
+              // Logo et Nom
               Padding(
                 padding: const EdgeInsets.symmetric(
                     horizontal: 16.0, vertical: 10.0),
                 child: Row(
                   children: [
-                    const CircleAvatar(
-                      backgroundImage:
-                          AssetImage('assets/logo.jpeg'), // Exemple d'image
+                    GestureDetector(
+                      onTap: () {
+                        // Action pour rediriger vers la page de profil
+                        //context.go('/profilePage');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ProfilePageScreenM()),
+                        );
+                      },
+                      child: const CircleAvatar(
+                        backgroundImage: AssetImage('assets/logo.jpeg'),
+                      ),
                     ),
-                    SizedBox(width: 20),
+                    const SizedBox(width: 16),
                     const Text(
                       "SOUTRALI DEALS",
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 20,
+                        fontSize: 22,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     const Spacer(),
                     IconButton(
-                      icon: Icon(Icons.notifications),
-                      onPressed: () {},
+                      icon: const Icon(Icons.notifications),
+                      onPressed: () {
+                        // Action pour les notifications
+                        //context.go('/notificationsPage');
+                      },
                       color: Colors.white,
                     ),
                   ],
                 ),
               ),
+              // Barre de recherche
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5.0),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(30),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
+                        // ignore: deprecated_member_use
+                        color: Colors.grey.withOpacity(0.3),
                         spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: Offset(0, 3),
+                        blurRadius: 4,
+                        offset: const Offset(0, 2),
                       ),
                     ],
                   ),
                   child: Row(
                     children: [
-                      const Expanded(
+                      Expanded(
                         child: TextField(
-                          decoration: InputDecoration(
+                          onTap: () {
+                            // Redirige vers la page de recherche lors de la sélection de l'entrée
+                            //context.go('/searchPage');
+                          },
+                          decoration: const InputDecoration(
                             prefixIcon: Icon(Icons.search, color: Colors.grey),
                             hintText: "Rechercher un service",
                             border: InputBorder.none,
@@ -86,45 +107,35 @@ class _HomePageScreenStateM extends State<HomePageScreenM> {
                         ),
                       ),
                       IconButton(
-                        icon: Icon(Icons.map, color: Colors.grey),
-                        onPressed: () {},
+                        icon: const Icon(Icons.gps_fixed, color: Colors.grey),
+                        onPressed: () {
+                          // Action pour rediriger vers la page de recherche avec filtre
+                          //context.go('/searchPage');
+                        },
                       ),
                     ],
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 100.0, vertical: 5.0),
-                child: ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor:
-                        Colors.green, // Couleur du texte et des icônes
-                    backgroundColor: Colors.transparent, // Couleur de fond
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(80),
-                    ),
-                    elevation: 5,
-                    padding: EdgeInsets.symmetric(vertical: 16.0),
-                  ),
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.map),
-                      SizedBox(width: 0),
-                      Text(
-                        "Toute la Cote d'ivoire",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Icon(Icons.gps_fixed),
-                    ],
+              const SizedBox(height: 10),
+              // Bouton de localisation
+              ElevatedButton.icon(
+                onPressed: () {
+                  // Action pour définir la localisation
+                  //context.go('/locationPage');
+                },
+                icon: const Icon(Icons.gps_fixed),
+                label: const Text("Toute la Côte d'Ivoire"),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.green,
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
                   ),
                 ),
               ),
+              const SizedBox(height: 10),
             ],
           ),
         ),
