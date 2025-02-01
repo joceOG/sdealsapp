@@ -22,69 +22,101 @@ class _ShoppingPageScreenStateM extends State<ShoppingPageScreenM> {
 
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(200.0),
+        preferredSize: Size.fromHeight(
+            180.0), // Augmente la hauteur de l'AppBar pour inclure le bouton
         child: AppBar(
           backgroundColor: Colors.green,
           flexibleSpace: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 50.0),
-                child: Row(
-                  children: [
-                    Icon(Icons.menu, size: 25),
-                    SizedBox(width: 80),
-                    Text(
-                      "SOUTRALI DEALS",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+              Row(
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(
+                      top: 17.0,
+                      left: 17.0,
+                      right: 17.0,
                     ),
-                    Spacer(),
-                    IconButton(
-                      icon: Icon(Icons.notifications),
-                      onPressed: () {},
+                    height: 50.0,
+                    width: 50.0,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(25.0),
+                        //border: Border.all(),
+                        image: const DecorationImage(
+                            fit: BoxFit.cover,
+                            image: AssetImage('assets/photo_profile.png',))
+                    ),
+                  ),
+                  const SizedBox(width: 270.0,),
+                  const Icon(Icons.notifications, size: 34.0,color: Colors.white,)
+                ],
+              ),
+
+              Column(
+                children: [
+                  const Text('SOUTRALI DEALS',
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),),
+                  SizedBox(height: 2.0,),
+                  Container(
+                    width: 300,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
                       color: Colors.white,
                     ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(30),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.search, color: Colors.grey),
-                            hintText: "Rechercher sur Soutralideals",
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.symmetric(vertical: 13),
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 1.0,),
+                        const Icon(Icons.search, color: Colors.black12, size: 20.0,),
+                        const SizedBox(width: 2.0,),
+                        Container(
+                          padding: const EdgeInsets.only(
+                              left: 2.0,
+                              right: 2.0,
+                              bottom: 9.0),
+                          width: 250.0,
+                          height: 30.0,
+                          child: const TextField(
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              errorBorder: InputBorder.none,
+                              disabledBorder: InputBorder.none,
+                              hintText: 'Recherchez sur soutrali',
+                            ),
                           ),
                         ),
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.gps_fixed, color: Colors.grey),
-                        onPressed: () {},
-                      ),
-                    ],
+                        const Icon(Icons.location_searching, color: Colors.black12, size: 20.0,)
+                      ],
+                    ),
                   ),
-                ),
+                  SizedBox(height: 20.0,),
+
+                  Container(
+                    padding: EdgeInsets.only(
+                      left: 4.0,
+                      right: 4.0,
+                    ),
+                    width: 190.0,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      color: Colors.lightGreenAccent.shade700,
+                    ),
+                    child: const Row(
+                      children: [
+                        Icon(Icons.map,size:20.0, color: Colors.white),
+                        SizedBox(height: 4.0,),
+                        Text("Toute la Côte d'Ivoire"),
+                        SizedBox(width: 4.0,),
+                        Icon(Icons.my_location,size: 20.0, color: Colors.white),
+                      ],
+                    ),
+                  )
+                ],
               ),
             ],
           ),
@@ -97,9 +129,21 @@ class _ShoppingPageScreenStateM extends State<ShoppingPageScreenM> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Ajout de la section catégories
-              Text(
-                'Top Catégories',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              Row(
+                children: [
+                  Container(
+                      width: 10.0,
+                      child: Image.asset('assets/rectanglered.png')),
+                  SizedBox(
+                    width: 4.0,
+                  ),
+                  Text(
+                    'Top Catégories',
+                    style: TextStyle(fontSize: 24,
+                        fontFamily:'Arial',
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
               ),
               SizedBox(height: 10),
               // Liste horizontale de catégories
@@ -117,10 +161,22 @@ class _ShoppingPageScreenStateM extends State<ShoppingPageScreenM> {
               ),
               SizedBox(height: 20),
               // Section Top Articles
-              Text(
-                'Top Articles',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              Row(
+                children: [
+                  Container(
+                      width: 10.0,
+                      child: Image.asset('assets/rectanglered.png')),
+                  SizedBox(
+                    width: 4.0,
+                  ),
+
+                  Text(
+                    'Top Articles',
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                ],
               ),
+
               SizedBox(height: 15),
               // Section pour les images avec noms à droite
               Row(
@@ -150,7 +206,7 @@ class _ShoppingPageScreenStateM extends State<ShoppingPageScreenM> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildProductImage('assets/images/nike-sb.png'),
+                      _buildProductImage('assets/adidas2.jpg'),
                       SizedBox(height: 8),
                       Text('Adidas', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                       SizedBox(height: 4),
