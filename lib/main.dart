@@ -30,6 +30,10 @@ import 'mobile/view/home.dart';
 import 'mobile/view/homepagem/homepageblocm/homePageBlocM.dart';
 import 'mobile/view/homepagem/homepageblocm/homePageEventM.dart';
 import 'mobile/view/homepagem/screens/homePageScreenM.dart';
+import 'mobile/view/shoppingpagem/screens/productDetailsScreenM.dart';
+import 'mobile/view/shoppingpagem/shoppingpageblocm/shoppingPageBlocM.dart';
+import 'mobile/view/shoppingpagem/shoppingpageblocm/shoppingPageEventM.dart'
+    as shoppingPageEventM;
 import 'mobile/view/splashcreenm/screens/splashScreenM.dart';
 import 'mobile/view/splashcreenm/splashscreenblocm/splashscreenBlocM.dart';
 import 'mobile/view/splashcreenm/splashscreenblocm/splashscreenEventM.dart';
@@ -83,7 +87,6 @@ class MyApp extends StatelessWidget {
           return BlocProvider(
             create: (context) => DetailsPrestataireBloc(),
             child: DetailsPrestataireScreen(),
-
           );
         },
       ),
@@ -101,7 +104,8 @@ class MyApp extends StatelessWidget {
       GoRoute(
         path: '/detailsarticle',
         builder: (context, state) {
-          final article = state.extra as Article;          return BlocProvider(
+          final article = state.extra as Article;
+          return BlocProvider(
             create: (context) => DetailsArticleBloc(),
             child: DetailsArticleScreen(article: article),
           );
@@ -125,10 +129,18 @@ class MyApp extends StatelessWidget {
           );
         },
       ),
-
+      // AFIS
+      GoRoute(
+          path: "/ProductDetails",
+          builder: (context, state) {
+            return BlocProvider(
+              create: (context) => ShoppingPageBlocM()
+                ..add(shoppingPageEventM.LoadCategorieDataM()),
+              child: ProductDetails(),
+            );
+          }),
     ],
   );
-
 
   final GoRouter mobileRouter = GoRouter(
     routes: [
@@ -136,12 +148,11 @@ class MyApp extends StatelessWidget {
         path: '/',
         builder: (context, state) {
           return BlocProvider(
-          create: (_) => SplashscreenBlocM()..add(LoadSplashM()),
-          child: SplashScreenM(),
+            create: (_) => SplashscreenBlocM()..add(LoadSplashM()),
+            child: SplashScreenM(),
           );
         },
       ),
-
       GoRoute(
         path: '/homepage',
         builder: (context, state) => const Home(),
@@ -151,9 +162,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ResponsiveBuilder(
-        builder: (context, sizingInformation)
-    {
+    return ResponsiveBuilder(builder: (context, sizingInformation) {
       GoRouter router;
       // Configure the router based on screen size
       if (sizingInformation.isDesktop) {
@@ -169,42 +178,26 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
           useMaterial3: true,
           inputDecorationTheme: const InputDecorationTheme(
-
               border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(8.0)),
                   borderSide: BorderSide(
                     color: Colors.grey,
                     width: 1.5,
-                  )
-              ),
+                  )),
               enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(8.0)),
                   borderSide: BorderSide(
                     color: Colors.grey,
                     width: 1.5,
-                  )
-              ),
+                  )),
               focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: Colors.grey
-                  )
-              ),
-              hintStyle: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 14
-              )
-          ),
-
+                  borderSide: BorderSide(color: Colors.grey)),
+              hintStyle: TextStyle(color: Colors.grey, fontSize: 14)),
         ),
-
       );
-    }
-    );
+    });
   }
 }
-
-
-
 
 /*
 class MyApp extends StatelessWidget {
