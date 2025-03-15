@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sdealsapp/mobile/view/homepagem/homepageblocm/homePageStateM.dart';
-import '../../profilpagem/screens/profilPageScreenM.dart';
 import '../homepageblocm/homePageBlocM.dart';
 import '../homepageblocm/homePageEventM.dart';
 
@@ -20,122 +19,106 @@ class _HomePageScreenStateM extends State<HomePageScreenM> {
     super.initState();
   }
 
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
-        // Augmente la hauteur de l'AppBar pour inclure le bouton
-        preferredSize: const Size.fromHeight(180.0),
+        preferredSize: Size.fromHeight(
+            180.0), // Augmente la hauteur de l'AppBar pour inclure le bouton
         child: AppBar(
           backgroundColor: Colors.green,
           flexibleSpace: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              // Logo et Nom
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0, vertical: 10.0),
-                child: Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        // Action pour rediriger vers la page de profil
-                        //context.go('/profilePage');
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const ProfilePageScreenM()),
-                        );
-                      },
-                      child: const CircleAvatar(
-                        backgroundImage: AssetImage('assets/logo.jpeg'),
-                      ),
+              Row(
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(
+                      top: 17.0,
+                      left: 17.0,
+                      right: 17.0,
                     ),
-                    const SizedBox(width: 16),
-                    const Text(
-                      "SOUTRALI DEALS",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    height: 50.0,
+                    width: 50.0,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(25.0),
+                        //border: Border.all(),
+                        image: const DecorationImage(
+                            fit: BoxFit.cover,
+                            image: AssetImage('assets/photo_profile.png',))
                     ),
-                    const Spacer(),
-                    IconButton(
-                      icon: const Icon(Icons.notifications),
-                      onPressed: () {
-                        // Action pour les notifications
-                        //context.go('/notificationsPage');
-                      },
+                  ),
+                  const SizedBox(width: 270.0,),
+                  const Icon(Icons.notifications, size: 34.0,color: Colors.white,)
+                ],
+              ),
+
+              Column(
+                children: [
+                  const Text('SOUTRALI DEALS',
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),),
+                  SizedBox(height: 2.0,),
+                  Container(
+                    width: 300,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
                       color: Colors.white,
                     ),
-                  ],
-                ),
-              ),
-              // Barre de recherche
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(30),
-                    boxShadow: [
-                      BoxShadow(
-                        // ignore: deprecated_member_use
-                        color: Colors.grey.withOpacity(0.3),
-                        spreadRadius: 2,
-                        blurRadius: 4,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          onTap: () {
-                            // Redirige vers la page de recherche lors de la sélection de l'entrée
-                            //context.go('/searchPage');
-                          },
-                          decoration: const InputDecoration(
-                            prefixIcon: Icon(Icons.search, color: Colors.grey),
-                            hintText: "Rechercher un service",
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.symmetric(vertical: 15),
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 1.0,),
+                        const Icon(Icons.search, color: Colors.black12, size: 20.0,),
+                        const SizedBox(width: 2.0,),
+                        Container(
+                          padding: const EdgeInsets.only(
+                              left: 2.0,
+                              right: 2.0,
+                              bottom: 9.0),
+                          width: 250.0,
+                          height: 30.0,
+                          child: const TextField(
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              errorBorder: InputBorder.none,
+                              disabledBorder: InputBorder.none,
+                              hintText: 'Recherchez sur soutrali',
+                            ),
                           ),
                         ),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.gps_fixed, color: Colors.grey),
-                        onPressed: () {
-                          // Action pour rediriger vers la page de recherche avec filtre
-                          //context.go('/searchPage');
-                        },
-                      ),
-                    ],
+                        const Icon(Icons.location_searching, color: Colors.black12, size: 20.0,)
+                      ],
+                    ),
                   ),
-                ),
+                  SizedBox(height: 20.0,),
+
+                  Container(
+                    padding: EdgeInsets.only(
+                      left: 4.0,
+                      right: 4.0,
+                    ),
+                    width: 190.0,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      color: Colors.lightGreenAccent.shade700,
+                    ),
+                    child: const Row(
+                      children: [
+                        Icon(Icons.map,size:20.0, color: Colors.white),
+                        SizedBox(height: 4.0,),
+                        Text("Toute la Côte d'Ivoire"),
+                        SizedBox(width: 4.0,),
+                        Icon(Icons.my_location,size: 20.0, color: Colors.white),
+                      ],
+                    ),
+                  )
+                ],
               ),
-              const SizedBox(height: 10),
-              // Bouton de localisation
-              ElevatedButton.icon(
-                onPressed: () {
-                  // Action pour définir la localisation
-                  //context.go('/locationPage');
-                },
-                icon: const Icon(Icons.gps_fixed),
-                label: const Text("Toute la Côte d'Ivoire"),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.green,
-                  elevation: 5,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 10),
             ],
           ),
         ),
@@ -146,30 +129,57 @@ class _HomePageScreenStateM extends State<HomePageScreenM> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const SizedBox(height: 10),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text(
-                "Services Populaires",
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
-                ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                children: [
+                  Container(
+                      width: 10.0,
+                      child: Image.asset('assets/rectanglered.png')),
+                  SizedBox(
+                    width: 4.0,
+                  ),
+                  const Text(
+                    "Services Populaires",
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      fontFamily: 'raf',
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text(
-                "Top Catégories",
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
-                ),
+            Container(
+              child: Image.asset('assets/_acceuil_.jpeg'),
+            ),
+            SizedBox(
+              height: 5.0,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                children: [
+                  Container(
+                      width: 10.0,
+                      child: Image.asset('assets/rectanglered.png')),
+                  const SizedBox(width: 4.0),
+                  const Text(
+                    "Top Catégories",
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      fontFamily: 'raf',
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
             ),
             CarouselSlider.builder(
               itemCount: categoriesSoutraliData.length,
               options: CarouselOptions(
-                height: 200.0,
+
+                height: 140.0,
                 autoPlay: true,
                 autoPlayInterval: const Duration(seconds: 3),
                 enlargeCenterPage: true,
@@ -180,7 +190,7 @@ class _HomePageScreenStateM extends State<HomePageScreenM> {
                 return Card(
                   elevation: 5,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12.0),
+                    borderRadius: BorderRadius.circular(8.0),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -193,23 +203,20 @@ class _HomePageScreenStateM extends State<HomePageScreenM> {
                           child: Image.asset(
                             item['image']!,
                             fit: BoxFit.cover,
-                            width: double.infinity,
+                            width: 300.0,
                           ),
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              item['title']!,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18.0,
-                              ),
-                            ),
-                          ],
+                        padding: const EdgeInsets.only(
+                            top: 2.0, left: 5.0, bottom: 2.0),
+                        child: Text(
+                          item['title']!,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'rif',
+                            fontSize: 16.0,
+                          ),
                         ),
                       ),
                     ],
@@ -218,14 +225,25 @@ class _HomePageScreenStateM extends State<HomePageScreenM> {
               },
             ),
             const SizedBox(height: 10),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text(
-                "Top Services",
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
-                ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                children: [
+                  Container(
+                      width: 10.0,
+                      child: Image.asset('assets/rectanglered.png')),
+                  const SizedBox(
+                    width: 4.0,
+                  ),
+                  const Text(
+                    "Top Services",
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      fontFamily: 'raf',
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
