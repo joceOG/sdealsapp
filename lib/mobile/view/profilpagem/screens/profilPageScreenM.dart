@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../auth/screens/loginPageScreenM.dart';
+
 class ProfilePageScreenM extends StatelessWidget {
   const ProfilePageScreenM({super.key});
 
@@ -91,6 +93,12 @@ class ProfilePageScreenM extends StatelessWidget {
               title: "Compte",
               onTap: () {
                 // Action pour cette option
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LoginPageScreenM(),
+                  ),
+                );
               },
             ),
           ],
