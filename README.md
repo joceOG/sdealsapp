@@ -6,8 +6,9 @@ A new Flutter project.
 
 ## Tâche effectueée By AFISU
 
-    - Ajout du carousels Top catégories dans la home page [valide]
     - Ajout du onboarding en cours
-    - Create page profil
+    - Ajout du carousels Top catégories dans la home page [valide]
+    - Create page profil [valide]
+    - Create page detail ecommerce [valide]
 
 ---
