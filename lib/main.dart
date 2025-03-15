@@ -27,9 +27,6 @@ import 'package:sdealsapp/web/view/splashcreen/splashscreenbloc/splashscreenBloc
 import 'package:sdealsapp/web/view/splashcreen/splashscreenbloc/splashscreenEvent.dart';
 
 import 'mobile/view/home.dart';
-import 'mobile/view/homepagem/homepageblocm/homePageBlocM.dart';
-import 'mobile/view/homepagem/homepageblocm/homePageEventM.dart';
-import 'mobile/view/homepagem/screens/homePageScreenM.dart';
 import 'mobile/view/shoppingpagem/screens/productDetailsScreenM.dart';
 import 'mobile/view/shoppingpagem/shoppingpageblocm/shoppingPageBlocM.dart';
 import 'mobile/view/shoppingpagem/shoppingpageblocm/shoppingPageEventM.dart'
@@ -59,7 +56,7 @@ class MyApp extends StatelessWidget {
         builder: (context, state) {
           return BlocProvider(
             create: (context) => HomePageBloc()..add(LoadCategorieData()),
-            child: HomePageScreen(),
+            child: const HomePageScreen(),
           );
         },
       ),
@@ -68,7 +65,7 @@ class MyApp extends StatelessWidget {
         builder: (context, state) {
           return BlocProvider(
             create: (context) => ConnexionBloc(),
-            child: ConnexionScreen(),
+            child: const ConnexionScreen(),
           );
         },
       ),
@@ -116,7 +113,7 @@ class MyApp extends StatelessWidget {
         builder: (context, state) {
           return BlocProvider(
             create: (context) => FreelanceBloc()..add(LoadCategorieDataF()),
-            child: FreelanceScreen(),
+            child: const FreelanceScreen(),
           );
         },
       ),
@@ -136,7 +133,7 @@ class MyApp extends StatelessWidget {
             return BlocProvider(
               create: (context) => ShoppingPageBlocM()
                 ..add(shoppingPageEventM.LoadCategorieDataM()),
-              child: ProductDetails(),
+              child: const ProductDetails(),
             );
           }),
     ],
@@ -159,6 +156,8 @@ class MyApp extends StatelessWidget {
       ),
     ],
   );
+
+  MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
