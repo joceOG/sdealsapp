@@ -3,11 +3,13 @@
 import 'groupe.dart';
 
 class Categorie{
+  String idcategorie;
   String nomcategorie;
   String imagecategorie;
-  Object groupe;
+  String groupe;
 
   Categorie({
+    required this.idcategorie,
     required this.nomcategorie,
     required this.imagecategorie,
     required this.groupe,
@@ -22,13 +24,15 @@ class Categorie{
 
   factory Categorie.fromJson(dynamic json) {
     return Categorie(
+        idcategorie: json['_id'] as String,
         nomcategorie: json['nomcategorie'] as String,
         imagecategorie : json['imagecategorie'] as String,
-         groupe : json['groupe'] as Object,
+         groupe : json['groupe'] as String,
     );}
 
   Map<String, dynamic> toMap() {
     return {
+      '_id': idcategorie,
       'nomcategorie': nomcategorie,
       'imagecategorie' : imagecategorie,
       'groupe' : groupe,

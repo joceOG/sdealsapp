@@ -32,9 +32,9 @@ class _ShoppingPageScreenStateM extends State<ShoppingPageScreenM> {
                 padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 50.0),
                 child: Row(
                   children: [
-                    Icon(Icons.menu, size: 25),
-                    SizedBox(width: 80),
-                    Text(
+                    const Icon(Icons.menu, size: 25),
+                    const SizedBox(width: 80),
+                    const Text(
                       "SOUTRALI DEALS",
                       style: TextStyle(
                         color: Colors.white,
@@ -44,12 +44,12 @@ class _ShoppingPageScreenStateM extends State<ShoppingPageScreenM> {
                     ),
                     Spacer(),
                     IconButton(
-                      icon: Icon(Icons.notifications),
+                      icon: const Icon(Icons.notifications),
                       onPressed: () {},
                       color: Colors.white,
                     ),
                   ],
-                ),
+               ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5.0),
@@ -68,7 +68,7 @@ class _ShoppingPageScreenStateM extends State<ShoppingPageScreenM> {
                   ),
                   child: Row(
                     children: [
-                      Expanded(
+                      const Expanded(
                         child: TextField(
                           decoration: InputDecoration(
                             prefixIcon: Icon(Icons.search, color: Colors.grey),
@@ -79,7 +79,7 @@ class _ShoppingPageScreenStateM extends State<ShoppingPageScreenM> {
                         ),
                       ),
                       IconButton(
-                        icon: Icon(Icons.gps_fixed, color: Colors.grey),
+                        icon: const Icon(Icons.gps_fixed, color: Colors.grey),
                         onPressed: () {},
                       ),
                     ],
@@ -92,12 +92,12 @@ class _ShoppingPageScreenStateM extends State<ShoppingPageScreenM> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Ajout de la section catégories
-              Text(
+              const Text(
                 'Top Catégories',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
@@ -115,9 +115,9 @@ class _ShoppingPageScreenStateM extends State<ShoppingPageScreenM> {
                   ],
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               // Section Top Articles
-              Text(
+              const Text(
                 'Top Articles',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
@@ -140,11 +140,11 @@ class _ShoppingPageScreenStateM extends State<ShoppingPageScreenM> {
                     children: [
                       _buildProductImage('assets/adidas.jpg'),
                       SizedBox(height: 8),
-                      Text('Nike', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                      const Text('Nike', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                       SizedBox(height: 4),
-                      Text('Pointures 42-43', style: TextStyle(fontSize: 14)),
+                      const Text('Pointures 42-43', style: TextStyle(fontSize: 14)),
                       SizedBox(height: 3),
-                      Text('25.000 Fcfa', style: TextStyle(fontSize: 14, color: Colors.green)),
+                      const Text('25.000 Fcfa', style: TextStyle(fontSize: 14, color: Colors.green)),
                     ],
                   ),
                   Column(

@@ -1,33 +1,34 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../data/models/categorie.dart';
+import '../../../../../data/models/categorie.dart';
 
-class AppBarWidgetState extends Equatable {
+
+class ItemContentState extends Equatable {
 
   final bool? isLoading;
   final List<Categorie>? listItems;
   final String? error;
 
-  const AppBarWidgetState( {
+  const ItemContentState( {
     this.isLoading,
     this.listItems,
     this.error,
   });
 
-  factory AppBarWidgetState.initial() {
-    return const AppBarWidgetState(
+  factory ItemContentState.initial() {
+    return const ItemContentState(
       isLoading: true,
       listItems: null,
       error: '',
     );
   }
 
-  AppBarWidgetState copyWith({
+  ItemContentState copyWith({
     bool? isLoading,
     List<Categorie>? listItems,
     String? error,
   }){
-    return AppBarWidgetState(
+    return ItemContentState(
 
       isLoading: isLoading ?? this.isLoading,
       listItems: listItems ?? this.listItems,

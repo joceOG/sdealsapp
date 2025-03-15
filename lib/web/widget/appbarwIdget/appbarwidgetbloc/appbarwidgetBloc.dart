@@ -1,25 +1,19 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../data/models/categorie.dart';
+import '../../../data/services/api_client.dart';
 import 'appbarwidgetEvent.dart';
 import 'appbarwidgetState.dart';
 
-class MenuBloc extends Bloc<MenuEvent, MenuState> {
+class AppBarWidgetBloc extends Bloc<AppBarWidgetEvent, AppBarWidgetState> {
 
 
-  MenuBloc(): super(MenuInitialState()) {
-
+  AppBarWidgetBloc(): super(AppBarWidgetState.initial()) {
     on<HoverMenuEvent>((event, emit) async {
-      print("Emit Visible") ;
+      print("Emit Visible");
     });
-
-    on<HoverMenuMetiers>((event, emit) async {
-      print("Menu Metiers") ;
-    });
-
+  }
   }
 
-
-
-}
 
 

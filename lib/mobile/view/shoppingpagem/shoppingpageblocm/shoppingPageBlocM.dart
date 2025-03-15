@@ -26,7 +26,8 @@ class ShoppingPageBlocM extends Bloc<ShoppingPageEventM, ShoppingPageStateM> {
     ApiClient apiClient = ApiClient();
     print("Try");
     try {
-      List<Categorie> list_categorie = await apiClient.fetchCategorie();
+      var nomgroupe = "Métiers" ;
+      List<Categorie> list_categorie = await apiClient.fetchCategorie(nomgroupe);
       print("List Categorie");
       emit(state.copyWith(listItems: list_categorie, isLoading: false));
     } catch (error) {

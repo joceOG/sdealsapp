@@ -93,7 +93,7 @@ class MyApp extends StatelessWidget {
           return BlocProvider(
             create: (context) => EmarcheBloc()
               ..add(LoadCategorieEData())
-              ..add(LoadServiceData()),
+              ..add(LoadServiceEData()),
             child: EmarcheScreen(),
           );
         },
