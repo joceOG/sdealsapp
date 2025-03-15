@@ -1,8 +1,30 @@
 
 
-abstract class MenuEvent {}
+import 'package:equatable/equatable.dart';
 
-class HoverMenuEvent extends MenuEvent {}
+abstract class AppBarWidgetEvent extends Equatable  {
+  const AppBarWidgetEvent();
 
-class HoverMenuMetiers extends MenuEvent {}
+  @override
+  List<Object> get props => [];
+}
 
+class HoverMenuEvent extends AppBarWidgetEvent {
+  final String nomgroupe;
+
+  const HoverMenuEvent({required this.nomgroupe});
+
+  @override
+  List<Object> get props => [nomgroupe];
+}
+
+class LoadCategorieData extends AppBarWidgetEvent {
+
+  final String nomgroupe;
+
+  const LoadCategorieData({required this.nomgroupe});
+
+  @override
+  List<Object> get props => [nomgroupe];
+
+}

@@ -14,4 +14,6 @@ abstract class HomePageEvent extends Equatable {
 
 class LoadCategorieData extends HomePageEvent {}
 
+class LoadServiceData extends HomePageEvent {}
+
 

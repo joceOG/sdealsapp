@@ -49,11 +49,52 @@ class _HomePageScreenState extends State<HomePageScreen> {
                     decoration: const BoxDecoration(
                       image: DecorationImage(
                         image: AssetImage(
-                            'assets/accueil.jpg'), // Chemin de l'image
+                            'assets/accueil_.jpeg'), // Chemin de l'image
                         fit: BoxFit
                             .fill, // Adapte l'image à la taille du container
                       ),
                     ),
+                    child: Align(
+                        alignment: Alignment.center,
+                        child: Column(
+                          children: [
+                            SizedBox(height: 30),
+                            const Text(
+                              "Métiers" ,
+                              style: TextStyle(
+                                  fontSize: 60,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black
+                              ),
+                            ),
+                            SizedBox(height: 38),
+                            SizedBox(
+                              width: 275, // Largeur du bouton
+                              height: 65,
+                              child: FilledButton(
+                                onPressed: () {
+                                  // Action à effectuer lors du clic sur le bouton
+                                },
+                                style: FilledButton.styleFrom(
+                                  backgroundColor: Colors.green, // Couleur de fond verte
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 5, vertical: 5), // Marges internes
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15), // Bords arrondis
+                                  ),
+                                ),
+                                child: const Text(
+                                  'Devenir prestataire',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold), // Couleur du texte
+                                ),
+                              ),
+                            ),
+
+                          ],
+                        )),
                   ),
                 ),
                 // You can add other widgets like buttons or overlays here
@@ -323,12 +364,12 @@ class _HomePageScreenState extends State<HomePageScreen> {
                       margin: const EdgeInsets.only(
                         top: 50.0
                       ),
-    child: Image.asset(
-      'assets/image2.png',
-      width: 400,
-      height: 300,
-    )),
-    )
+                    child: Image.asset(
+                      'assets/image2.png',
+                      width: 400,
+                      height: 300,
+                    )),
+                    )
               ],
             ),
             Footer()

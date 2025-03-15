@@ -2,15 +2,14 @@
 class Service{
   String idservice;
   String nomservice;
-  String idcategorie;
-  String nomcategorie;
-
-
+  String categorie;
+  String nomgroupe;
+  
   Service({
     required this.idservice,
     required this.nomservice,
-    required this.idcategorie,
-    required this.nomcategorie,
+    required this.categorie,
+    required this.nomgroupe,
   });
 
   /*factory Groupe.fromJson(Map<String, dynamic> json){
@@ -24,16 +23,16 @@ class Service{
     return Service(
         idservice : json['_id'] as String,
         nomservice : json['nomservice'] as String,
-        idcategorie : json['idcategorie'] as String,
-        nomcategorie: json['nomcategorie'] as String);
+        categorie : json['categorie'] as String,
+        nomgroupe: json['nomgroupe'] as String);
   }
 
   Map<String, dynamic> toMap() {
     return {
       'idservice': idservice,
       'nomservice': nomservice,
-      'idcategorie': idcategorie,
-      'nomcategorie': nomcategorie
+      'categorie': categorie,
+      'nomgroupe': nomgroupe
       ,
     };
   }

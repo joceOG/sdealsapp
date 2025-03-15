@@ -9,7 +9,7 @@ class EmarcheBloc extends Bloc<EmarcheEvent, EmarcheState> {
 
   EmarcheBloc() : super( EmarcheState.initial() ) {
     on<LoadCategorieEData>(_onLoadCategorieEData);
-    on<LoadServiceData>(_onLoadServiceData);
+    on<LoadServiceEData>(_onLoadServiceEData);
   }
 
   Future<void> _onLoadCategorieEData(LoadCategorieEData event,
@@ -20,7 +20,8 @@ class EmarcheBloc extends Bloc<EmarcheEvent, EmarcheState> {
     ApiClient apiClient = ApiClient();
     print("Try");
     try {
-      List<Categorie> list_categorie = await apiClient.fetchCategorie();
+      var nomgroupe = "Métiers" ;
+      List<Categorie> list_categorie = await apiClient.fetchCategorie(nomgroupe);
       print("List Categorie");
       emit(state.copyWith(listItems: list_categorie, isLoading: false));
     } catch (error) {
@@ -29,7 +30,7 @@ class EmarcheBloc extends Bloc<EmarcheEvent, EmarcheState> {
     }
   }
 
-  Future<void> _onLoadServiceData(LoadServiceData event,
+  Future<void> _onLoadServiceEData(LoadServiceEData event,
       Emitter<EmarcheState> emit,) async {
     // String nomgroupe = "Metiers";
     // emit(state.copyWith3(isLoading2: true));

@@ -20,11 +20,12 @@ class Home extends StatefulWidget {
 }
 
 int _currentIndex = 0;
-List<Widget> _pageList =  [
+List<Widget> _pageList = [
   BlocProvider(create: (_) => HomePageBlocM(), child: HomePageScreenM()),
   BlocProvider(create: (_) => RondPageBlocM(), child: RondPageScreenM()),
   BlocProvider(create: (_) => SearchPageBlocM(), child: SearchPageScreenM()),
-  BlocProvider(create: (_) => ShoppingPageBlocM(), child: ShoppingPageScreenM()),
+  BlocProvider(
+      create: (_) => ShoppingPageBlocM(), child: ShoppingPageScreenM()),
   BlocProvider(create: (_) => MorePageBlocM(), child: MorePageScreenM()),
 ];
 
