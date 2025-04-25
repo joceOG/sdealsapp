@@ -177,17 +177,26 @@ class _LoginPageScreenMState extends State<LoginPageScreenM>
                     ],
                   ),
                   const SizedBox(height: 10),
-                  TextButton(
-                    onPressed: () {
-                      // Logique pour créer un compte
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const RegisterPageScreenM(),
-                        ),
-                      );
-                    },
-                    child: const Text("Créer un compte"),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text('Vous n\'avez pas de compte?'),
+                      TextButton(
+                        onPressed: () {
+                          // Navigate to the registration screen
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const RegisterPageScreenM(),
+                            ),
+                          );
+                        },
+                        child: const Text('Créer un compte',
+                            style: TextStyle(
+                              color: Colors.green,
+                            )),
+                      ),
+                    ],
                   ),
                 ],
               ),

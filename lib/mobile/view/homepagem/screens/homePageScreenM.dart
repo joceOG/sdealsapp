@@ -1,248 +1,44 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sdealsapp/mobile/view/homepagem/homepageblocm/homePageStateM.dart';
-import '../homepageblocm/homePageBlocM.dart';
-import '../homepageblocm/homePageEventM.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import '../widgets/promotion_carousel.dart';
+import '../widgets/category_grid.dart';
+import '../widgets/popular_services.dart';
+import '../widgets/featured_products.dart';
 
 class HomePageScreenM extends StatefulWidget {
   const HomePageScreenM({super.key});
+
   @override
-  State<HomePageScreenM> createState() => _HomePageScreenStateM();
+  State<HomePageScreenM> createState() => _HomePageScreenMState();
 }
 
-class _HomePageScreenStateM extends State<HomePageScreenM> {
-  @override
-  void initState() {
-    BlocProvider.of<HomePageBlocM>(context).add(LoadCategorieDataM());
-    super.initState();
-  }
+class _HomePageScreenMState extends State<HomePageScreenM> {
+  final ScrollController _scrollController = ScrollController();
 
+  List<Map<String, dynamic>> _groupes = [];
+  Map<String, List<Map<String, dynamic>>> _categoriesParGroupe = {};
+  Map<String, List<Map<String, dynamic>>> _servicesParCategorie = {};
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(
-            180.0), // Augmente la hauteur de l'AppBar pour inclure le bouton
-        child: AppBar(
-          backgroundColor: Colors.green,
-          flexibleSpace: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Row(
+      backgroundColor: Colors.grey[100],
+      body: SafeArea(
+        child: CustomScrollView(
+          controller: _scrollController,
+          slivers: [
+            _buildSliverAppBar(),
+            SliverToBoxAdapter(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    margin: const EdgeInsets.only(
-                      top: 17.0,
-                      left: 17.0,
-                      right: 17.0,
-                    ),
-                    height: 50.0,
-                    width: 50.0,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(25.0),
-                        //border: Border.all(),
-                        image: const DecorationImage(
-                            fit: BoxFit.cover,
-                            image: AssetImage('assets/photo_profile.png',))
-                    ),
-                  ),
-                  const SizedBox(width: 270.0,),
-                  const Icon(Icons.notifications, size: 34.0,color: Colors.white,)
-                ],
-              ),
-
-              Column(
-                children: [
-                  const Text('SOUTRALI DEALS',
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),),
-                  SizedBox(height: 2.0,),
-                  Container(
-                    width: 300,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
-                      color: Colors.white,
-                    ),
-                    child: Row(
-                      children: [
-                        const SizedBox(width: 1.0,),
-                        const Icon(Icons.search, color: Colors.black12, size: 20.0,),
-                        const SizedBox(width: 2.0,),
-                        Container(
-                          padding: const EdgeInsets.only(
-                              left: 2.0,
-                              right: 2.0,
-                              bottom: 9.0),
-                          width: 250.0,
-                          height: 30.0,
-                          child: const TextField(
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              errorBorder: InputBorder.none,
-                              disabledBorder: InputBorder.none,
-                              hintText: 'Recherchez sur soutrali',
-                            ),
-                          ),
-                        ),
-                        const Icon(Icons.location_searching, color: Colors.black12, size: 20.0,)
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 20.0,),
-
-                  Container(
-                    padding: EdgeInsets.only(
-                      left: 4.0,
-                      right: 4.0,
-                    ),
-                    width: 190.0,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
-                      color: Colors.lightGreenAccent.shade700,
-                    ),
-                    child: const Row(
-                      children: [
-                        Icon(Icons.map,size:20.0, color: Colors.white),
-                        SizedBox(height: 4.0,),
-                        Text("Toute la Côte d'Ivoire"),
-                        SizedBox(width: 4.0,),
-                        Icon(Icons.my_location,size: 20.0, color: Colors.white),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-      body: SingleChildScrollView(
-        //padding: const EdgeInsets.all(1.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                children: [
-                  Container(
-                      width: 10.0,
-                      child: Image.asset('assets/rectanglered.png')),
-                  SizedBox(
-                    width: 4.0,
-                  ),
-                  const Text(
-                    "Services Populaires",
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      fontFamily: 'raf',
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              child: Image.asset('assets/_acceuil_.jpeg'),
-            ),
-            SizedBox(
-              height: 5.0,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                children: [
-                  Container(
-                      width: 10.0,
-                      child: Image.asset('assets/rectanglered.png')),
-                  const SizedBox(width: 4.0),
-                  const Text(
-                    "Top Catégories",
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      fontFamily: 'raf',
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            CarouselSlider.builder(
-              itemCount: categoriesSoutraliData.length,
-              options: CarouselOptions(
-
-                height: 140.0,
-                autoPlay: true,
-                autoPlayInterval: const Duration(seconds: 3),
-                enlargeCenterPage: true,
-                viewportFraction: 0.8,
-              ),
-              itemBuilder: (context, index, realIndex) {
-                final item = categoriesSoutraliData[index];
-                return Card(
-                  elevation: 5,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: ClipRRect(
-                          borderRadius: const BorderRadius.vertical(
-                            top: Radius.circular(12.0),
-                          ),
-                          child: Image.asset(
-                            item['image']!,
-                            fit: BoxFit.cover,
-                            width: 300.0,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            top: 2.0, left: 5.0, bottom: 2.0),
-                        child: Text(
-                          item['title']!,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'rif',
-                            fontSize: 16.0,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-            const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                children: [
-                  Container(
-                      width: 10.0,
-                      child: Image.asset('assets/rectanglered.png')),
-                  const SizedBox(
-                    width: 4.0,
-                  ),
-                  const Text(
-                    "Top Services",
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      fontFamily: 'raf',
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  _buildSearchBar(),
+                  const PromotionCarousel(),
+                  _buildQuickActions(),
+                  _buildGroupesSection(),
+                  const SizedBox(height: 16),
                 ],
               ),
             ),
@@ -251,29 +47,300 @@ class _HomePageScreenStateM extends State<HomePageScreenM> {
       ),
     );
   }
-}
 
-// Liste des données du carousel (à remplacer par les données réelles) soutralideals
-const List<Map<String, String>> categoriesSoutraliData = [
-  {
-    "image": "assets/categories/Image1.png",
-    "title": "Plombier",
-  },
-  {
-    "image": "assets/categories/Image2.png",
-    "title": "Coiffeurs",
-  },
-  {
-    "image": "assets/categories/Image3.png",
-    "title": "Photographes",
-  },
-  {
-    "image": "assets/categories/Image4.png",
-    "title": "Nettoyage",
-  },
-  {
-    "image": "assets/categories/Image5.png",
-    "title": "Menuiserie",
-  },
-  // Ajoutez les autres éléments ici...
-];
+  Widget _buildGroupesSection() {
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: _groupes.length,
+      itemBuilder: (context, index) {
+        final groupe = _groupes[index];
+        final categories = _categoriesParGroupe[groupe['_id']] ?? [];
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    groupe['nomgroupe'],
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      // Navigation vers toutes les catégories du groupe
+                    },
+                    child: const Text('Voir tout'),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 120,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                itemCount: categories.length,
+                itemBuilder: (context, index) {
+                  final categorie = categories[index];
+                  return _buildCategorieCard(categorie);
+                },
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildCategorieCard(Map<String, dynamic> categorie) {
+    return Card(
+      margin: const EdgeInsets.only(right: 16),
+      child: InkWell(
+        onTap: () {
+          // Navigation vers les services de la catégorie
+        },
+        child: Container(
+          width: 100,
+          padding: const EdgeInsets.all(8),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.network(
+                categorie['imagecategorie'],
+                width: 48,
+                height: 48,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return const Icon(
+                    Icons.category,
+                    size: 48,
+                    color: Color(0xFF27AE60),
+                  );
+                },
+              ),
+              const SizedBox(height: 8),
+              Text(
+                categorie['nomcategorie'],
+                style: const TextStyle(fontSize: 12),
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSliverAppBar() {
+    return SliverAppBar(
+      floating: true,
+      pinned: true,
+      elevation: 0,
+      backgroundColor: const Color(0xFF27AE60),
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  context.go('/profile');
+                },
+                child: const CircleAvatar(
+                  radius: 15,
+                  backgroundColor: Colors.white,
+                  child: Text(
+                    'SD',
+                    style: TextStyle(
+                      color: Color(0xFF27AE60),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+              const Text(
+                'SOUTRALI DEALS',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextButton(
+                onPressed: () => context.go('/register'),
+                child: const Text(
+                  "S'inscrire",
+                  style: TextStyle(color: Colors.white, fontSize: 14),
+                ),
+              ),
+              TextButton(
+                onPressed: () => context.go('/login'),
+                child: const Text(
+                  'Connexion',
+                  style: TextStyle(color: Colors.white, fontSize: 14),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+      bottom: PreferredSize(
+        preferredSize: const Size.fromHeight(48),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Row(
+            children: [
+              const Icon(Icons.location_on, color: Colors.white),
+              const SizedBox(width: 8),
+              const Text(
+                'Toute la Côte d\'ivoire',
+                style: TextStyle(color: Colors.white),
+              ),
+              const Spacer(),
+              TextButton(
+                onPressed: () {
+                  context.pushNamed('provider_registration');
+                },
+                child: const Text(
+                  'Devenir prestataire',
+                  style: TextStyle(color: Colors.white, fontSize: 14),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSearchBar() {
+    return Container(
+      margin: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            // ignore: deprecated_member_use
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () {},
+          child: const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            child: Row(
+              children: [
+                Icon(Icons.search, color: Colors.grey),
+                SizedBox(width: 8),
+                Text(
+                  'Rechercher sur soutralideal',
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildQuickActions() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Services Rapides',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _buildQuickActionItem(
+                icon: Icons.home_repair_service,
+                label: 'Services',
+                onTap: () {},
+              ),
+              _buildQuickActionItem(
+                icon: Icons.shopping_bag,
+                label: 'Produits',
+                onTap: () {},
+              ),
+              _buildQuickActionItem(
+                icon: Icons.schedule,
+                label: 'Réservations',
+                onTap: () {},
+              ),
+              _buildQuickActionItem(
+                icon: Icons.local_offer,
+                label: 'Offres',
+                onTap: () {},
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildQuickActionItem({
+    required IconData icon,
+    required String label,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              // ignore: deprecated_member_use
+              color: const Color(0xFF27AE60).withOpacity(0.1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(
+              icon,
+              color: const Color(0xFF27AE60),
+              size: 24,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: const TextStyle(fontSize: 12),
+          ),
+        ],
+      ),
+    );
+  }
+}
