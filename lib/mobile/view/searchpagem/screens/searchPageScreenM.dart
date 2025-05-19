@@ -1,221 +1,272 @@
-
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:sdealsapp/mobile/view/searchpagem/searchpageblocm/searchPageStateM.dart';
-import '../searchpageblocm/searchPageBlocM.dart';
-import '../searchpageblocm/searchPageEventM.dart';
 
+class SearchPageScreenM extends StatelessWidget {
+  SearchPageScreenM({super.key});
 
-class SearchPageScreenM extends StatefulWidget {
-  const SearchPageScreenM({super.key});
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
-  State<SearchPageScreenM> createState() => _SearchPageScreenStateM();
-}
-
-class _SearchPageScreenStateM extends State<SearchPageScreenM> {
-  @override
-  void initState() {
-    BlocProvider.of<SearchPageBlocM>(context);
-    super.initState();
-  }
   Widget build(BuildContext context) {
-
-    return  Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(200.0),
-        child: AppBar(
-          backgroundColor: Colors.green,
-          flexibleSpace: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 50.0),
-                child: Row(
-                  children: [
-                    Icon(Icons.menu, size: 25),
-                    SizedBox(width: 80),
-                    Text(
-                      "SOUTRALI DEALS",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Spacer(),
-                    IconButton(
-                      icon: Icon(Icons.notifications),
-                      onPressed: () {},
-                      color: Colors.white,
-                    ),
-                  ],
+    return Scaffold(
+      key: _scaffoldKey,
+      backgroundColor: Colors.white,
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: const <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.green,
+              ),
+              child: Text(
+                'Menu',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(30),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
-                  ),
+            ),
+            // Ajoute ici d'autres éléments de menu si besoin
+          ],
+        ),
+      ),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(180),
+        child: AppBar(
+          backgroundColor: Colors.green,
+          elevation: 0,
+          automaticallyImplyLeading: false,
+          flexibleSpace: SafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Expanded(
-                        child: TextField(
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.search, color: Colors.grey),
-                            hintText: "Rechercher sur Soutralideals",
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.symmetric(vertical: 15),
-                          ),
-                        ),
+                      GestureDetector(
+                        onTap: () {
+                          _scaffoldKey.currentState?.openDrawer();
+                        },
+                        child: const Icon(Icons.menu,
+                            color: Colors.white, size: 32),
                       ),
                       IconButton(
-                        icon: Icon(Icons.gps_fixed, color: Colors.grey),
+                        icon: const Icon(Icons.notifications,
+                            color: Colors.white, size: 32),
                         onPressed: () {},
                       ),
                     ],
                   ),
                 ),
+                const SizedBox(height: 4),
+                const Center(
+                  child: Text(
+                    'SOUTRALI DEALS',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      double horizontalPadding = 16.0;
+                      double width =
+                          constraints.maxWidth - 2 * horizontalPadding;
+                      return Center(
+                        child: Container(
+                          width: width > 0 ? width : constraints.maxWidth,
+                          height: 48,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(30),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.13),
+                                blurRadius: 10,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            children: [
+                              const SizedBox(width: 16),
+                              const Icon(Icons.search,
+                                  color: Colors.grey, size: 26),
+                              const SizedBox(width: 10),
+                              const Expanded(
+                                child: TextField(
+                                  style: TextStyle(fontSize: 16),
+                                  decoration: InputDecoration(
+                                    hintText: 'Rechercher sur soutralideals',
+                                    hintStyle: TextStyle(
+                                        color: Colors.grey, fontSize: 16),
+                                    border: InputBorder.none,
+                                    enabledBorder: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
+                                    isDense: true,
+                                    contentPadding:
+                                        EdgeInsets.symmetric(vertical: 14),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10.0),
+                                child: Material(
+                                  color: Colors.white,
+                                  shape: const CircleBorder(),
+                                  elevation: 4,
+                                  shadowColor: Colors.black.withOpacity(0.18),
+                                  child: InkWell(
+                                    customBorder: const CircleBorder(),
+                                    onTap: () {},
+                                    child: const Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Icon(Icons.settings,
+                                          color: Colors.grey, size: 22),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+          child: Column(
+            children: [
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 16),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                        child: _styledNavIcon('Prestation\nde service',
+                            Icons.settings, Colors.green)),
+                    Expanded(
+                        child: _styledNavIcon(
+                            'E-commerce', Icons.shopping_cart, Colors.green)),
+                    Expanded(
+                        child: _styledNavIcon('Crypto\nStore',
+                            Icons.currency_bitcoin, Colors.green)),
+                    Expanded(
+                        child: _styledNavIcon('Petite\nAnnonce',
+                            Icons.alternate_email, Colors.green)),
+                  ],
+                ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 100.0, vertical: 5.0),
+              const SizedBox(height: 30),
+              Center(
+                child: Column(
+                  children: [
+                    Image.asset(
+                      'assets/imageconnexion.png',
+                      height: 180,
+                    ),
+                    const SizedBox(height: 30),
+                    const Text(
+                      'Le chargement\nde la page a échoué',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 15),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 24.0),
+                      child: Text(
+                        'Nous sommes désolés, une erreur technique est survenue, nous travaillons.',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.grey,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ],
+                ),
               ),
+              const SizedBox(height: 30),
             ],
           ),
         ),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Les boutons de navigation (Prestation de service, E-commerce, Crypto Store, Petite annonce)
-            SizedBox(
-              height: 100, // Adjust height if needed
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    _buildNavigationButton("Prestation de service", Icons.build, Colors.blue),
-                    _buildNavigationButton("E-commerce", Icons.shopping_cart, Colors.red),
-                    _buildNavigationButton("Crypto Store", Icons.currency_bitcoin, Colors.orange),
-                    _buildNavigationButton("Petite annonce", Icons.announcement, Colors.purple),
-                    // Add more buttons here if needed
-                  ],
+    );
+  }
+
+  Widget _styledNavIcon(String label, IconData icon, Color color) {
+    return InkWell(
+      borderRadius: BorderRadius.circular(40),
+      onTap: () {},
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: color.withOpacity(0.18),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
                 ),
-              ),
+              ],
             ),
-            SizedBox(height: 15),  // Espacement entre les sections
-
-            // Section Métiers
-            Text(
-              'Métiers',
-              style: TextStyle(
-                fontSize: 24,
+            child: CircleAvatar(
+              radius: 30,
+              backgroundColor: color.withOpacity(0.15),
+              child: Icon(icon, color: color, size: 32),
+            ),
+          ),
+          const SizedBox(height: 8),
+          SizedBox(
+            height: 40,
+            child: Text(
+              label,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontSize: 13,
                 fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 10),
-            Expanded(
-              child: ListView(
-                children: [
-                  _buildCategoryItem('Maçonnerie', 'Catégorie', 'assets/images/maconnerie.png'),
-                  _buildCategoryItem('Mécanique', 'Catégorie', 'assets/images/mecanique.png'),
-                  _buildCategoryItem('Plomberie', 'Catégorie', 'assets/images/plomberie.jpg'),
-                  _buildCategoryItem('Menuisier', 'Catégorie', 'assets/images/menuisier.png'),
-
-                  SizedBox(height: 20),
-
-                  // Section Prestataires
-                  Text(
-                    'Prestataires',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      _buildProviderItem('Marc', '1000 FCFA', 'assets/images/marc.jpg'),
-                      _buildProviderItem('Elie', '1000 FCFA', 'assets/images/elie.jpg'),
-                      _buildProviderItem('Tratra', '1000 FCFA', 'assets/images/tratra.jpg'),
-                      _buildProviderItem('OLI', '1000 FCFA', 'assets/images/oli.jpg'),
-                    ],
+                color: Colors.black,
+                shadows: [
+                  Shadow(
+                    color: Colors.black12,
+                    blurRadius: 2,
+                    offset: Offset(0, 1),
                   ),
                 ],
               ),
+              textAlign: TextAlign.center,
             ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 5),
+        ],
       ),
     );
-
   }
-}
-
-
-// Fonction pour créer un bouton de navigation en haut
-Widget _buildNavigationButton(String title, IconData icon, Color color) {
-  return Padding(
-    padding: const EdgeInsets.only(right: 16.0), // Espacement entre les boutons
-    child: Column(
-      mainAxisSize: MainAxisSize.min,  // Limite la taille au minimum requis
-      children: [
-        CircleAvatar(
-          radius: 25,
-          backgroundColor: color.withOpacity(0.2),
-          child: Icon(icon, size: 25, color: color),
-        ),
-        SizedBox(height: 8),  // Espacement ajusté entre l'icône et le texte
-        Text(
-          title,
-          textAlign: TextAlign.center,  // Centrage du texte
-          style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-        ),
-        SizedBox(height: 5),  // Espace supplémentaire entre les éléments
-      ],
-    ),
-  );
-}
-
-// Fonction pour créer un item de catégorie (Métiers)
-Widget _buildCategoryItem(String title, String subtitle, String imagePath) {
-  return ListTile(
-    leading: CircleAvatar(
-      radius: 30,
-      backgroundImage: AssetImage(imagePath), // Assurez-vous que les images sont dans votre dossier assets
-    ),
-    title: Text(title, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-    subtitle: Text(subtitle, style: TextStyle(color: Colors.grey)),
-    onTap: () {
-      // Action à faire quand on clique sur l'item
-    },
-  );
-}
-
-// Fonction pour créer un item de prestataire
-Widget _buildProviderItem(String name, String price, String imagePath) {
-  return Column(
-    children: [
-      CircleAvatar(
-        radius: 40,
-        backgroundImage: AssetImage(imagePath), // Assurez-vous que les images sont dans votre dossier assets
-      ),
-      SizedBox(height: 5),
-      Text(name, style: TextStyle(fontWeight: FontWeight.bold)),
-      Text(price, style: TextStyle(color: Colors.green)),
-    ],
-  );
 }
