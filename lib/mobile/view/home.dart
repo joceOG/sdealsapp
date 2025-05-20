@@ -33,7 +33,14 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: _pageList[_currentIndex]),
+      body: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 350),
+        transitionBuilder: (child, animation) => FadeTransition(
+          opacity: animation,
+          child: child,
+        ),
+        child: _pageList[_currentIndex],
+      ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(0),
         child: BottomNavigationBar(
@@ -45,41 +52,43 @@ class _HomeState extends State<Home> {
             _currentIndex = index;
           }),
           currentIndex: _currentIndex,
+          showSelectedLabels: true,
+          showUnselectedLabels: false,
           items: const [
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.home,
                 size: 30.0,
               ),
-              label: '',
+              label: 'Accueil',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.autorenew,
                 size: 30.0,
               ),
-              label: '',
+              label: 'Freelance',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.search,
                 size: 30.0,
               ),
-              label: '',
+              label: 'Recherche',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.shopping_bag,
                 size: 30.0,
               ),
-              label: '',
+              label: 'MarketPlace',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.more_horiz,
                 size: 30.0,
               ),
-              label: '',
+              label: 'More',
             ),
           ],
         ),
