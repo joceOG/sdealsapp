@@ -245,6 +245,7 @@ class _ShoppingPageScreenStateM extends State<ShoppingPageScreenM> {
     );
   }
 
+
   // Fonction pour créer un widget image de produit
   Widget _buildProductImage(String imagePath) {
     return Container(

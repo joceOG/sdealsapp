@@ -1,6 +1,3 @@
-
-import 'package:equatable/equatable.dart';
-import 'package:sdealsapp/web/view/homepage/homepagebloc/homePageBloc.dart';
 import 'package:sdealsapp/mobile/view/morepagem/morepageblocm/morePageEventM.dart';
 import 'package:sdealsapp/mobile/view/morepagem/morepageblocm/morePageStateM.dart';
 
