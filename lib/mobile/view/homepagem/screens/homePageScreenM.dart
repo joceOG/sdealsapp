@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sdealsapp/mobile/view/homepagem/homepageblocm/homePageStateM.dart';
+import '../../profilpagem/screens/profilPageScreenM.dart';
 import '../homepageblocm/homePageBlocM.dart';
 import '../homepageblocm/homePageEventM.dart';
 
@@ -19,6 +20,7 @@ class _HomePageScreenStateM extends State<HomePageScreenM> {
     super.initState();
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -54,11 +56,27 @@ class _HomePageScreenStateM extends State<HomePageScreenM> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Icon(Icons.menu, color: Colors.white, size: 32),
+                        const Icon(Icons.menu, color: Colors.white, size: 32),
                         IconButton(
                           icon: const Icon(Icons.notifications,
                               color: Colors.white, size: 32),
                           onPressed: () {},
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const ProfilePageScreenM(),
+                              ),
+                            );
+                          },
+                          child: const CircleAvatar(
+                            radius: 20,
+                            backgroundImage:
+                                AssetImage('assets/profile_picture.jpg'),
+                          ),
                         ),
                       ],
                     ),
@@ -95,21 +113,21 @@ class _HomePageScreenStateM extends State<HomePageScreenM> {
                               ),
                             ],
                           ),
-                          child: Row(
+                          child: const Row(
                             children: [
-                              const SizedBox(width: 10),
+                              SizedBox(width: 10),
                               Material(
                                 color: Colors.green,
-                                shape: const CircleBorder(),
+                                shape: CircleBorder(),
                                 elevation: 2,
                                 child: Padding(
-                                  padding: const EdgeInsets.all(7.0),
+                                  padding: EdgeInsets.all(7.0),
                                   child: Icon(Icons.search_rounded,
                                       color: Colors.white, size: 22),
                                 ),
                               ),
-                              const SizedBox(width: 12),
-                              const Expanded(
+                              SizedBox(width: 12),
+                              Expanded(
                                 child: TextField(
                                   style: TextStyle(fontSize: 16),
                                   cursorColor: Colors.green,
@@ -128,7 +146,7 @@ class _HomePageScreenStateM extends State<HomePageScreenM> {
                                   ),
                                 ),
                               ),
-                              const SizedBox(width: 10),
+                              SizedBox(width: 10),
                             ],
                           ),
                         ),
@@ -146,125 +164,156 @@ class _HomePageScreenStateM extends State<HomePageScreenM> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            //Image.asset('assets/_acceuil_.jpeg'),
             const SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                      width: 10.0,
-                      child: Image.asset('assets/rectanglered.png')),
-                  SizedBox(
-                    width: 4.0,
-                  ),
-                  const Text(
-                    "Services Populaires",
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      fontFamily: 'raf',
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              child: Image.asset('assets/_acceuil_.jpeg'),
-            ),
-            SizedBox(
-              height: 5.0,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                children: [
-                  Container(
-                      width: 10.0,
-                      child: Image.asset('assets/rectanglered.png')),
-                  const SizedBox(width: 4.0),
-                  const Text(
-                    "Top Catégories",
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      fontFamily: 'raf',
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            CarouselSlider.builder(
-              itemCount: categoriesSoutraliData.length,
-              options: CarouselOptions(
-                height: 140.0,
-                autoPlay: true,
-                autoPlayInterval: const Duration(seconds: 3),
-                enlargeCenterPage: true,
-                viewportFraction: 0.8,
-              ),
-              itemBuilder: (context, index, realIndex) {
-                final item = categoriesSoutraliData[index];
-                return Card(
-                  elevation: 5,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  // Titre des catégories
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Expanded(
-                        child: ClipRRect(
-                          borderRadius: const BorderRadius.vertical(
-                            top: Radius.circular(12.0),
-                          ),
-                          child: Image.asset(
-                            item['image']!,
-                            fit: BoxFit.cover,
-                            width: 300.0,
-                          ),
+                      const Text(
+                        'Top Catégories',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          color: Colors.black,
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            top: 2.0, left: 5.0, bottom: 2.0),
-                        child: Text(
-                          item['title']!,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'rif',
-                            fontSize: 16.0,
+                      // Bouton "Voir plus"
+                      GestureDetector(
+                        onTap: () {},
+                        child: const Text(
+                          'Voir plus',
+                          style: TextStyle(
+                            color: Colors.green,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 15,
                           ),
                         ),
                       ),
                     ],
                   ),
-                );
-              },
-            ),
-            const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                children: [
-                  Container(
-                      width: 10.0,
-                      child: Image.asset('assets/rectanglered.png')),
-                  const SizedBox(
-                    width: 4.0,
-                  ),
-                  const Text(
-                    "Top Services",
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      fontFamily: 'raf',
-                      fontWeight: FontWeight.bold,
+                  const SizedBox(height: 10),
+                  // Liste horizontale des catégories
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        _buildCategoryCard('Auto & Moto', Icons.directions_car),
+                        _buildCategoryCard('Immobilier', Icons.house),
+                        _buildCategoryCard(
+                            'Électronique', Icons.electrical_services),
+                        _buildCategoryCard('Mode', Icons.style),
+                        // Ajoute autant de catégories que nécessaire ici
+                      ],
                     ),
+                  ),
+                  const SizedBox(height: 20),
+
+                  // Titre des services
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Top Services',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          color: Colors.black,
+                        ),
+                      ),
+                      // Bouton "Voir plus"
+                      GestureDetector(
+                        onTap: () {},
+                        child: const Text(
+                          'Voir plus',
+                          style: TextStyle(
+                            color: Colors.green,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  // CarouselSlider pour afficher les services
+                  CarouselSlider.builder(
+                    itemCount: categoriesSoutraliData.length,
+                    options: CarouselOptions(
+                      height: 140.0,
+                      autoPlay: true,
+                      autoPlayInterval: const Duration(seconds: 3),
+                      enlargeCenterPage: true,
+                      viewportFraction: 0.8,
+                    ),
+                    itemBuilder: (context, index, realIndex) {
+                      final item = categoriesSoutraliData[index];
+                      return Card(
+                        elevation: 5,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: ClipRRect(
+                                borderRadius: const BorderRadius.vertical(
+                                  top: Radius.circular(12.0),
+                                ),
+                                child: Image.asset(
+                                  item['image']!,
+                                  fit: BoxFit.cover,
+                                  width: 300.0,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 2.0, left: 5.0, bottom: 2.0),
+                              child: Text(
+                                item['title']!,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'rif',
+                                  fontSize: 16.0,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  // Fonction pour créer une carte de catégorie
+  Widget _buildCategoryCard(String categoryName, IconData icon) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 16.0),
+      child: Column(
+        children: [
+          CircleAvatar(
+            radius: 30,
+            // ignore: deprecated_member_use
+            backgroundColor: Colors.green.withOpacity(0.2),
+            child: Icon(icon, size: 30, color: Colors.green),
+          ),
+          const SizedBox(height: 5),
+          Text(categoryName, style: const TextStyle(fontSize: 16)),
+        ],
       ),
     );
   }

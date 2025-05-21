@@ -54,7 +54,7 @@ class _ShoppingPageScreenStateM extends State<ShoppingPageScreenM> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Icon(Icons.menu, color: Colors.white, size: 32),
+                        const Icon(Icons.menu, color: Colors.white, size: 32),
                         IconButton(
                           icon: const Icon(Icons.notifications,
                               color: Colors.white, size: 32),
@@ -95,21 +95,21 @@ class _ShoppingPageScreenStateM extends State<ShoppingPageScreenM> {
                               ),
                             ],
                           ),
-                          child: Row(
+                          child: const Row(
                             children: [
-                              const SizedBox(width: 10),
+                              SizedBox(width: 10),
                               Material(
                                 color: Colors.green,
-                                shape: const CircleBorder(),
+                                shape: CircleBorder(),
                                 elevation: 2,
                                 child: Padding(
-                                  padding: const EdgeInsets.all(7.0),
+                                  padding: EdgeInsets.all(7.0),
                                   child: Icon(Icons.search_rounded,
                                       color: Colors.white, size: 22),
                                 ),
                               ),
-                              const SizedBox(width: 12),
-                              const Expanded(
+                              SizedBox(width: 12),
+                              Expanded(
                                 child: TextField(
                                   style: TextStyle(fontSize: 16),
                                   cursorColor: Colors.green,
@@ -128,7 +128,7 @@ class _ShoppingPageScreenStateM extends State<ShoppingPageScreenM> {
                                   ),
                                 ),
                               ),
-                              const SizedBox(width: 10),
+                              SizedBox(width: 10),
                             ],
                           ),
                         ),
@@ -287,7 +287,6 @@ class _ShoppingPageScreenStateM extends State<ShoppingPageScreenM> {
       ],
     );
   }
-
 
   // Fonction pour créer un widget image de produit
   Widget _buildProductImage(String imagePath) {
