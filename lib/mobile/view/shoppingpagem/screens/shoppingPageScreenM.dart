@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../profilpagem/screens/profilPageScreenM.dart';
 import '../shoppingpageblocm/shoppingPageBlocM.dart';
 import '../shoppingpageblocm/shoppingPageEventM.dart';
 import 'productDetailsScreenM.dart';
@@ -24,140 +23,121 @@ class _ShoppingPageScreenStateM extends State<ShoppingPageScreenM> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(
-            180.0), // Augmente la hauteur de l'AppBar pour inclure le bouton
+        preferredSize: const Size.fromHeight(165),
         child: AppBar(
-          backgroundColor: Colors.green,
-          flexibleSpace: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Container(
-                      margin: const EdgeInsets.only(
-                        top: 17.0,
-                        left: 17.0,
-                        right: 17.0,
-                      ),
-                      height: 50.0,
-                      width: 50.0,
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const ProfilePageScreenM(),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25.0),
-                            //border: Border.all(),
-                            image: const DecorationImage(
-                              fit: BoxFit.cover,
-                              image: AssetImage(
-                                'assets/logo.jpeg',
-                              ),
-                            ),
-                          ),
-                        ),
-                      )),
-                  const Spacer(),
-                  const Icon(
-                    Icons.notifications,
-                    size: 34.0,
-                    color: Colors.white,
-                  )
-                ],
+          backgroundColor: Colors.transparent,
+          surfaceTintColor: Colors.transparent,
+          elevation: 0,
+          automaticallyImplyLeading: false,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(32),
+              bottomRight: Radius.circular(32),
+            ),
+          ),
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(
+              color: Colors.green,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(32),
+                bottomRight: Radius.circular(32),
               ),
-              Column(
+            ),
+            child: SafeArea(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Text(
-                    'SOUTRALI DEALS',
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 2.0,
-                  ),
-                  Container(
-                    width: 300,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
-                      color: Colors.white,
-                    ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 6),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const SizedBox(
-                          width: 1.0,
+                        const Icon(Icons.menu, color: Colors.white, size: 32),
+                        IconButton(
+                          icon: const Icon(Icons.notifications,
+                              color: Colors.white, size: 32),
+                          onPressed: () {},
                         ),
-                        const Icon(
-                          Icons.search,
-                          color: Colors.black12,
-                          size: 20.0,
-                        ),
-                        const SizedBox(
-                          width: 2.0,
-                        ),
-                        Container(
-                          padding: const EdgeInsets.only(
-                              left: 2.0, right: 2.0, bottom: 9.0),
-                          width: 250.0,
-                          height: 30.0,
-                          child: const TextField(
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              errorBorder: InputBorder.none,
-                              disabledBorder: InputBorder.none,
-                              hintText: 'Recherchez sur soutrali',
-                            ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  const Center(
+                    child: Text(
+                      'SOUTRALI DEALS',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: FractionallySizedBox(
+                        widthFactor: 0.8,
+                        child: Container(
+                          height: 52,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(32),
+                            border: Border.all(
+                                color: Colors.green.shade200, width: 1.4),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.green.withOpacity(0.07),
+                                blurRadius: 10,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: const Row(
+                            children: [
+                              SizedBox(width: 10),
+                              Material(
+                                color: Colors.green,
+                                shape: CircleBorder(),
+                                elevation: 2,
+                                child: Padding(
+                                  padding: EdgeInsets.all(7.0),
+                                  child: Icon(Icons.search_rounded,
+                                      color: Colors.white, size: 22),
+                                ),
+                              ),
+                              SizedBox(width: 12),
+                              Expanded(
+                                child: TextField(
+                                  style: TextStyle(fontSize: 16),
+                                  cursorColor: Colors.green,
+                                  decoration: InputDecoration(
+                                    hintText: 'Rechercher sur soutralideals',
+                                    hintStyle: TextStyle(
+                                        color: Colors.green,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500),
+                                    border: InputBorder.none,
+                                    enabledBorder: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
+                                    isDense: true,
+                                    contentPadding:
+                                        EdgeInsets.symmetric(vertical: 14),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                            ],
                           ),
                         ),
-                        const Icon(
-                          Icons.location_searching,
-                          color: Colors.black12,
-                          size: 20.0,
-                        )
-                      ],
+                      ),
                     ),
                   ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(
-                      left: 4.0,
-                      right: 4.0,
-                    ),
-                    width: 190.0,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
-                      color: Colors.lightGreenAccent.shade700,
-                    ),
-                    child: const Row(
-                      children: [
-                        Icon(Icons.map, size: 20.0, color: Colors.white),
-                        SizedBox(
-                          height: 4.0,
-                        ),
-                        Text("Toute la Côte d'Ivoire"),
-                        SizedBox(
-                          width: 4.0,
-                        ),
-                        Icon(Icons.my_location,
-                            size: 20.0, color: Colors.white),
-                      ],
-                    ),
-                  )
                 ],
               ),
-            ],
+            ),
           ),
         ),
       ),

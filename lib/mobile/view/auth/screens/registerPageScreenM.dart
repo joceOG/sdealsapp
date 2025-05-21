@@ -34,6 +34,16 @@ class _RegisterPageScreenMState extends State<RegisterPageScreenM>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.green.shade700,
+      appBar: AppBar(
+        backgroundColor: Colors.green.shade700,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -194,6 +204,16 @@ class _RegisterPageScreenMState extends State<RegisterPageScreenM>
                             )),
                       ),
                     ],
+                  ),
+
+                  const SizedBox(height: 10),
+                  const Text(
+                    "En vous inscrivant, vous acceptez nos conditions d'utilisation et notre politique de confidentialité.",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.grey,
+                    ),
                   ),
                 ],
               ),
