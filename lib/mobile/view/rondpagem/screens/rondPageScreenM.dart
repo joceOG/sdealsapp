@@ -12,6 +12,9 @@ class RondPageScreenM extends StatefulWidget {
 }
 
 class _RondPageScreenStateM extends State<RondPageScreenM> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  bool _arrowPressed = false;
+  int _prestatairePressed = -1;
   @override
   void initState() {
     BlocProvider.of<RondPageBlocM>(context);
@@ -21,9 +24,30 @@ class _RondPageScreenStateM extends State<RondPageScreenM> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.white,
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: const <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.green,
+              ),
+              child: Text(
+                'Menu',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            // Ajoute ici d'autres éléments de menu si besoin
+          ],
+        ),
+      ),
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(165),
+        preferredSize: const Size.fromHeight(170),
         child: AppBar(
           backgroundColor: Colors.transparent,
           surfaceTintColor: Colors.transparent,
@@ -31,16 +55,27 @@ class _RondPageScreenStateM extends State<RondPageScreenM> {
           automaticallyImplyLeading: false,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(32),
-              bottomRight: Radius.circular(32),
+              bottomLeft: Radius.circular(44),
+              bottomRight: Radius.circular(44),
             ),
           ),
           flexibleSpace: Container(
             decoration: const BoxDecoration(
-              color: Colors.green,
+              gradient: LinearGradient(
+                colors: [Color(0xFF43EA5E), Color(0xFF1CBF3F)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 18,
+                  offset: Offset(0, 8),
+                ),
+              ],
               borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(32),
-                bottomRight: Radius.circular(32),
+                bottomLeft: Radius.circular(44),
+                bottomRight: Radius.circular(44),
               ),
             ),
             child: SafeArea(
@@ -54,7 +89,13 @@ class _RondPageScreenStateM extends State<RondPageScreenM> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Icon(Icons.menu, color: Colors.white, size: 32),
+                        GestureDetector(
+                          onTap: () {
+                            _scaffoldKey.currentState?.openDrawer();
+                          },
+                          child: const Icon(Icons.menu,
+                              color: Colors.white, size: 32),
+                        ),
                         IconButton(
                           icon: const Icon(Icons.notifications,
                               color: Colors.white, size: 32),
@@ -64,13 +105,22 @@ class _RondPageScreenStateM extends State<RondPageScreenM> {
                     ),
                   ),
                   const SizedBox(height: 4),
-                  const Center(
-                    child: Text(
-                      'SOUTRALI DEALS',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+                  TweenAnimationBuilder<double>(
+                    tween: Tween(begin: 0, end: 1),
+                    duration: Duration(milliseconds: 700),
+                    builder: (context, value, child) => Opacity(
+                      opacity: value,
+                      child: child,
+                    ),
+                    child: const Center(
+                      child: Text(
+                        'SOUTRALI DEALS',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1.2,
+                        ),
                       ),
                     ),
                   ),
