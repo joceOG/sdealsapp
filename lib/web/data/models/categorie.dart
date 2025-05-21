@@ -1,7 +1,4 @@
 
-
-import 'groupe.dart';
-
 class Categorie{
   String idcategorie;
   String nomcategorie;

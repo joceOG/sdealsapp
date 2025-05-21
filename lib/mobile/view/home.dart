@@ -1,3 +1,4 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:sdealsapp/mobile/view/homepagem/screens/homePageScreenM.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -36,54 +37,124 @@ class _HomeState extends State<Home> {
       body: Center(child: _pageList[_currentIndex]),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(0),
-        child: BottomNavigationBar(
-          backgroundColor: Colors.green,
-          selectedItemColor: Colors.white,
-          unselectedItemColor: Colors.black,
-          type: BottomNavigationBarType.fixed,
+        child:  CurvedNavigationBar(
+          backgroundColor: Colors.white, // background behind the nav bar
+          color: Colors.green,           // actual nav bar color
+          buttonBackgroundColor: Colors.green, // optional, color for the active button
           onTap: (index) => setState(() {
             _currentIndex = index;
           }),
-          currentIndex: _currentIndex,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home,
-                size: 30.0,
-              ),
-              label: '',
+          items: const <Widget>[
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.home,
+                  size: 30.0,
+                    color: Colors.white
+                ),
+                Text('Metiers', style: TextStyle(color: Colors.white, fontSize: 12)),
+              ],
             ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.autorenew,
-                size: 30.0,
-              ),
-              label: '',
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                    Icons.autorenew,
+                    size: 30.0,
+                    color: Colors.white
+                ),
+                Text('Freelance', style: TextStyle(color: Colors.white, fontSize: 12)),
+              ],
             ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.search,
-                size: 30.0,
-              ),
-              label: '',
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                    Icons.search,
+                    size: 30.0,
+                    color: Colors.white
+                ),
+                Text('Recherche', style: TextStyle(color: Colors.white, fontSize: 12)),
+              ],
             ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.shopping_bag,
-                size: 30.0,
-              ),
-              label: '',
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                    Icons.shopping_bag,
+                    size: 30.0,
+                    color: Colors.white
+                ),
+                Text('E-Marché', style: TextStyle(color: Colors.white, fontSize: 12)),
+              ],
             ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.more_horiz,
-                size: 30.0,
-              ),
-              label: '',
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                    Icons.more_horiz,
+                    size: 30.0,
+                    color: Colors.white
+                ),
+                Text('Autres', style: TextStyle(color: Colors.white, fontSize: 12)),
+              ],
             ),
           ],
-        ),
+        )
       ),
     );
   }
 }
+
+/*
+
+BottomNavigationBar(
+backgroundColor: Colors.green,
+selectedItemColor: Colors.white,
+unselectedItemColor: Colors.black,
+type: BottomNavigationBarType.fixed,
+onTap: (index) => setState(() {
+_currentIndex = index;
+}),
+currentIndex: _currentIndex,
+items: const [
+BottomNavigationBarItem(
+icon: Icon(
+Icons.home,
+size: 30.0,
+),
+label: '',
+),
+BottomNavigationBarItem(
+icon: Icon(
+Icons.autorenew,
+size: 30.0,
+),
+label: '',
+),
+BottomNavigationBarItem(
+icon: Icon(
+Icons.search,
+size: 30.0,
+),
+label: '',
+),
+BottomNavigationBarItem(
+icon: Icon(
+Icons.shopping_bag,
+size: 30.0,
+),
+label: '',
+),
+BottomNavigationBarItem(
+icon: Icon(
+Icons.more_horiz,
+size: 30.0,
+),
+label: '',
+),
+],
+),
+
+*/
