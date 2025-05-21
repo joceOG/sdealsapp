@@ -174,20 +174,26 @@ class _RegisterPageScreenMState extends State<RegisterPageScreenM>
                   const SizedBox(height: 10),
 
                   // Déjà un compte ?
-                  TextButton(
-                    onPressed: () {
-                      // Logique pour aller à la page de connexion
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const LoginPageScreenM(),
-                        ),
-                      );
-                    },
-                    child: Text(
-                      "Vous avez déjà un compte ? Connectez-vous",
-                      style: TextStyle(color: Colors.green.shade700),
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text('Vous avez déjà un compte ?'),
+                      TextButton(
+                        onPressed: () {
+                          // Logique pour aller à la page de connexion
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginPageScreenM(),
+                            ),
+                          );
+                        },
+                        child: const Text('Connectez-vous',
+                            style: TextStyle(
+                              color: Colors.green,
+                            )),
+                      ),
+                    ],
                   ),
                 ],
               ),
