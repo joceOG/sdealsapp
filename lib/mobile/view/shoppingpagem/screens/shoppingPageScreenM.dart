@@ -23,78 +23,121 @@ class _ShoppingPageScreenStateM extends State<ShoppingPageScreenM> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(200.0),
+        preferredSize: const Size.fromHeight(165),
         child: AppBar(
-          backgroundColor: Colors.green,
-          flexibleSpace: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10.0,
-                  vertical: 50.0,
-                ),
-                child: Row(
-                  children: [
-                    const Icon(Icons.menu, size: 25),
-                    const SizedBox(width: 80),
-                    const Text(
-                      "SOUTRALI DEALS",
+          backgroundColor: Colors.transparent,
+          surfaceTintColor: Colors.transparent,
+          elevation: 0,
+          automaticallyImplyLeading: false,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(32),
+              bottomRight: Radius.circular(32),
+            ),
+          ),
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(
+              color: Colors.green,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(32),
+                bottomRight: Radius.circular(32),
+              ),
+            ),
+            child: SafeArea(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 6),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Icon(Icons.menu, color: Colors.white, size: 32),
+                        IconButton(
+                          icon: const Icon(Icons.notifications,
+                              color: Colors.white, size: 32),
+                          onPressed: () {},
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  const Center(
+                    child: Text(
+                      'SOUTRALI DEALS',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const Spacer(),
-                    IconButton(
-                      icon: const Icon(Icons.notifications),
-                      onPressed: () {},
-                      color: Colors.white,
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16.0,
-                  vertical: 5.0,
-                ),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(30),
-                    boxShadow: [
-                      BoxShadow(
-                        // ignore: deprecated_member_use
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: const Offset(0, 3),
-                      ),
-                    ],
                   ),
-                  child: Row(
-                    children: [
-                      const Expanded(
-                        child: TextField(
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.search, color: Colors.grey),
-                            hintText: "Rechercher sur Soutralideals",
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.symmetric(vertical: 13),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: FractionallySizedBox(
+                        widthFactor: 0.8,
+                        child: Container(
+                          height: 52,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(32),
+                            border: Border.all(
+                                color: Colors.green.shade200, width: 1.4),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.green.withOpacity(0.07),
+                                blurRadius: 10,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            children: [
+                              const SizedBox(width: 10),
+                              Material(
+                                color: Colors.green,
+                                shape: const CircleBorder(),
+                                elevation: 2,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(7.0),
+                                  child: Icon(Icons.search_rounded,
+                                      color: Colors.white, size: 22),
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              const Expanded(
+                                child: TextField(
+                                  style: TextStyle(fontSize: 16),
+                                  cursorColor: Colors.green,
+                                  decoration: InputDecoration(
+                                    hintText: 'Rechercher sur soutralideals',
+                                    hintStyle: TextStyle(
+                                        color: Colors.green,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500),
+                                    border: InputBorder.none,
+                                    enabledBorder: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
+                                    isDense: true,
+                                    contentPadding:
+                                        EdgeInsets.symmetric(vertical: 14),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                            ],
                           ),
                         ),
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.gps_fixed, color: Colors.grey),
-                        onPressed: () {},
-                      ),
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
@@ -170,7 +213,7 @@ class _ShoppingPageScreenStateM extends State<ShoppingPageScreenM> {
                         const SizedBox(height: 3),
                         const Text('25.000 Fcfa',
                             style:
-                            TextStyle(fontSize: 14, color: Colors.green)),
+                                TextStyle(fontSize: 14, color: Colors.green)),
                       ],
                     ),
                   ),
@@ -199,7 +242,7 @@ class _ShoppingPageScreenStateM extends State<ShoppingPageScreenM> {
                         const SizedBox(height: 3),
                         const Text('30.000 Fcfa',
                             style:
-                            TextStyle(fontSize: 14, color: Colors.green)),
+                                TextStyle(fontSize: 14, color: Colors.green)),
                       ],
                     ),
                   ),
