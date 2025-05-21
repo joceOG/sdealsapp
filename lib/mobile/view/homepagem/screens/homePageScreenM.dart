@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sdealsapp/mobile/view/homepagem/homepageblocm/homePageStateM.dart';
+import '../../auth/screens/loginPageScreenM.dart';
 import '../homepageblocm/homePageBlocM.dart';
 import '../homepageblocm/homePageEventM.dart';
 
@@ -25,7 +26,87 @@ class _HomePageScreenStateM extends State<HomePageScreenM> {
       key: _scaffoldKey,
       backgroundColor: Colors.white,
       drawer: Drawer(
-        child: ListView(
+        child:
+
+        SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // Avatar et nom d'utilisateur
+              const CircleAvatar(
+                radius: 50,
+                backgroundImage: AssetImage(
+                    'assets/profile_picture.jpg'), // Remplacez par votre image
+              ),
+              const SizedBox(height: 10),
+              const Text(
+                'Afisu yussuf',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // Section "Mon Deals"
+              const SectionTitle(title: 'Mon Deals'),
+              MenuItem(
+                icon: Icons.lightbulb,
+                title: "Trouver l'inspiration",
+                onTap: () {
+                  // Action pour cette option
+                },
+              ),
+              MenuItem(
+                icon: Icons.favorite,
+                title: "Listes enregistrées",
+                onTap: () {
+                  // Action pour cette option
+                },
+              ),
+              MenuItem(
+                icon: Icons.people,
+                title: "Mes intérêts",
+                onTap: () {
+                  // Action pour cette option
+                },
+              ),
+              MenuItem(
+                icon: Icons.person_add,
+                title: "Inviter des amis",
+                onTap: () {
+                  // Action pour cette option
+                },
+              ),
+
+              // Section "Paramètres"
+              const SectionTitle(title: 'Paramètres'),
+              MenuItem(
+                icon: Icons.settings,
+                title: "Préférences",
+                onTap: () {
+                  // Action pour cette option
+                },
+              ),
+              MenuItem(
+                icon: Icons.account_circle,
+                title: "Compte",
+                onTap: () {
+                  // Action pour cette option
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LoginPageScreenM(),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+
+        /* ListView(
           padding: EdgeInsets.zero,
           children: const <Widget>[
             DrawerHeader(
@@ -42,7 +123,7 @@ class _HomePageScreenStateM extends State<HomePageScreenM> {
             ),
             // Ajoute ici d'autres éléments de menu si besoin
           ],
-        ),
+        ), */
       ),
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(170),
@@ -342,3 +423,68 @@ const List<Map<String, String>> categoriesSoutraliData = [
   },
   // Ajoutez les autres éléments ici...
 ];
+
+
+
+class MenuItem extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final VoidCallback onTap;
+
+  const MenuItem({
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          margin: const EdgeInsets.symmetric(vertical: 5),
+          decoration: BoxDecoration(
+            color: Colors.green.shade50,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: ListTile(
+            leading: Icon(icon, color: Colors.green),
+            title: Text(
+              title,
+              style: const TextStyle(fontSize: 16, color: Colors.black),
+            ),
+            trailing: const Icon(Icons.arrow_forward_ios, color: Colors.green),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+class SectionTitle extends StatelessWidget {
+  final String title;
+
+  const SectionTitle({super.key, required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          title,
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+      ),
+    );
+  }
+}
