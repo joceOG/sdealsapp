@@ -1,0 +1,14 @@
+import 'package:equatable/equatable.dart';
+import 'package:sdealsapp/web/data/models/categorie.dart';
+
+
+abstract class OrderPageEventM extends Equatable {
+  const OrderPageEventM();
+
+  @override
+  List<Object> get props => [];
+}
+
+class LoadCategorieDataM extends OrderPageEventM {}
+
+

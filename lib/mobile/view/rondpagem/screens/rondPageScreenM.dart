@@ -12,6 +12,9 @@ class RondPageScreenM extends StatefulWidget {
 }
 
 class _RondPageScreenStateM extends State<RondPageScreenM> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  bool _arrowPressed = false;
+  int _prestatairePressed = -1;
   @override
   void initState() {
     BlocProvider.of<RondPageBlocM>(context);
@@ -21,36 +24,172 @@ class _RondPageScreenStateM extends State<RondPageScreenM> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 8.0),
-          child: Material(
-            color: Colors.transparent,
-            shape: const CircleBorder(),
-            child: InkWell(
-              customBorder: const CircleBorder(),
-              onTap: () => Navigator.of(context).maybePop(),
-              child: const Padding(
-                padding: EdgeInsets.all(6.0),
-                child: Icon(Icons.arrow_back_ios_new_rounded,
-                    color: Colors.green, size: 26),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: const <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.green,
+              ),
+              child: Text(
+                'Menu',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            // Ajoute ici d'autres éléments de menu si besoin
+          ],
+        ),
+      ),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(170),
+        child: AppBar(
+          backgroundColor: Colors.transparent,
+          surfaceTintColor: Colors.transparent,
+          elevation: 0,
+          automaticallyImplyLeading: false,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(44),
+              bottomRight: Radius.circular(44),
+            ),
+          ),
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Color(0xFF43EA5E), Color(0xFF1CBF3F)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 18,
+                  offset: Offset(0, 8),
+                ),
+              ],
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(44),
+                bottomRight: Radius.circular(44),
+              ),
+            ),
+            child: SafeArea(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 6),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            _scaffoldKey.currentState?.openDrawer();
+                          },
+                          child: const Icon(Icons.menu,
+                              color: Colors.white, size: 32),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.notifications,
+                              color: Colors.white, size: 32),
+                          onPressed: () {},
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  TweenAnimationBuilder<double>(
+                    tween: Tween(begin: 0, end: 1),
+                    duration: Duration(milliseconds: 700),
+                    builder: (context, value, child) => Opacity(
+                      opacity: value,
+                      child: child,
+                    ),
+                    child: const Center(
+                      child: Text(
+                        'SOUTRALI DEALS',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1.2,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: FractionallySizedBox(
+                        widthFactor: 0.8,
+                        child: Container(
+                          height: 52,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(32),
+                            border: Border.all(
+                                color: Colors.green.shade200, width: 1.4),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.green.withOpacity(0.07),
+                                blurRadius: 10,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            children: [
+                              const SizedBox(width: 10),
+                              Material(
+                                color: Colors.green,
+                                shape: const CircleBorder(),
+                                elevation: 2,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(7.0),
+                                  child: Icon(Icons.search_rounded,
+                                      color: Colors.white, size: 22),
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              const Expanded(
+                                child: TextField(
+                                  style: TextStyle(fontSize: 16),
+                                  cursorColor: Colors.green,
+                                  decoration: InputDecoration(
+                                    hintText: 'Rechercher sur soutralideals',
+                                    hintStyle: TextStyle(
+                                        color: Colors.green,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500),
+                                    border: InputBorder.none,
+                                    enabledBorder: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
+                                    isDense: true,
+                                    contentPadding:
+                                        EdgeInsets.symmetric(vertical: 14),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
         ),
-        title: const Text(
-          'Découvrir les freelances',
-          style: TextStyle(
-            color: Colors.green,
-            fontWeight: FontWeight.bold,
-            fontSize: 22,
-            letterSpacing: 1.1,
-          ),
-        ),
-        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -59,73 +198,7 @@ class _RondPageScreenStateM extends State<RondPageScreenM> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Barre de recherche
-              FocusScope(
-                child: Focus(
-                  onFocusChange: (hasFocus) => setState(() {}),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(30),
-                            border: Border.all(color: Colors.green, width: 1.5),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.green.withOpacity(0.10),
-                                blurRadius: 12,
-                                offset: const Offset(0, 4),
-                              ),
-                            ],
-                          ),
-                          child: TextField(
-                            cursorColor: Colors.green,
-                            style: const TextStyle(fontSize: 16),
-                            decoration: InputDecoration(
-                              hintText:
-                              'Rechercher un freelance, un métier... ',
-                              hintStyle: const TextStyle(
-                                  color: Colors.green,
-                                  fontWeight: FontWeight.w500),
-                              prefixIcon: TweenAnimationBuilder<double>(
-                                tween: Tween(begin: 1.0, end: 1.1),
-                                duration: const Duration(milliseconds: 400),
-                                builder: (context, value, child) =>
-                                    Transform.scale(
-                                      scale: value,
-                                      child: child,
-                                    ),
-                                child: const Icon(Icons.search_rounded,
-                                    color: Colors.green, size: 26),
-                              ),
-                              border: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              contentPadding:
-                              const EdgeInsets.symmetric(vertical: 14),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Material(
-                        color: Colors.green,
-                        shape: const CircleBorder(),
-                        elevation: 4,
-                        child: InkWell(
-                          customBorder: const CircleBorder(),
-                          onTap: () => _showFilterSheet(context),
-                          child: const Padding(
-                            padding: EdgeInsets.all(10.0),
-                            child: Icon(Icons.filter_list_rounded,
-                                color: Colors.white, size: 26),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+
               const SizedBox(height: 24),
               // Liste horizontale de freelances
               Row(
@@ -456,19 +529,19 @@ class _RondPageScreenStateM extends State<RondPageScreenM> {
           ),
         ],
       ),
-      child: const Row(
+      child: Row(
         children: [
-          SizedBox(width: 18),
+          const SizedBox(width: 18),
           CircleAvatar(
             radius: 38,
             backgroundImage: AssetImage('assets/profile_picture.jpg'),
           ),
-          SizedBox(width: 18),
+          const SizedBox(width: 18),
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+              children: const [
                 Text(
                   'Aminata - Développeuse',
                   style: TextStyle(
@@ -490,7 +563,7 @@ class _RondPageScreenStateM extends State<RondPageScreenM> {
               ],
             ),
           ),
-          SizedBox(width: 18),
+          const SizedBox(width: 18),
         ],
       ),
     );
@@ -555,7 +628,7 @@ class _RondPageScreenStateM extends State<RondPageScreenM> {
       label: Text(
         label,
         style:
-        const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
       ),
       backgroundColor: color,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -712,7 +785,7 @@ class _RondPageScreenStateM extends State<RondPageScreenM> {
                 ),
                 const Text('Filtrer les freelances',
                     style:
-                    TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
                 const SizedBox(height: 18),
                 // Métier/catégorie
                 const Text('Catégorie',
