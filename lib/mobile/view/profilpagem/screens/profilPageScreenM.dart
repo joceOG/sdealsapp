@@ -1,32 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../auth/screens/loginPageScreenM.dart';
+import '../profilpageblocm/profilPageBlocM.dart';
 
-class ProfilePageScreenM extends StatelessWidget {
-  const ProfilePageScreenM({super.key});
 
+class ProfilPageScreenM extends StatefulWidget {
+  const ProfilPageScreenM({super.key});
   @override
+  State<ProfilPageScreenM> createState() => _ProfilPageScreenStateM();
+}
+
+class _ProfilPageScreenStateM extends State<ProfilPageScreenM> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  @override
+  void initState() {
+    BlocProvider.of<ProfilPageBlocM>(context);
+    super.initState();
+  }
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            // Action pour revenir en arrière
-            Navigator.of(context).pop();
-          },
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.notifications, color: Colors.green),
-            onPressed: () {
-              // Action pour les notifications
-            },
-          ),
-        ],
-      ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
