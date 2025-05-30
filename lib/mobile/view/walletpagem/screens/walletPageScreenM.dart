@@ -88,6 +88,18 @@ class _WalletPageScreenMState extends State<WalletPageScreenM> {
             children: [
               const SizedBox(height: 20),
               // Section navigation boutons
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 0.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _buildStyledNavButton(
+                        'Chat', Icons.settings),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
+              // Section navigation boutons
             ],
           ),
         ),
