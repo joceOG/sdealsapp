@@ -60,12 +60,12 @@ class PopularServices extends StatelessWidget {
                           fit: BoxFit.cover,
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8),
+                      const Padding(
+                        padding: EdgeInsets.all(8),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
+                            Text(
                               'Service de plomberie',
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
@@ -73,17 +73,17 @@ class PopularServices extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            const SizedBox(height: 4),
-                            const Text(
+                            SizedBox(height: 4),
+                            Text(
                               'À partir de 10.000 FCFA',
                               style: TextStyle(
                                 color: Color(0xFF27AE60),
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            const SizedBox(height: 4),
+                            SizedBox(height: 4),
                             Row(
-                              children: const [
+                              children: [
                                 Icon(Icons.star, size: 16, color: Colors.amber),
                                 Text('4.5'),
                                 Spacer(),

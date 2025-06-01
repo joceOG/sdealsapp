@@ -13,14 +13,14 @@ class PanierProductScreenM extends StatefulWidget {
 class _PanierProductScreenMState extends State<PanierProductScreenM> {
   List<Map<String, dynamic>> produits = [
     {
-      "image": "assets/adidas.jpg", // Remplacez par une vraie URL
+      "image": "assets/products/4.png", // Remplacez par une vraie URL
       "nom": "Chaussure  Adidas Originals Superstar",
       "prix": 2590,
       "ancienPrix": 9000,
       "quantite": 1
     },
     {
-      "image": "assets/adidas.jpg", // Remplacez par une vraie URL
+      "image": "assets/products/4.png", // Remplacez par une vraie URL
       "nom": "Chaussure  Adidas Originals Superstar",
       "prix": 73000,
       "ancienPrix": null,
@@ -53,9 +53,14 @@ class _PanierProductScreenMState extends State<PanierProductScreenM> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Panier"),
+        title: const Text(
+          "Votre panier",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
         backgroundColor: Colors.green,
-        centerTitle: true,
       ),
       body: Column(
         children: [

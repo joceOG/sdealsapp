@@ -21,11 +21,13 @@ class _ProductDetailsState extends State<ProductDetails> {
             Navigator.of(context).pop();
           },
         ),
-        title: const Text('Détails',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            )),
+        title: const Text(
+          'Détails',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
         backgroundColor: Colors.green,
         actions: [
           IconButton(
@@ -64,7 +66,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(12),
                   child: Image.asset(
-                    'assets/adidas.jpg',
+                    'assets/products/5.png',
                     height: 250,
                     width: double.infinity,
                     fit: BoxFit.cover,

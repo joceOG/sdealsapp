@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class WalletPageScreenM extends StatefulWidget {
   const WalletPageScreenM({super.key});
@@ -8,510 +9,294 @@ class WalletPageScreenM extends StatefulWidget {
 }
 
 class _WalletPageScreenMState extends State<WalletPageScreenM> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  bool _arrowPressed = false;
-  int _prestatairePressed = -1;
+  // Solde fictif
+  double balance = 125000;
+
+  // Pour afficher ou cacher le solde
+  bool _showBalance = true;
+
+  // Liste fictive de transactions
+  final List<Map<String, dynamic>> transactions = [
+    {
+      "type": "Rechargé",
+      "amount": 50000,
+      "date": "31 Mai 2025",
+      "icon": Icons.arrow_downward_rounded,
+      "color": Colors.green
+    },
+    {
+      "type": "Envoyé",
+      "amount": -20000,
+      "date": "30 Mai 2025",
+      "icon": Icons.arrow_upward_rounded,
+      "color": Colors.red
+    },
+    {
+      "type": "Paiement",
+      "amount": -15000,
+      "date": "29 Mai 2025",
+      "icon": Icons.shopping_cart,
+      "color": Colors.orange
+    },
+    {
+      "type": "Rechargé",
+      "amount": 30000,
+      "date": "28 Mai 2025",
+      "icon": Icons.arrow_downward_rounded,
+      "color": Colors.green
+    },
+    {
+      "type": "Envoyé",
+      "amount": -10000,
+      "date": "27 Mai 2025",
+      "icon": Icons.arrow_upward_rounded,
+      "color": Colors.red
+    },
+  ];
+
+  // Formatteur pour le solde avec séparateurs de milliers et centièmes
+  String get formattedBalance {
+    final formatter = NumberFormat("#,##0", "fr_FR");
+    return formatter.format(balance);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
       backgroundColor: Colors.white,
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(170),
-        child: AppBar(
-          backgroundColor: Colors.transparent,
-          surfaceTintColor: Colors.transparent,
-          elevation: 0,
-          automaticallyImplyLeading: false,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(44),
-              bottomRight: Radius.circular(44),
-            ),
-          ),
-          flexibleSpace: Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color(0xFF43EA5E), Color(0xFF1CBF3F)],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black26,
-                  blurRadius: 18,
-                  offset: Offset(0, 8),
-                ),
-              ],
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(44),
-                bottomRight: Radius.circular(44),
-              ),
-            ),
-            child: SafeArea(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const SizedBox(height: 4),
-                  TweenAnimationBuilder<double>(
-                    tween: Tween(begin: 0, end: 1),
-                    duration: Duration(milliseconds: 700),
-                    builder: (context, value, child) => Opacity(
-                      opacity: value,
-                      child: child,
-                    ),
-                    child: const Center(
-                      child: Text(
-                        'WALLET',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 1.2,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+      // AppBar personnalisée avec photo de profil à droite
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        title: const Text(
+          'Mon Compte SD',
+          style: TextStyle(
+            color: Colors.black87,
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+            letterSpacing: 1.1,
           ),
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: CircleAvatar(
+              radius: 22,
+              backgroundColor: Colors.green.withOpacity(0.13),
+              backgroundImage: const AssetImage('assets/profile_picture.jpg'),
+              child: Align(
+                alignment: Alignment.bottomRight,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.green,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.white, width: 1.5),
+                  ),
+                  padding: const EdgeInsets.all(2),
+                  child:
+                      const Icon(Icons.verified, size: 14, color: Colors.white),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 20),
-              // Section navigation boutons
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 0.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    _buildStyledNavButton(
-                        'Chat', Icons.settings),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 20),
-              // Section navigation boutons
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildStyledCategoryItem(
-      String title, String subtitle, String imagePath,
-      {bool isPopular = false}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
-      child: Material(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(22),
-        elevation: 4,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(22),
-          onTap: () {},
-          child: Stack(
-            children: [
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Carte virtuelle du solde réorganisée
+            Center(
+              child: Container(
+                margin: const EdgeInsets.only(top: 10, bottom: 18),
+                width: double.infinity,
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Colors.white, Colors.green.withOpacity(0.07)],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
                   borderRadius: BorderRadius.circular(22),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.green.withOpacity(0.08),
-                      blurRadius: 12,
-                      offset: Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(14.0),
-                  child: Row(
-                    children: [
-                      AnimatedScale(
-                        scale: 1.0,
-                        duration: const Duration(milliseconds: 100),
-                        child: CircleAvatar(
-                          radius: 30,
-                          backgroundImage: AssetImage(imagePath),
-                        ),
-                      ),
-                      const SizedBox(width: 18),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            title,
-                            style: const TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black),
-                          ),
-                          Text(
-                            subtitle,
-                            style: const TextStyle(
-                                fontSize: 15, color: Colors.grey),
-                          ),
-                        ],
-                      ),
-                      const Spacer(),
-                      GestureDetector(
-                        onTapDown: (_) => setState(() => _arrowPressed = true),
-                        onTapUp: (_) => setState(() => _arrowPressed = false),
-                        onTapCancel: () =>
-                            setState(() => _arrowPressed = false),
-                        child: AnimatedScale(
-                          scale: _arrowPressed ? 1.15 : 1.0,
-                          duration: Duration(milliseconds: 120),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              gradient: const LinearGradient(
-                                colors: [Color(0xFF43EA5E), Color(0xFF1CBF3F)],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
-                              shape: BoxShape.circle,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.green.withOpacity(0.25),
-                                  blurRadius: 8,
-                                  offset: Offset(0, 2),
-                                ),
-                              ],
-                            ),
-                            padding: EdgeInsets.all(6),
-                            child: const Icon(
-                              Icons.arrow_forward_ios,
-                              color: Colors.white,
-                              size: 18,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              if (isPopular)
-                Positioned(
-                  top: 10,
-                  right: 10,
-                  child: TweenAnimationBuilder<double>(
-                    tween: Tween(begin: 0, end: 1),
-                    duration: Duration(milliseconds: 600),
-                    builder: (context, value, child) => Opacity(
-                      opacity: value,
-                      child: child,
-                    ),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 2),
-                      decoration: BoxDecoration(
-                        color: Colors.orange.shade200,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: const Text(
-                        'Populaire',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 11,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildStyledProviderItem(String name, String price, String imagePath,
-      {bool isPopular = false, required int index}) {
-    final bool pressed = _prestatairePressed == index;
-    return AnimatedScale(
-      scale: pressed ? 0.96 : 1.0,
-      duration: const Duration(milliseconds: 120),
-      child: GestureDetector(
-        onTapDown: (_) => setState(() => _prestatairePressed = index),
-        onTapUp: (_) => setState(() => _prestatairePressed = -1),
-        onTapCancel: () => setState(() => _prestatairePressed = -1),
-        child: Container(
-          width: 120,
-          margin: const EdgeInsets.symmetric(vertical: 4),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.white, Colors.green.withOpacity(0.08)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            borderRadius: BorderRadius.circular(22),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.green.withOpacity(0.10),
-                blurRadius: 12,
-                offset: Offset(0, 4),
-              ),
-              if (isPopular)
-                BoxShadow(
-                  color: Colors.orange.withOpacity(0.18),
-                  blurRadius: 18,
-                  spreadRadius: 2,
-                  offset: Offset(0, 2),
-                ),
-            ],
-          ),
-          child: Material(
-            color: Colors.transparent,
-            borderRadius: BorderRadius.circular(22),
-            child: InkWell(
-              borderRadius: BorderRadius.circular(22),
-              splashColor: Colors.green.withOpacity(0.08),
-              onTap: () {},
-              child: Stack(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0, vertical: 12.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        AnimatedContainer(
-                          duration: const Duration(milliseconds: 200),
-                          decoration: isPopular
-                              ? BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.orange.withOpacity(0.25),
-                                blurRadius: 18,
-                                spreadRadius: 2,
-                              ),
-                            ],
-                            shape: BoxShape.circle,
-                          )
-                              : null,
-                          child: CircleAvatar(
-                            radius: 40,
-                            backgroundImage: AssetImage(imagePath),
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          name,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                            color: Colors.black,
-                          ),
-                          textAlign: TextAlign.center,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        Text(
-                          price,
-                          style: const TextStyle(
-                            color: Colors.green,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 13,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
-                    ),
-                  ),
-                  if (isPopular)
-                    Positioned(
-                      top: 8,
-                      right: 8,
-                      child: TweenAnimationBuilder<double>(
-                        tween: Tween(begin: 0, end: 1),
-                        duration: const Duration(milliseconds: 600),
-                        builder: (context, value, child) => Opacity(
-                          opacity: value,
-                          child: child,
-                        ),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 6, vertical: 2),
-                          decoration: BoxDecoration(
-                            color: Colors.orange.shade200,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: const Text(
-                            'Populaire',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 10,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildStyledNavButton(String label, IconData icon) {
-    return TweenAnimationBuilder<double>(
-      tween: Tween(begin: 0.95, end: 1.0),
-      duration: const Duration(milliseconds: 400),
-      builder: (context, value, child) => Transform.scale(
-        scale: value,
-        child: child,
-      ),
-      child: GestureDetector(
-        onTapDown: (_) {},
-        child: Container(
-          margin: const EdgeInsets.symmetric(vertical: 4),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
+                  gradient: const LinearGradient(
                     colors: [Color(0xFF43EA5E), Color(0xFF1CBF3F)],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.green.withOpacity(0.18),
-                      blurRadius: 12,
-                      offset: Offset(0, 4),
+                      color: Colors.green.withOpacity(0.13),
+                      blurRadius: 16,
+                      offset: const Offset(0, 6),
                     ),
                   ],
-                  borderRadius: BorderRadius.circular(32),
                 ),
-                child: CircleAvatar(
-                  radius: 32,
-                  backgroundColor: Colors.transparent,
-                  child: Icon(icon, color: Colors.white, size: 32),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 22),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          const Icon(Icons.account_balance_wallet_rounded,
+                              color: Colors.white70, size: 28),
+                          const SizedBox(width: 10),
+                          const Text(
+                            "Solde du compte",
+                            style: TextStyle(
+                              color: Colors.white70,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const Spacer(),
+                          // Icône œil pour afficher/cacher le solde
+                          InkWell(
+                            borderRadius: BorderRadius.circular(20),
+                            onTap: () {
+                              setState(() {
+                                _showBalance = !_showBalance;
+                              });
+                            },
+                            child: Icon(
+                              _showBalance
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Colors.white,
+                              size: 26,
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          // QR Code fictif
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.13),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            padding: const EdgeInsets.all(6),
+                            child: const Icon(Icons.qr_code_rounded,
+                                color: Colors.white, size: 28),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      // Affichage du solde avec séparateurs ou caché
+                      Text(
+                        _showBalance ? "$formattedBalance FCFA" : "••••••••",
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1.2,
+                        ),
+                      ),
+                      const SizedBox(height: 18),
+                      // Boutons d'action
+                      Row(
+                        children: [
+                          _walletActionButton(
+                            icon: Icons.add_circle_outline,
+                            label: "Recharger",
+                            color: Colors.white,
+                            onTap: () {},
+                          ),
+                          const SizedBox(width: 12),
+                          _walletActionButton(
+                            icon: Icons.send_rounded,
+                            label: "Transférer",
+                            color: Colors.white,
+                            onTap: () {},
+                          ),
+                          const SizedBox(width: 12),
+                          _walletActionButton(
+                            icon: Icons.history,
+                            label: "Historique",
+                            color: Colors.white,
+                            onTap: () {},
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              const SizedBox(height: 8),
-              SizedBox(
-                width: 70,
-                child: Text(
-                  label,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 13),
-                  textAlign: TextAlign.center,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
+            ),
+            const SizedBox(height: 10),
+            // Titre section transactions
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 8.0),
+              child: Text(
+                "Dernières transactions",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  color: Colors.black87,
                 ),
               ),
-            ],
-          ),
+            ),
+            // Liste des transactions
+            ListView.separated(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: transactions.length,
+              separatorBuilder: (_, __) => const Divider(height: 1),
+              itemBuilder: (context, index) {
+                final tx = transactions[index];
+                return ListTile(
+                  leading: CircleAvatar(
+                    backgroundColor: (tx['color'] as Color).withOpacity(0.13),
+                    child: Icon(tx['icon'], color: tx['color']),
+                  ),
+                  title: Text(
+                    tx['type'],
+                    style: const TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                  subtitle: Text(tx['date']),
+                  trailing: Text(
+                    "${tx['amount'] > 0 ? '+' : ''}${NumberFormat("#,##0.00", "fr_FR").format(tx['amount'])} FCFA",
+                    style: TextStyle(
+                      color: tx['amount'] > 0 ? Colors.green : Colors.red,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                );
+              },
+            ),
+            const SizedBox(height: 18),
+          ],
         ),
       ),
     );
   }
-}
 
-class _AnimatedSearchBar extends StatefulWidget {
-  @override
-  State<_AnimatedSearchBar> createState() => _AnimatedSearchBarState();
-}
-
-class _AnimatedSearchBarState extends State<_AnimatedSearchBar> {
-  bool _focused = false;
-  final FocusNode _focusNode = FocusNode();
-
-  @override
-  void initState() {
-    super.initState();
-    _focusNode.addListener(() {
-      setState(() {
-        _focused = _focusNode.hasFocus;
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    _focusNode.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedScale(
-      scale: _focused ? 1.035 : 1.0,
-      duration: const Duration(milliseconds: 180),
-      curve: Curves.easeOut,
-      child: Container(
-        height: 52,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(32),
-          border: Border.all(
-              color: _focused ? Colors.green : Colors.green.shade200,
-              width: 1.4),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.green.withOpacity(_focused ? 0.13 : 0.07),
-              blurRadius: _focused ? 18 : 10,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            const SizedBox(width: 10),
-            const Material(
-              color: Colors.green,
-              shape: CircleBorder(),
-              elevation: 2,
-              child: Padding(
-                padding: EdgeInsets.all(7.0),
-                child:
-                Icon(Icons.search_rounded, color: Colors.white, size: 22),
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: TextField(
-                focusNode: _focusNode,
-                style: const TextStyle(fontSize: 16),
-                cursorColor: Colors.green,
-                decoration: InputDecoration(
-                  hintText: 'Rechercher sur soutralideals',
-                  hintStyle: TextStyle(
-                      color: Colors.green.shade400,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500),
-                  border: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  isDense: true,
-                  contentPadding: const EdgeInsets.symmetric(vertical: 14),
+  /// Widget pour un bouton d'action wallet (recharger, transférer, retirer, etc.)
+  Widget _walletActionButton({
+    required IconData icon,
+    required String label,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
+    return Expanded(
+      child: InkWell(
+        borderRadius: BorderRadius.circular(12),
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          decoration: BoxDecoration(
+            color: color.withOpacity(0.13),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Column(
+            children: [
+              Icon(icon, color: color, size: 26),
+              const SizedBox(height: 4),
+              Text(
+                label,
+                style: TextStyle(
+                  color: color,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 13.5,
                 ),
               ),
-            ),
-            const SizedBox(width: 10),
-          ],
+            ],
+          ),
         ),
       ),
     );

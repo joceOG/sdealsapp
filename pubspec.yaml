@@ -43,6 +43,7 @@ dependencies:
   font_awesome_flutter: ^10.7.0
   http: ^1.2.2
   curved_navigation_bar: ^1.0.6
+  intl: ^0.20.2 ## for date formatting
 
 dev_dependencies:
   flutter_test:
@@ -67,6 +68,7 @@ flutter:
   assets:
     - assets/
     - assets/categories/
+    - assets/products/
 
   # To add assets to your application, add an assets section, like this:
   # assets:
