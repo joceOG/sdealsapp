@@ -4,266 +4,710 @@ import 'package:go_router/go_router.dart';
 import 'package:sdealsapp/mobile/view/freelancepagem/freelancepageblocm/freelancePageStateM.dart';
 import '../freelancepageblocm/freelancePageBlocM.dart';
 import '../freelancepageblocm/freelancePageEventM.dart';
+import '../models/freelance_model.dart';
 
-
-
-class FreelancePageScreen extends StatelessWidget  {
+// Widget wrapper qui fournit le BLoC à toute la page
+class FreelancePageScreen extends StatelessWidget {
+  const FreelancePageScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BlocProvider(
+      create: (_) => FreelancePageBlocM()
+        ..add(LoadCategorieDataM())
+        ..add(LoadFreelancersEvent()),
+      child: _FreelancePageScreenContent(),
+    );
+  }
+}
+
+// Contenu réel de la page
+class _FreelancePageScreenContent extends StatefulWidget {
+  const _FreelancePageScreenContent({Key? key}) : super(key: key);
+
+  @override
+  State<_FreelancePageScreenContent> createState() => _FreelancePageScreenContentState();
+}
+
+class _FreelancePageScreenContentState extends State<_FreelancePageScreenContent> {
+  // Controller pour la barre de recherche
+  final TextEditingController _searchController = TextEditingController();
+  
+  // Liste des catégories de filtrage disponibles
+  final List<Map<String, dynamic>> _filterCategories = [
+    {'name': 'Tous', 'icon': Icons.apps, 'color': Colors.blue},
+    {'name': 'Dev', 'icon': Icons.computer, 'color': Colors.indigo},
+    {'name': 'Design', 'icon': Icons.brush, 'color': Colors.purple},
+    {'name': 'Rédaction', 'icon': Icons.edit_document, 'color': Colors.green},
+    {'name': 'Marketing', 'icon': Icons.trending_up, 'color': Colors.orange},
+    {'name': 'Vidéo', 'icon': Icons.videocam, 'color': Colors.red},
+    {'name': 'Traduction', 'icon': Icons.translate, 'color': Colors.teal},
+    {'name': 'Photo', 'icon': Icons.camera_alt, 'color': Colors.amber},
+  ];
+  
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+  
+  // Construction de l'AppBar avec le bouton SoutraPay
+  PreferredSizeWidget _buildFreelanceAppBar() {
+    return AppBar(
       backgroundColor: Colors.white,
-      body: BlocProvider(
-        create: (_) => FreelancePageBlocM()..add(LoadCategorieDataM()),
-        child: BlocBuilder<FreelancePageBlocM, FreelancePageStateM>(
-          builder: (context, state) {
-            return
-            state.listItems == null ?
-            SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
+      elevation: 0,
+      title: const Text('Freelances', 
+        style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+      actions: [
+        // Bouton SoutraPay
+        Padding(
+          padding: const EdgeInsets.only(right: 16.0),
+          child: ElevatedButton.icon(
+            onPressed: () {
+              // Navigation vers la page SoutraPay
+              GoRouter.of(context).push('/wallet');
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            ),
+            icon: const Icon(Icons.account_balance_wallet, size: 16),
+            label: const Text('💳 SoutraPay',
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+          ),
+        ),
+      ],
+    );
+  }
+  
+  // Construction de la barre de recherche
+  Widget _buildSearchBar() {
+    return Container(
+      height: 50,
+      decoration: BoxDecoration(
+        color: Colors.grey.shade100,
+        borderRadius: BorderRadius.circular(25),
+      ),
+      child: TextField(
+        controller: _searchController,
+        decoration: const InputDecoration(
+          hintText: '🔍 Rechercher un freelance ou une compétence...',
+          prefixIcon: Icon(Icons.search, color: Colors.grey),
+          border: InputBorder.none,
+          contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+        ),
+        onChanged: (value) {
+          // Envoyer l'événement de recherche au BLoC
+          final bloc = context.read<FreelancePageBlocM>();
+          bloc.add(SearchFreelancerEvent(value));
+        },
+      ),
+    );
+  }
+  
+  // Construction des filtres de catégories
+  Widget _buildCategoryFilters() {
+    // Lire la catégorie sélectionnée depuis le BLoC
+    final bloc = context.watch<FreelancePageBlocM>();
+    final selectedCategory = bloc.state.selectedCategory;
+    
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 16),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              'Filtrer par catégorie',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: Colors.black87,
+              ),
+            ),
+            // Bouton pour réinitialiser les filtres
+            if (selectedCategory != null || bloc.state.searchQuery.isNotEmpty)
+              TextButton.icon(
+                onPressed: () {
+                  _searchController.clear();
+                  bloc.add(ClearFiltersEvent());
+                },
+                icon: const Icon(Icons.refresh, size: 16),
+                label: const Text('Réinitialiser'),
+                style: TextButton.styleFrom(foregroundColor: Colors.grey),
+              ),
+          ],
+        ),
+        const SizedBox(height: 10),
+        SizedBox(
+          height: 40,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: _filterCategories.length,
+            itemBuilder: (context, index) {
+              final category = _filterCategories[index];
+              final isSelected = selectedCategory == category['name'];
+              
+              return GestureDetector(
+                onTap: () {
+                  // Pas besoin de setState ici, le BlocBuilder reconstruira le widget
+                  // lorsque l'état du bloc sera mis à jour
+                  
+                  // Envoyer l'événement au BLoC pour le filtrage
+                  bloc.add(FilterByCategoryEvent(isSelected ? null : category['name']));
+                },
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  margin: const EdgeInsets.only(right: 8),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  decoration: BoxDecoration(
+                    color: isSelected ? category['color'] : Colors.grey.shade200,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: isSelected ? category['color'] : Colors.transparent,
+                      width: 1,
+                    ),
+                    boxShadow: isSelected ? [
+                      BoxShadow(
+                        color: (category['color'] as Color).withOpacity(0.4),
+                        blurRadius: 8,
+                        offset: const Offset(0, 4),
+                      )
+                    ] : [],
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        category['icon'],
+                        size: 16,
+                        color: isSelected ? Colors.white : category['color'],
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        category['name'],
+                        style: TextStyle(
+                          color: isSelected ? Colors.white : Colors.black87,
+                          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+  
+  // Construction du bouton flottant "Devenir Freelance"
+  Widget _buildBecomingFreelanceButton() {
+    return FloatingActionButton.extended(
+      onPressed: () {
+        // Navigation vers la page d'inscription freelance
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Redirection vers inscription freelance...'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      },
+      backgroundColor: Colors.orange,
+      icon: const Icon(Icons.person_add),
+      label: const Text('👤 Devenir Freelance'),
+    );
+  }
+  
+  // Construction de la section des résultats filtrés
+  Widget _buildFilterResultsSection(FreelancePageStateM state) {
+    final filteredFreelancers = state.filteredFreelancers;
+    
+    if (state.searchQuery.isNotEmpty || state.selectedCategory != null) {
+      // Afficher un message si aucun résultat
+      if (filteredFreelancers.isEmpty) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 32.0),
+          child: Center(
+            child: Column(
+              children: [
+                const Icon(Icons.search_off, size: 64, color: Colors.grey),
+                const SizedBox(height: 16),
+                Text(
+                  'Aucun freelance trouvé pour "${state.searchQuery}"${state.selectedCategory != null ? ' dans ${state.selectedCategory}' : ''}',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontSize: 16, color: Colors.grey),
+                ),
+              ],
+            ),
+          ),
+        );
+      }
+      
+      // Afficher les résultats de recherche
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Résultats (${filteredFreelancers.length})',
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+              ),
+              IconButton(
+                icon: const Icon(Icons.swap_vert),
+                onPressed: () {
+                  // Ici on pourrait ajouter une fonction de tri
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Tri non implémenté')),
+                  );
+                },
+                tooltip: 'Trier les résultats',
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          _buildFilteredFreelancersList(filteredFreelancers),
+        ],
+      );
+    }
+    
+    // Si pas de filtre actif, ne rien afficher dans cette section
+    return const SizedBox.shrink();
+  }
+  
+  // Liste des freelancers filtrés avec animation
+  Widget _buildFilteredFreelancersList(List<FreelanceModel> freelancers) {
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 500),
+      child: ListView.builder(
+        key: ValueKey<int>(freelancers.length), // Important pour l'animation
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: freelancers.length,
+        itemBuilder: (context, index) {
+          final freelancer = freelancers[index];
+          // Animation pour chaque élément apparaissant avec un délai basé sur l'index
+          return AnimatedBuilder(
+            animation: Tween<double>(begin: 0, end: 1).animate(
+              CurvedAnimation(
+                parent: ModalRoute.of(context)?.animation ?? const AlwaysStoppedAnimation(1),
+                curve: Interval((index / 10).clamp(0, 1), 1, curve: Curves.easeOut),
+              ),
+            ),
+            builder: (context, child) {
+              return Transform.translate(
+                offset: Offset(0, (1 - (ModalRoute.of(context)?.animation?.value ?? 1)) * 50),
+                child: Opacity(
+                  opacity: (ModalRoute.of(context)?.animation?.value ?? 1),
+                  child: child,
+                ),
+              );
+            },
+            child: _buildFreelancerCard(freelancer),
+          );
+        },
+      ),
+    );
+  }
+  
+  // Carte de freelancer améliorée pour l'affichage dans les résultats
+  Widget _buildFreelancerCard(FreelanceModel freelancer) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 16),
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(16),
+        onTap: () {
+          // Navigation vers le détail du freelancer
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Voir le profil de ${freelancer.name}...')),
+          );
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Avatar
+              Stack(
+                children: [
+                  Hero(
+                    tag: 'freelancer-${freelancer.id}',
+                    child: CircleAvatar(
+                      radius: 40,
+                      backgroundImage: AssetImage(freelancer.imagePath),
+                    ),
+                  ),
+                  if (freelancer.isTopRated)
+                    Positioned(
+                      top: 0,
+                      right: 0,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        decoration: BoxDecoration(
+                          color: Colors.orange,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: const Text(
+                          'Top',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 10,
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+              const SizedBox(width: 16),
+              // Informations
+              Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Barre de recherche
-
-                    const SizedBox(height: 24),
-                    // Liste horizontale de freelances
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          'Freelances populaires',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                            color: Colors.black,
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {},
-                          child: const Text(
-                            'Voir plus',
-                            style: TextStyle(
-                              color: Colors.green,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 15,
+                        Expanded(
+                          child: Text(
+                            freelancer.name,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
                             ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        Text(
+                          '${freelancer.hourlyRate.toStringAsFixed(0)} €/h',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.green,
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 14),
-                    SizedBox(
-                      height: 200,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          _buildFreelanceCard('Aminata', 'Développeuse mobile & web',
-                              'assets/profile_picture.jpg',
-                              isTop: true, avatarSize: 48),
-                          _buildFreelanceCard(
-                              'Yao', 'Designer UI/UX', 'assets/esty.jpg',
-                              avatarSize: 48),
-                          _buildFreelanceCard(
-                              'Fatou', 'Rédactrice SEO', 'assets/coiffuer2.jpeg',
-                              avatarSize: 48),
-                          _buildFreelanceCard(
-                              'Marc', 'Photographe', 'assets/profile_picture.jpg',
-                              avatarSize: 48),
-                        ],
-                      ),
+                    Text(
+                      freelancer.job,
+                      style: TextStyle(color: Colors.grey[700]),
                     ),
-                    const SizedBox(height: 30),
-                    // Section À la une
-                    const Text(
-                      'À la une',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                        color: Colors.black,
-                      ),
-                    ),
-                    const SizedBox(height: 14),
-                    _buildFeaturedCard(),
-                    const SizedBox(height: 30),
-                    // Nouveaux freelances
-                    const Text(
-                      'Nouveaux freelances',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                        color: Colors.black,
-                      ),
-                    ),
-                    const SizedBox(height: 14),
-                    SizedBox(
-                      height: 180,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          _buildFreelanceCard(
-                              'Sali', 'Traductrice', 'assets/esty.jpg',
-                              avatarSize: 40),
-                          _buildFreelanceCard(
-                              'Oumar', 'Développeur', 'assets/profile_picture.jpg',
-                              avatarSize: 40),
-                          _buildFreelanceCard(
-                              'Léa', 'Community Manager', 'assets/coiffuer2.jpeg',
-                              avatarSize: 40),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 30),
-                    // Catégories populaires
-                    const Text(
-                      'Catégories populaires',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                        color: Colors.black,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 8),
+                    // Compétences
                     Wrap(
-                      spacing: 10,
-                      runSpacing: 10,
-                      children: [
-                        _buildCategoryChip('Développement', Colors.green),
-                        _buildCategoryChip('Design', Colors.orange),
-                        _buildCategoryChip('Rédaction', Colors.blue),
-                        _buildCategoryChip('Photo', Colors.purple),
-                        _buildCategoryChip('Traduction', Colors.teal),
-                        _buildCategoryChip('Marketing', Colors.redAccent),
-                      ],
+                      spacing: 6,
+                      runSpacing: 6,
+                      children: freelancer.skills.map((skill) {
+                        return Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[200],
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Text(skill, style: const TextStyle(fontSize: 12)),
+                        );
+                      }).toList(),
                     ),
-                    const SizedBox(height: 36),
-                    // Avis clients (carousel)
-                    const Text(
-                      'Avis clients',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                        color: Colors.black,
-                      ),
-                    ),
-                    const SizedBox(height: 14),
-                    SizedBox(
-                      height: 170,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          _buildReviewCard('"Super travail, rapide et efficace !"',
-                              'Awa', 'assets/profile_picture.jpg'),
-                          _buildReviewCard('"Très créatif, je recommande !"', 'Jean',
-                              'assets/esty.jpg'),
-                          _buildReviewCard('"Professionnelle et à l\'écoute."',
-                              'Fatou', 'assets/coiffuer2.jpeg'),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 36),
-                    // Statistiques animées
-                    const Text(
-                      'Statistiques de la communauté',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                        color: Colors.black,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 8),
+                    // Note et nombre de projets
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        _buildStatCard(
-                            'Freelances', '1 200+', Icons.people, Colors.green),
-                        _buildStatCard(
-                            'Clients', '3 500+', Icons.emoji_people, Colors.orange),
-                        _buildStatCard('Projets', '8 000+', Icons.work, Colors.blue),
+                        Icon(Icons.star, size: 16, color: Colors.amber[700]),
+                        const SizedBox(width: 4),
+                        Text(
+                          freelancer.rating.toString(),
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(width: 12),
+                        Icon(Icons.check_circle_outline, size: 16, color: Colors.green[700]),
+                        const SizedBox(width: 4),
+                        Text(
+                          '${freelancer.completedJobs} projets',
+                          style: const TextStyle(fontSize: 13),
+                        ),
                       ],
-                    ),
-                    const SizedBox(height: 36),
-                    // Call-to-action secondaire
-                    Center(
-                      child: ElevatedButton.icon(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.orange,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(24),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 28, vertical: 12),
-                          elevation: 3,
-                        ),
-                        onPressed: () {},
-                        icon: const Icon(Icons.add_business, color: Colors.white),
-                        label: const Text(
-                          'Publier une mission',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 36),
-                    // Pourquoi choisir un freelance ?
-                    const Text(
-                      'Pourquoi choisir un freelance ?',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                        color: Colors.black,
-                      ),
-                    ),
-                    const SizedBox(height: 14),
-                    _buildWhyFreelance(),
-                    const SizedBox(height: 36),
-                    // Bannière promotionnelle
-                    _buildPromoBanner(),
-                    const SizedBox(height: 24),
-                    // Bouton d'action
-                    Center(
-                      child: ElevatedButton.icon(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(24),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 32, vertical: 14),
-                          elevation: 4,
-                        ),
-                        onPressed: () {},
-                        icon: const Icon(Icons.people, color: Colors.white),
-                        label: const Text(
-                          'Voir tous les freelances',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
                     ),
                   ],
                 ),
               ),
-            ) :
-            const SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.all(16.0),
-              ),
-            );
-           },
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildFreelanceCard(String name, String job, String imagePath,
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      floatingActionButton: _buildBecomingFreelanceButton(),
+      appBar: _buildFreelanceAppBar(),
+      body: BlocBuilder<FreelancePageBlocM, FreelancePageStateM>(
+        builder: (context, state) {
+          if (state.isLoading == true) {
+            return const Center(child: CircularProgressIndicator(color: Colors.green));
+          }
+          
+          return SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Barre de recherche
+                  _buildSearchBar(),
+                  
+                  // Filtres par catégorie
+                  _buildCategoryFilters(),
+                  
+                  // Résultats filtrés - nouvelle section
+                  _buildFilterResultsSection(state),
+                  
+                  const SizedBox(height: 24),
+                  // Liste horizontale de freelances
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Freelances populaires',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          color: Colors.black,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {},
+                        child: const Text(
+                          'Voir plus',
+                          style: TextStyle(
+                            color: Colors.green,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 14),
+                  SizedBox(
+                    height: 200,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        _buildSimpleFreelanceCard('Aminata', 'Développeuse mobile & web',
+                            'assets/profile_picture.jpg',
+                            isTop: true, avatarSize: 48),
+                        _buildSimpleFreelanceCard(
+                            'Yao', 'Designer UI/UX', 'assets/esty.jpg',
+                            avatarSize: 48),
+                        _buildSimpleFreelanceCard(
+                            'Fatou', 'Rédactrice SEO', 'assets/coiffuer2.jpeg',
+                            avatarSize: 48),
+                        _buildSimpleFreelanceCard(
+                            'Marc', 'Photographe', 'assets/profile_picture.jpg',
+                            avatarSize: 48),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  // Section À la une
+                  const Text(
+                    'À la une',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: Colors.black,
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+                  _buildFeaturedCard(),
+                  const SizedBox(height: 30),
+                  // Nouveaux freelances
+                  const Text(
+                    'Nouveaux freelances',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: Colors.black,
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+                  SizedBox(
+                    height: 180,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        _buildSimpleFreelanceCard(
+                            'Sali', 'Traductrice', 'assets/esty.jpg',
+                            avatarSize: 40),
+                        _buildSimpleFreelanceCard(
+                            'Oumar', 'Développeur', 'assets/profile_picture.jpg',
+                            avatarSize: 40),
+                        _buildSimpleFreelanceCard(
+                            'Léa', 'Community Manager', 'assets/coiffuer2.jpeg',
+                            avatarSize: 40),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  // Catégories populaires
+                  const Text(
+                    'Catégories populaires',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: Colors.black,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Wrap(
+                    spacing: 10,
+                    runSpacing: 10,
+                    children: [
+                      _buildCategoryChip('Développement', Colors.green),
+                      _buildCategoryChip('Design', Colors.orange),
+                      _buildCategoryChip('Rédaction', Colors.blue),
+                      _buildCategoryChip('Photo', Colors.purple),
+                      _buildCategoryChip('Traduction', Colors.teal),
+                      _buildCategoryChip('Marketing', Colors.redAccent),
+                    ],
+                  ),
+                  const SizedBox(height: 36),
+                  // Avis clients (carousel)
+                  const Text(
+                    'Avis clients',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: Colors.black,
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+                  SizedBox(
+                    height: 170,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        _buildReviewCard('"Super travail, rapide et efficace !"',
+                            'Awa', 'assets/profile_picture.jpg'),
+                        _buildReviewCard('"Très créatif, je recommande !"', 'Jean',
+                            'assets/esty.jpg'),
+                        _buildReviewCard('"Professionnelle et à l\'écoute."',
+                            'Fatou', 'assets/coiffuer2.jpeg'),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 36),
+                  // Statistiques animées
+                  const Text(
+                    'Statistiques de la communauté',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: Colors.black,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      _buildStatCard(
+                          'Freelances', '1 200+', Icons.people, Colors.green),
+                      _buildStatCard(
+                          'Clients', '3 500+', Icons.emoji_people, Colors.orange),
+                      _buildStatCard('Projets', '8 000+', Icons.work, Colors.blue),
+                    ],
+                  ),
+                  const SizedBox(height: 36),
+                  // Call-to-action secondaire
+                  Center(
+                    child: ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.orange,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 28, vertical: 12),
+                        elevation: 3,
+                      ),
+                      onPressed: () {},
+                      icon: const Icon(Icons.add_business, color: Colors.white),
+                      label: const Text(
+                        'Publier une mission',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 36),
+                  // Pourquoi choisir un freelance ?
+                  const Text(
+                    'Pourquoi choisir un freelance ?',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: Colors.black,
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+                  _buildWhyFreelance(),
+                  const SizedBox(height: 36),
+                  // Bannière promotionnelle
+                  _buildPromoBanner(),
+                  const SizedBox(height: 24),
+                  // Bouton d'action
+                  Center(
+                    child: ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 32, vertical: 14),
+                        elevation: 4,
+                      ),
+                      onPressed: () {},
+                      icon: const Icon(Icons.people, color: Colors.white),
+                      label: const Text(
+                        'Voir tous les freelances',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildSimpleFreelanceCard(String name, String job, String imagePath,
       {bool isTop = false, double avatarSize = 40}) {
     return Padding(
       padding: const EdgeInsets.only(right: 14.0),

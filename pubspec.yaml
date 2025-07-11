@@ -44,6 +44,8 @@ dependencies:
   http: ^1.2.2
   curved_navigation_bar: ^1.0.6
   intl: ^0.20.2 ## for date formatting
+  google_maps_flutter: ^2.10.1
+  uuid: ^4.0.0 ## for generating unique IDs
 
 dev_dependencies:
   flutter_test:
