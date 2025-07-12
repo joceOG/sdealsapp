@@ -25,7 +25,9 @@ class FreelancePageBlocM extends Bloc<FreelancePageEventM, FreelancePageStateM> 
 
     ApiClient apiClient = ApiClient();
     try {
-      var nomgroupe = "Métiers";
+      // Revenir à l'ancien nom du groupe qui fonctionne
+      var nomgroupe = "Freelance";  // Sans trait d'union
+      print("Chargement des catégories pour le groupe: $nomgroupe");
       List<Categorie> list_categorie = await apiClient.fetchCategorie(nomgroupe);
       
       // Charger également les freelancers par défaut

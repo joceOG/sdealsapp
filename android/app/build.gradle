@@ -24,7 +24,7 @@ if (flutterVersionName == null) {
 
 android {
     namespace "com.example.sdealsapp"
-    compileSdk flutter.compileSdkVersion
+    compileSdk 33 // Utilisation d'une version fixe au lieu de flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -49,6 +49,11 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        // Configurations pour optimiser la compilation
+        multiDexEnabled true
+        ndk {
+            abiFilters "armeabi-v7a", "arm64-v8a", "x86_64"
+        }
     }
 
     buildTypes {
@@ -64,4 +69,7 @@ flutter {
     source '../..'
 }
 
-dependencies {}
+dependencies {
+    // Pour gérer les grandes applications avec beaucoup de méthodes
+    implementation "androidx.multidex:multidex:2.0.1"
+}

@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-
 import '../shoppingpageblocm/shoppingPageBlocM.dart';
 import '../shoppingpageblocm/shoppingPageEventM.dart';
 import '../shoppingpageblocm/shoppingPageStateM.dart' as bloc_model;
 import 'productDetailsScreenM.dart';
 import 'panierProductScreenM.dart';
+import '../../seller_registration/screens/seller_registration_screen.dart';
 
 // Utilisation du modèle Product du BLoC
 typedef Product = bloc_model.Product;
 
 class ShoppingPageScreenM extends StatefulWidget {
+  // Retiré la dépendance aux catégories passées depuis HomePage
   const ShoppingPageScreenM({Key? key}) : super(key: key);
 
   @override
@@ -19,10 +20,50 @@ class ShoppingPageScreenM extends StatefulWidget {
 }
 
 class _ShoppingPageScreenMState extends State<ShoppingPageScreenM> {
+  @override
+  void initState() {
+    super.initState();
+    // Charger les catégories spécifiquement pour E-marché
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<ShoppingPageBlocM>().add(LoadCategorieDataM());
+      // Charger aussi les produits
+      context.read<ShoppingPageBlocM>().add(LoadProductsEvent());
+    });
+  }
   int cartItemCount = 2; // Nombre d'articles dans le panier
   bool hasSoutraPayBalance = true; // Solde disponible sur SoutraPay
   bool isCompareDialogOpen = false; // Dialog de comparaison ouvert ou fermé
   // Note: selectedFilter sera maintenant géré par le BLoC
+  
+  // Méthode pour attribuer une icône selon le nom de la catégorie
+  IconData _getCategoryIcon(String name) {
+    // Attribution d'une icône selon le nom de la catégorie
+    IconData icon = Icons.category; // Icône par défaut
+    
+    name = name.toLowerCase();
+    
+    if (name.contains('auto') || name.contains('moto')) {
+      return Icons.directions_car;
+    } else if (name.contains('immobilier') || name.contains('maison')) {
+      return Icons.house;
+    } else if (name.contains('électronique') || name.contains('electronique')) {
+      return Icons.devices;
+    } else if (name.contains('tech')) {
+      return Icons.electrical_services;
+    } else if (name.contains('mode') || name.contains('vêtement') || name.contains('vetement')) {
+      return Icons.style;
+    } else if (name.contains('meuble')) {
+      return Icons.chair;
+    } else if (name.contains('sport')) {
+      return Icons.sports_soccer;
+    } else if (name.contains('jeu')) {
+      return Icons.videogame_asset;
+    } else if (name.contains('santé') || name.contains('sante')) {
+      return Icons.health_and_safety;
+    }
+    
+    return icon;
+  }
 
   // Liste de produits fictifs (remplacer par nos données API)
   List<Product> get products => [
@@ -101,17 +142,74 @@ class _ShoppingPageScreenMState extends State<ShoppingPageScreenM> {
             rating: 4.9),
       ];
 
-  // Liste de catégories fictives (remplacer par nos données API)
-  final List<Map<String, dynamic>> categories = [
-    {'name': 'Auto & Moto', 'icon': Icons.directions_car},
-    {'name': 'Immobilier', 'icon': Icons.house},
-    {'name': 'Électronique', 'icon': Icons.electrical_services},
-    {'name': 'Mode', 'icon': Icons.style},
-    {'name': 'Maison', 'icon': Icons.chair},
-    {'name': 'Sport', 'icon': Icons.sports_soccer},
-    {'name': 'Jeux', 'icon': Icons.videogame_asset},
-    {'name': 'Santé', 'icon': Icons.health_and_safety},
-  ];
+  // Conversion des catégories de l'API en format utilisable
+  List<Map<String, dynamic>> _getCategories() {
+    // Récupérer les catégories depuis le BLoC
+    final state = context.read<ShoppingPageBlocM>().state;
+    final categories = state.listItems;
+    
+    if (categories == null || categories.isEmpty) {
+      print('Aucune catégorie dans le BLoC de ShoppingPageScreenM');
+      return [
+        {'name': 'Aucune catégorie', 'icon': Icons.error_outline},
+      ];
+    }
+
+    try {
+      // Déboguer les catégories récupérées du BLoC
+      print('Catégories récupérées du BLoC: ${categories?.length ?? 0}');
+      if (categories != null) {
+        for (var cat in categories) {
+          print('Catégorie: ${cat.nomcategorie}, Groupe: ${cat.groupe}');
+        }
+      }
+
+      // Transformation des catégories récupérées - correction de l'opérateur null-aware inutile
+      return categories.map<Map<String, dynamic>>((category) {
+        // Attribution d'une icône selon le nom de la catégorie
+        IconData icon = Icons.category;
+        String name = "Catégorie";
+        
+        if (category != null) {
+          // Utiliser titre ou nom selon ce qui est disponible
+          name = category.nomcategorie ?? "Catégorie";
+          
+          // Attribuer une icône selon le nom
+          if (name.toLowerCase().contains('auto') || name.toLowerCase().contains('moto')) {
+            icon = Icons.directions_car;
+          } else if (name.toLowerCase().contains('immobilier') || name.toLowerCase().contains('maison')) {
+            icon = Icons.house;
+          } else if (name.toLowerCase().contains('électronique')) {
+            icon = Icons.devices;
+          } else if (name.toLowerCase().contains('tech')) {
+            icon = Icons.electrical_services;
+          } else if (name.toLowerCase().contains('mode') || name.toLowerCase().contains('vêtement')) {
+            icon = Icons.style;
+          } else if (name.toLowerCase().contains('meuble')) {
+            icon = Icons.chair;
+          } else if (name.toLowerCase().contains('sport')) {
+            icon = Icons.sports_soccer;
+          } else if (name.toLowerCase().contains('jeu')) {
+            icon = Icons.videogame_asset;
+          } else if (name.toLowerCase().contains('santé')) {
+            icon = Icons.health_and_safety;
+          }
+        }
+        
+        return {
+          'name': name,
+          'icon': icon,
+          'id': category?.idcategorie ?? '',
+          'groupe': category?.groupe ?? '',
+        };
+      }).toList();
+    } catch (e) {
+      print('Erreur lors de la conversion des catégories: $e');
+      return [
+        {'name': 'Erreur de chargement', 'icon': Icons.error},
+      ];
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +217,7 @@ class _ShoppingPageScreenMState extends State<ShoppingPageScreenM> {
       backgroundColor: Colors.white,
       // 1. AppBar avec bouton SoutraPay et icône panier
       appBar: AppBar(
-        title: const Text('Shopping Soutrali', style: TextStyle(color: Colors.white)),
+        title: const Text('E-marché', style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold)),
         backgroundColor: Colors.green,
         elevation: 0,
         actions: [
@@ -196,11 +294,11 @@ class _ShoppingPageScreenMState extends State<ShoppingPageScreenM> {
       // 2. Bouton "Devenir Vendeur"
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          // Navigation vers la page pour devenir vendeur
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Fonctionnalité "Devenir Vendeur" à venir !'),
-              duration: Duration(seconds: 2),
+          // Navigation vers la page d'inscription vendeur
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const SellerRegistrationScreen(),
             ),
           );
         },
@@ -218,16 +316,53 @@ class _ShoppingPageScreenMState extends State<ShoppingPageScreenM> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Liste horizontale de catégories
+                // Titre des catégories avec style
+                const Padding(
+                  padding: EdgeInsets.only(left: 4, bottom: 10),
+                  child: Text(
+                    'Catégories populaires',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                
+                // Liste horizontale de catégories avec design amélioré - utilisation de BlocBuilder
                 SizedBox(
-                  height: 90,
-                  child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: categories.length,
-                    separatorBuilder: (_, __) => const SizedBox(width: 12),
-                    itemBuilder: (context, index) {
-                      final cat = categories[index];
-                      return _buildCategoryCard(cat['name'], cat['icon']);
+                  height: 120,
+                  child: BlocBuilder<ShoppingPageBlocM, bloc_model.ShoppingPageStateM>(
+                    builder: (context, state) {
+                      // Afficher message de chargement ou d'erreur si nécessaire
+                      if (state?.isLoading == true) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                      
+                      if (state?.error?.isNotEmpty == true) {
+                        return Center(child: Text('Erreur: ${state!.error}', 
+                                           style: const TextStyle(color: Colors.red)));
+                      }
+                      
+                      final categories = state?.listItems;
+                      if (categories == null || categories.isEmpty) {
+                        return const Center(child: Text('Aucune catégorie disponible'));
+                      }
+                      
+                      // Générer des couleurs et icônes pour les catégories
+                      return ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        itemCount: categories.length,
+                        itemBuilder: (context, index) {
+                          final category = categories[index];
+                          final name = category.nomcategorie ?? "Catégorie";
+                          
+                          // Attribution d'une icône selon le nom
+                          IconData icon = _getCategoryIcon(name);
+                          
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: _buildCategoryCard(name, icon),
+                          );
+                        },
+                      );
                     },
                   ),
                 ),
@@ -330,15 +465,42 @@ class _ShoppingPageScreenMState extends State<ShoppingPageScreenM> {
                         return const Center(child: CircularProgressIndicator());
                       }
                       
-                      if (state.error != null) {
+                      // Affichage de débogage pour comprendre l'erreur
+                      print('Débogage BlocBuilder ShoppingPage');
+                      print('state.error: ${state.error}');
+                      print('state.products: ${state.products?.length}');
+                      print('state.filteredProducts: ${state.filteredProducts?.length}');
+                      print('state.isLoading: ${state.isLoading}');
+                      
+                      // Ignorer l'erreur si nous avons des produits à afficher
+                      if (state.error != null && (state.products == null || state.products!.isEmpty)) {
                         return Center(
-                          child: Text(
-                            'Erreur: ${state.error}',
-                            style: const TextStyle(color: Colors.red),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(Icons.error_outline, size: 50, color: Colors.red),
+                              const SizedBox(height: 16),
+                              Text(
+                                'Erreur: ${state.error}',
+                                style: const TextStyle(color: Colors.red),
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: 16),
+                              ElevatedButton(
+                                onPressed: () {
+                                  // Recharger les produits
+                                  context.read<ShoppingPageBlocM>().add(LoadProductsEvent());
+                                },
+                                child: const Text('Recharger'),
+                              ),
+                            ],
                           ),
                         );
                       }
                       
+                      // Forcer l'affichage des produits récupérés même s'il y a une erreur
+                      
+                      // S'assurer que nous avons une liste valide même si elle est vide
                       final displayProducts = state.filteredProducts ?? state.products ?? [];
                       
                       if (displayProducts.isEmpty) {
@@ -371,21 +533,63 @@ class _ShoppingPageScreenMState extends State<ShoppingPageScreenM> {
     );
   }
 
-  /// Widget pour une carte de catégorie
+  /// Widget pour une carte de catégorie avec design e-commerce moderne
   Widget _buildCategoryCard(String categoryName, IconData icon) {
-    return Column(
-      children: [
-        CircleAvatar(
-          radius: 28,
-          backgroundColor: Colors.green.withOpacity(0.15),
-          child: Icon(icon, size: 28, color: Colors.green),
-        ),
-        const SizedBox(height: 6),
-        Text(
-          categoryName,
-          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-        ),
-      ],
+    return Container(
+      width: 100,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.15),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // Badge pour l'icône avec effet de gradient
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.green[300]!,
+                  Colors.green[600]!,
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              icon,
+              size: 30,
+              color: Colors.white,
+            ),
+          ),
+          const SizedBox(height: 10),
+          // Texte de la catégorie avec style amélioré
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            child: Text(
+              categoryName,
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                height: 1.2,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
   
@@ -439,7 +643,22 @@ class _ShoppingPageScreenMState extends State<ShoppingPageScreenM> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Image.asset(product.image, height: 80),
+                      product.image.startsWith('http') || product.image.startsWith('https')
+                        ? Image.network(
+                            product.image,
+                            height: 80,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Container(
+                                height: 80,
+                                width: 80,
+                                color: Colors.grey[200],
+                                child: const Center(
+                                  child: Icon(Icons.image_not_supported, size: 30, color: Colors.grey),
+                                ),
+                              );
+                            },
+                          )
+                        : Image.asset(product.image.isNotEmpty ? product.image : 'assets/products/default.png', height: 80),
                       const SizedBox(height: 8),
                       Text(product.name, style: const TextStyle(fontWeight: FontWeight.bold)),
                       Text(product.price),
@@ -509,12 +728,55 @@ class _ShoppingPageScreenMState extends State<ShoppingPageScreenM> {
                         topLeft: Radius.circular(15),
                         topRight: Radius.circular(15),
                       ),
-                      child: Image.asset(
-                        product.image,
-                        fit: BoxFit.contain,
-                        height: 120,
-                        width: double.infinity,
-                      ),
+                      child: product.image.startsWith('http') || product.image.startsWith('https')
+                        ? Image.network(
+                            product.image,
+                            fit: BoxFit.contain,
+                            height: 120,
+                            width: double.infinity,
+                            errorBuilder: (context, error, stackTrace) {
+                              print('Erreur de chargement image: $error');
+                              return Container(
+                                height: 120,
+                                width: double.infinity,
+                                color: Colors.grey[200],
+                                child: const Center(
+                                  child: Icon(Icons.image_not_supported, size: 40, color: Colors.grey),
+                                ),
+                              );
+                            },
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return Container(
+                                height: 120,
+                                width: double.infinity,
+                                color: Colors.grey[200],
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    value: loadingProgress.expectedTotalBytes != null
+                                        ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                                        : null,
+                                  ),
+                                ),
+                              );
+                            },
+                          )
+                        : Image.asset(product.image.isNotEmpty ? product.image : 'assets/products/default.png',
+                            fit: BoxFit.contain,
+                            height: 120,
+                            width: double.infinity,
+                            errorBuilder: (context, error, stackTrace) {
+                              print('Erreur de chargement image: $error');
+                              return Container(
+                                height: 120,
+                                width: double.infinity,
+                                color: Colors.grey[200],
+                                child: const Center(
+                                  child: Icon(Icons.image_not_supported, size: 40, color: Colors.grey),
+                                ),
+                              );
+                            },
+                          ),
                     ),
                     Positioned(
                       top: 0,

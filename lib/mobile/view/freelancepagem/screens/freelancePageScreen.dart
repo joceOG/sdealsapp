@@ -2,18 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sdealsapp/mobile/view/freelancepagem/freelancepageblocm/freelancePageStateM.dart';
+import 'package:sdealsapp/mobile/view/freelance_registration/screens/freelance_registration_screen.dart';
 import '../freelancepageblocm/freelancePageBlocM.dart';
 import '../freelancepageblocm/freelancePageEventM.dart';
 import '../models/freelance_model.dart';
 
 // Widget wrapper qui fournit le BLoC à toute la page
 class FreelancePageScreen extends StatelessWidget {
-  const FreelancePageScreen({Key? key}) : super(key: key);
+  final List<dynamic> categories;
+  
+  const FreelancePageScreen({Key? key, this.categories = const []}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => FreelancePageBlocM()
+        // Toujours charger les catégories depuis l'API pour l'instant
+        // Les catégories passées en paramètre pourront être utilisées à l'avenir
         ..add(LoadCategorieDataM())
         ..add(LoadFreelancersEvent()),
       child: _FreelancePageScreenContent(),
@@ -33,16 +38,36 @@ class _FreelancePageScreenContentState extends State<_FreelancePageScreenContent
   // Controller pour la barre de recherche
   final TextEditingController _searchController = TextEditingController();
   
-  // Liste des catégories de filtrage disponibles
-  final List<Map<String, dynamic>> _filterCategories = [
-    {'name': 'Tous', 'icon': Icons.apps, 'color': Colors.blue},
-    {'name': 'Dev', 'icon': Icons.computer, 'color': Colors.indigo},
-    {'name': 'Design', 'icon': Icons.brush, 'color': Colors.purple},
-    {'name': 'Rédaction', 'icon': Icons.edit_document, 'color': Colors.green},
-    {'name': 'Marketing', 'icon': Icons.trending_up, 'color': Colors.orange},
-    {'name': 'Vidéo', 'icon': Icons.videocam, 'color': Colors.red},
-    {'name': 'Traduction', 'icon': Icons.translate, 'color': Colors.teal},
-    {'name': 'Photo', 'icon': Icons.camera_alt, 'color': Colors.amber},
+  // Couleurs pour les catégories dynamiques
+  final List<Color> _categoryColors = [
+    Colors.blue,
+    Colors.indigo,
+    Colors.purple,
+    Colors.green,
+    Colors.orange,
+    Colors.red,
+    Colors.teal,
+    Colors.amber,
+    Colors.pink,
+    Colors.cyan,
+    Colors.brown,
+    Colors.lime,
+  ];
+  
+  // Icônes pour les catégories dynamiques
+  final List<IconData> _categoryIcons = [
+    Icons.computer,
+    Icons.brush,
+    Icons.edit_document,
+    Icons.trending_up,
+    Icons.videocam,
+    Icons.translate,
+    Icons.camera_alt,
+    Icons.build,
+    Icons.mic,
+    Icons.school,
+    Icons.support_agent,
+    Icons.paid,
   ];
   
   @override
@@ -146,59 +171,76 @@ class _FreelancePageScreenContentState extends State<_FreelancePageScreenContent
         const SizedBox(height: 10),
         SizedBox(
           height: 40,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: _filterCategories.length,
-            itemBuilder: (context, index) {
-              final category = _filterCategories[index];
-              final isSelected = selectedCategory == category['name'];
+          child: BlocBuilder<FreelancePageBlocM, FreelancePageStateM>(
+            builder: (context, state) {
+              // Ajouter une catégorie "Tous" au début
+              final allCategories = [
+                {'id': 'all', 'name': 'Tous'}, 
+                ...state.listItems?.map((cat) => {
+                  'id': cat.idcategorie, 
+                  'name': cat.nomcategorie
+                }).toList() ?? []
+              ];
               
-              return GestureDetector(
-                onTap: () {
-                  // Pas besoin de setState ici, le BlocBuilder reconstruira le widget
-                  // lorsque l'état du bloc sera mis à jour
+              return ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: allCategories.length,
+                itemBuilder: (context, index) {
+                  final category = allCategories[index];
+                  final categoryName = category['name'] as String;
+                  final isSelected = selectedCategory == categoryName;
                   
-                  // Envoyer l'événement au BLoC pour le filtrage
-                  bloc.add(FilterByCategoryEvent(isSelected ? null : category['name']));
-                },
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  margin: const EdgeInsets.only(right: 8),
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  decoration: BoxDecoration(
-                    color: isSelected ? category['color'] : Colors.grey.shade200,
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: isSelected ? category['color'] : Colors.transparent,
-                      width: 1,
-                    ),
-                    boxShadow: isSelected ? [
-                      BoxShadow(
-                        color: (category['color'] as Color).withOpacity(0.4),
-                        blurRadius: 8,
-                        offset: const Offset(0, 4),
-                      )
-                    ] : [],
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        category['icon'],
-                        size: 16,
-                        color: isSelected ? Colors.white : category['color'],
-                      ),
-                      const SizedBox(width: 6),
-                      Text(
-                        category['name'],
-                        style: TextStyle(
-                          color: isSelected ? Colors.white : Colors.black87,
-                          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                  // Obtenir une couleur et une icône stables pour cette catégorie
+                  final colorIndex = index % _categoryColors.length;
+                  final iconIndex = index % _categoryIcons.length;
+                  final categoryColor = _categoryColors[colorIndex];
+                  final categoryIcon = index == 0 ? Icons.apps : _categoryIcons[iconIndex];
+                  
+                  return GestureDetector(
+                    onTap: () {
+                      // Envoyer l'événement au BLoC pour le filtrage
+                      bloc.add(FilterByCategoryEvent(isSelected ? null : categoryName));
+                    },
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      margin: const EdgeInsets.only(right: 8),
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      decoration: BoxDecoration(
+                        color: isSelected ? categoryColor : Colors.grey.shade200,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: isSelected ? categoryColor : Colors.transparent,
+                          width: 1,
                         ),
+                        boxShadow: isSelected ? [
+                          BoxShadow(
+                            color: categoryColor.withOpacity(0.4),
+                            blurRadius: 8,
+                            offset: const Offset(0, 4),
+                          )
+                        ] : [],
                       ),
-                    ],
-                  ),
-                ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            categoryIcon,
+                            size: 16,
+                            color: isSelected ? Colors.white : categoryColor,
+                          ),
+                          const SizedBox(width: 6),
+                          Text(
+                            categoryName,
+                            style: TextStyle(
+                              color: isSelected ? Colors.white : Colors.black87,
+                              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
               );
             },
           ),
@@ -212,10 +254,9 @@ class _FreelancePageScreenContentState extends State<_FreelancePageScreenContent
     return FloatingActionButton.extended(
       onPressed: () {
         // Navigation vers la page d'inscription freelance
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Redirection vers inscription freelance...'),
-            backgroundColor: Colors.green,
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const FreelanceRegistrationScreen(),
           ),
         );
       },

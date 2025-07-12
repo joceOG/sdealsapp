@@ -7,6 +7,8 @@ import '../../../../web/data/models/categorie.dart';
 import '../../../../web/data/services/api_client.dart';
 
 class ShoppingPageBlocM extends Bloc<ShoppingPageEventM, ShoppingPageStateM> {
+  final ApiClient _apiClient = ApiClient();
+  
   ShoppingPageBlocM() : super(ShoppingPageStateM.initial()) {
     // Events originaux
     on<LoadCategorieDataM>(_onLoadCategorieDataM);
@@ -31,20 +33,51 @@ class ShoppingPageBlocM extends Bloc<ShoppingPageEventM, ShoppingPageStateM> {
     on<ClearCompareListEvent>(_onClearCompareListEvent);
   }
 
-  // Event handler d'origine pour charger les catégories
+  // Event handler pour charger les catégories spécifiquement du groupe E-marché
   Future<void> _onLoadCategorieDataM(
     LoadCategorieDataM event,
     Emitter<ShoppingPageStateM> emit,
   ) async {
-    emit(state.copyWith(isLoading: true));
-
-    ApiClient apiClient = ApiClient();
+    emit(state.copyWith(isLoading: true, error: ''));
+    
     try {
-      var nomgroupe = "Métiers";
-      List<Categorie> list_categorie = await apiClient.fetchCategorie(nomgroupe);
-      emit(state.copyWith(listItems: list_categorie, isLoading: false));
-    } catch (error) {
-      emit(state.copyWith(error: error.toString(), isLoading: false));
+      // Utiliser le nom exact comme dans le dashboard "E-marché" (avec le trait d'union et accent)
+      var nomgroupe = "E-marché";
+      print("Chargement des catégories pour le groupe: $nomgroupe");
+      List<Categorie> categories = await _apiClient.fetchCategorie(nomgroupe);
+      
+      // Si aucune catégorie n'est trouvée, essayer une variante sans accent
+      if (categories.isEmpty) {
+        nomgroupe = "E-marche"; // Sans accent
+        print("Essai avec le nom de groupe: $nomgroupe");
+        categories = await _apiClient.fetchCategorie(nomgroupe);
+      }
+      
+      // Si toujours aucune catégorie, afficher les groupes disponibles pour le débogage
+      if (categories.isEmpty) {
+        print('Aucune catégorie trouvée pour le groupe E-marché, affichage des groupes disponibles:');
+        final allCategories = await _apiClient.fetchAllCategories();
+        final groupes = allCategories.map((c) => c.groupe).toSet().toList();
+        print('Groupes disponibles: $groupes');
+        
+        emit(state.copyWith(
+          error: "Aucune catégorie trouvée pour le groupe E-marché",
+          isLoading: false,
+        ));
+        return;
+      }
+      
+      print('Catégories trouvées pour "$nomgroupe": ${categories.length}');
+      emit(state.copyWith(
+        listItems: categories,
+        isLoading: false,
+      ));
+    } catch (e) {
+      print('Erreur lors du chargement des catégories E-marché: $e');
+      emit(state.copyWith(
+        error: e.toString(),
+        isLoading: false,
+      ));
     }
   }
 
@@ -58,8 +91,58 @@ class ShoppingPageBlocM extends Bloc<ShoppingPageEventM, ShoppingPageStateM> {
     emit(state.copyWith(isLoading: true));
     
     try {
-      // Dans une vraie application, on chargerait les produits depuis l'API
-      // Pour l'instant on utilise une liste statique de produits mockup
+      // Utiliser l'API client pour charger les articles réels
+      ApiClient apiClient = ApiClient();
+      
+      // Tenter de récupérer les articles depuis l'API
+      try {
+        print("Tentative de chargement des articles depuis l'API...");
+        final articles = await apiClient.fetchArticle();
+        
+        if (articles.isNotEmpty) {
+          print("Articles récupérés avec succès: ${articles.length}");
+          
+          // Convertir les articles de l'API en objets Product
+          List<Product> products = [];
+          
+          // Déboguer chaque article avant conversion
+          for (var article in articles) {
+            try {
+              print('Article: ${article.nomArticle}, prix: ${article.prixArticle}, image: ${article.photoArticle}');
+              
+              // S'assurer que les valeurs sont valides ou fournir des valeurs par défaut
+              String imageUrl = article.photoArticle;
+              // Si l'URL de l'image n'est pas valide ou vide, utiliser une image par défaut
+              if (imageUrl.isEmpty || (!imageUrl.startsWith('http') && !imageUrl.startsWith('https'))) {
+                imageUrl = 'assets/products/default.png';
+              }
+              
+              products.add(Product(
+                id: article.hashCode.toString(), // Utiliser hashCode comme ID unique
+                name: article.nomArticle.isEmpty ? 'Article sans nom' : article.nomArticle,
+                image: imageUrl,
+                size: 'Quantité: ${article.quantiteArticle.toString()}',
+                price: article.prixArticle.isEmpty ? '0 FCFA' : article.prixArticle,
+                brand: 'Non spécifié', // Pas de champ marque disponible
+                rating: 0.0, // Pas de champ note disponible
+              ));
+            } catch (e) {
+              print('Erreur lors de la conversion de l\'article: $e');
+            }
+          }
+          
+          print('Produits convertis: ${products.length}');
+          
+          emit(state.copyWith(products: products, isLoading: false));
+          return;
+        } else {
+          print("Aucun article trouvé dans l'API ou erreur de récupération");
+        }
+      } catch (apiError) {
+        print("Erreur lors de la récupération des articles: $apiError");
+      }
+      
+      // Si l'API échoue, utiliser les données fictives comme fallback
       List<Product> mockProducts = [
         Product(
             id: '1',
