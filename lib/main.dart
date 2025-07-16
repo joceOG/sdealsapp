@@ -34,8 +34,15 @@ import 'mobile/view/shoppingpagem/shoppingpageblocm/shoppingPageEventM.dart'
 import 'mobile/view/splashcreenm/screens/splashScreenM.dart';
 import 'mobile/view/splashcreenm/splashscreenblocm/splashscreenBlocM.dart';
 import 'mobile/view/splashcreenm/splashscreenblocm/splashscreenEventM.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
-void main() {
+void main() async {
+  // Assure que Flutter est initialisé
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // Initialiser les formats de date pour la localisation française
+  await initializeDateFormatting('fr_FR', null);
+  
   runApp(MyApp());
 }
 

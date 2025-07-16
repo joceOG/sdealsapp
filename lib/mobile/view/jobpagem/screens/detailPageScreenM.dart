@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sdealsapp/mobile/view/common/widgets/ai_provider_matcher_widget.dart';
 
 // Exemple de page de détails de service
 class DetailPage extends StatelessWidget {
@@ -73,6 +74,13 @@ class DetailPage extends StatelessWidget {
                 style: TextStyle(fontSize: 14.5, color: Colors.black87),
               ),
             ],
+          ),
+          const SizedBox(height: 28),
+          // Recommandations IA de prestataires
+          AIProviderMatcherWidget(
+            serviceType: title,
+            location: "Abidjan",
+            preferences: const [],
           ),
           const SizedBox(height: 28),
           // Bouton commander

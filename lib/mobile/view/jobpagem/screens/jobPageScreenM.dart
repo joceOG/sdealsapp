@@ -1,6 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:sdealsapp/mobile/view/service_provider_registration/screens/service_provider_welcome_screen.dart';
 import 'package:sdealsapp/mobile/view/jobpagem/screens/detailPageScreenM.dart';
+import 'package:sdealsapp/mobile/view/common/screens/ai_assistant_chat_screen.dart';
+import 'package:sdealsapp/mobile/view/common/widgets/ai_price_estimator_widget.dart';
 
 class JobPageScreenM extends StatelessWidget {
   final List<dynamic> categories;
@@ -170,7 +173,18 @@ class JobPageScreenM extends StatelessWidget {
                 style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
             ),
           ),
-          // Icône du panier (facultatif)
+          // Bouton Assistant IA
+          IconButton(
+            icon: const Icon(Icons.smart_toy_outlined, color: Colors.white),
+            tooltip: 'Assistant IA',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const AIAssistantChatScreen()),
+              );
+            },
+          ),
+          // Icône notifications
           IconButton(
             icon: const Icon(Icons.notifications_outlined, color: Colors.white),
             onPressed: () {},
@@ -188,7 +202,7 @@ class JobPageScreenM extends StatelessWidget {
               const SizedBox(height: 16),
 
               // Bannière promotionnelle
-              _buildPromoBanner(),
+              _buildPromoBanner(context),
               const SizedBox(height: 20),
 
               // Titre catégories
@@ -280,6 +294,13 @@ class JobPageScreenM extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 12),
+              // Estimation IA de prix pour un service populaire
+              AIPriceEstimatorWidget(
+                serviceCategory: topServices.isNotEmpty ? topServices[0]['title']! : 'Service',
+                location: 'Abidjan',
+                jobDescription: 'Besoin standard',
+              ),
+              const SizedBox(height: 16),
               // Carrousel Top Services
               CarouselSlider.builder(
                 itemCount: topServices.length,
@@ -620,7 +641,7 @@ class JobPageScreenM extends StatelessWidget {
   }
 
   // Bannière promotionnelle
-  Widget _buildPromoBanner() {
+  Widget _buildPromoBanner(BuildContext context) {
     return Column(
       children: [
         Container(
@@ -663,7 +684,15 @@ class JobPageScreenM extends StatelessWidget {
         const SizedBox(height: 16),
         InkWell(
           onTap: () {
-            // Navigation vers la page d'inscription prestataire
+            // Navigation vers la page d'accueil prestataire
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ServiceProviderWelcomeScreen(
+                  categories: categories,
+                ),
+              ),
+            );
           },
           child: Container(
             width: double.infinity,

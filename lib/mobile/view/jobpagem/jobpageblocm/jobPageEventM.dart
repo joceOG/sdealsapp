@@ -14,4 +14,34 @@ abstract class JobPageEventM extends Equatable {
 
 class LoadCategorieDataM extends JobPageEventM {}
 
+class LoadPriceEstimationM extends JobPageEventM {
+  final String serviceType;
+  final String location;
+  final String jobDescription;
+
+  const LoadPriceEstimationM({
+    required this.serviceType,
+    required this.location,
+    required this.jobDescription,
+  });
+
+  @override
+  List<Object> get props => [serviceType, location, jobDescription];
+}
+
+class LoadProviderMatchingM extends JobPageEventM {
+  final String serviceType;
+  final String location;
+  final List<String>? preferences;
+
+  const LoadProviderMatchingM({
+    required this.serviceType,
+    required this.location,
+    this.preferences,
+  });
+
+  @override
+  List<Object> get props => [serviceType, location, preferences ?? []];
+}
+
 
