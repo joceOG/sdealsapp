@@ -1,9 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sdealsapp/web/data/models/service.dart';
+import 'package:sdealsapp/data/models/service.dart';
 
 
-import '../../../../../data/models/categorie.dart';
-import '../../../../../data/services/api_client.dart';
+import 'package:sdealsapp/data/models/categorie.dart';
+import 'package:sdealsapp/data/services/api_client.dart';
 import 'itemContentEvent.dart';
 import 'itemContentState.dart';
 

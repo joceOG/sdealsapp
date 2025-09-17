@@ -9,11 +9,11 @@ abstract class ContentDetailsEvent extends Equatable  {
 
 class LoadServiceData extends ContentDetailsEvent {
 
-  final String categorieid;
-  const LoadServiceData({required this.categorieid});
+  final String nomGroupe;
+  const LoadServiceData({required this.nomGroupe});
 
   @override
-  List<Object> get props => [categorieid];
+  List<Object> get props => [nomGroupe];
 
 }
 

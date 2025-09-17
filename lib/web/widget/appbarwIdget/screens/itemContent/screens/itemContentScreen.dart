@@ -56,7 +56,7 @@ class MyItemStatefulWidget extends StatelessWidget {
                             color: Colors.black
                         ),
                         ),
-                        ContentDetailsScreen(categorieid: state.listItems![index].idcategorie)
+                        ContentDetailsScreen(nomGroupe: state.listItems![index].groupe.nomgroupe)
                       ],
                     ),
                     const Spacer(),

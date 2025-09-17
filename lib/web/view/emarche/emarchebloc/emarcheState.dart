@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
-import '../../../data/models/article.dart';
-import '../../../data/models/categorie.dart';
-import '../../../data/models/service.dart';
+import 'package:sdealsapp/data/models/article.dart';
+import 'package:sdealsapp/data/models/categorie.dart';
+import 'package:sdealsapp/data/models/service.dart';
 
 class EmarcheState extends Equatable {
 

@@ -1,5 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+
+import '../soutrapayblocm/soutra_wallet_bloc.dart';
+import '../soutrapayblocm/soutra_wallet_event.dart';
+import '../soutrapayblocm/soutra_wallet_state.dart';
+import 'soutraPayActivationScreen.dart';
+import 'soutraRechargeScreen.dart';
+import 'soutraTransferScreen.dart';
+import 'soutraWalletMainScreen.dart';
 
 class WalletPageScreenM extends StatefulWidget {
   const WalletPageScreenM({super.key});
@@ -9,13 +18,24 @@ class WalletPageScreenM extends StatefulWidget {
 }
 
 class _WalletPageScreenMState extends State<WalletPageScreenM> {
-  // Solde fictif
+  late SoutraWalletBloc _soutraWalletBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _soutraWalletBloc = SoutraWalletBloc();
+    _soutraWalletBloc.add(LoadSoutraWallet());
+  }
+
+  @override
+  void dispose() {
+    _soutraWalletBloc.close();
+    super.dispose();
+  }
+
+  // Conservons les données de démonstration pour afficher quelque chose pendant le chargement
   double balance = 125000;
-
-  // Pour afficher ou cacher le solde
   bool _showBalance = true;
-
-  // Liste fictive de transactions
   final List<Map<String, dynamic>> transactions = [
     {
       "type": "Rechargé",
@@ -62,206 +82,268 @@ class _WalletPageScreenMState extends State<WalletPageScreenM> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      // AppBar personnalisée avec photo de profil à droite
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        title: const Text(
-          'Mon Compte SD',
-          style: TextStyle(
-            color: Colors.black87,
-            fontWeight: FontWeight.bold,
-            fontSize: 22,
-            letterSpacing: 1.1,
-          ),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: CircleAvatar(
-              radius: 22,
-              backgroundColor: Colors.green.withOpacity(0.13),
-              backgroundImage: const AssetImage('assets/profile_picture.jpg'),
-              child: Align(
-                alignment: Alignment.bottomRight,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.green,
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Colors.white, width: 1.5),
-                  ),
-                  padding: const EdgeInsets.all(2),
-                  child:
-                      const Icon(Icons.verified, size: 14, color: Colors.white),
+    return BlocProvider(
+      create: (context) => _soutraWalletBloc,
+      child: BlocConsumer<SoutraWalletBloc, SoutraWalletState>(
+        listener: (context, state) {
+          // Afficher les erreurs si nécessaire
+          if (state.error != null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.error!),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
+        },
+        builder: (context, state) {
+          // Vérifier si le portefeuille est activé
+          if (!state.isLoading && state.wallet.isActivated) {
+            // Rediriger vers l'écran principal du portefeuille SoutraPay
+            return const SoutraWalletMainScreen();
+          }
+
+          // Si le wallet n'est pas activé et que le chargement est terminé,
+          // rediriger vers l'écran d'activation
+          if (!state.isLoading && !state.wallet.isActivated) {
+            return const SoutraPayActivationScreen();
+          }
+
+          // Sinon, afficher l'écran de chargement avec l'interface wallet de base
+          return Scaffold(
+            backgroundColor: Colors.white,
+            // AppBar personnalisée avec photo de profil à droite
+            appBar: AppBar(
+              backgroundColor: Colors.white,
+              elevation: 0,
+              title: const Text(
+                'Mon Compte SD',
+                style: TextStyle(
+                  color: Colors.black87,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22,
+                  letterSpacing: 1.1,
                 ),
               ),
-            ),
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Carte virtuelle du solde réorganisée
-            Center(
-              child: Container(
-                margin: const EdgeInsets.only(top: 10, bottom: 18),
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(22),
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFF43EA5E), Color(0xFF1CBF3F)],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.green.withOpacity(0.13),
-                      blurRadius: 16,
-                      offset: const Offset(0, 6),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 16.0),
+                  child: CircleAvatar(
+                    radius: 22,
+                    backgroundColor: Colors.green.withOpacity(0.13),
+                    backgroundImage: const AssetImage('assets/profile_picture.jpg'),
+                    child: Align(
+                      alignment: Alignment.bottomRight,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.green,
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.white, width: 1.5),
+                        ),
+                        padding: const EdgeInsets.all(2),
+                        child: const Icon(Icons.verified, size: 14, color: Colors.white),
+                      ),
                     ),
-                  ],
+                  ),
                 ),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 22),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          const Icon(Icons.account_balance_wallet_rounded,
-                              color: Colors.white70, size: 28),
-                          const SizedBox(width: 10),
-                          const Text(
-                            "Solde du compte",
-                            style: TextStyle(
-                              color: Colors.white70,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          const Spacer(),
-                          // Icône œil pour afficher/cacher le solde
-                          InkWell(
-                            borderRadius: BorderRadius.circular(20),
-                            onTap: () {
-                              setState(() {
-                                _showBalance = !_showBalance;
-                              });
-                            },
-                            child: Icon(
-                              _showBalance
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
-                              color: Colors.white,
-                              size: 26,
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          // QR Code fictif
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.13),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            padding: const EdgeInsets.all(6),
-                            child: const Icon(Icons.qr_code_rounded,
-                                color: Colors.white, size: 28),
+              ],
+            ),
+            body: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Carte virtuelle du solde réorganisée
+                  Center(
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 10, bottom: 18),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(22),
+                        gradient: const LinearGradient(
+                          colors: [Color(0xFF43EA5E), Color(0xFF1CBF3F)],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.green.withOpacity(0.13),
+                            blurRadius: 16,
+                            offset: const Offset(0, 6),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 16),
-                      // Affichage du solde avec séparateurs ou caché
-                      Text(
-                        _showBalance ? "$formattedBalance FCFA" : "••••••••",
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 32,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 1.2,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 22),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                const Icon(Icons.account_balance_wallet_rounded,
+                                    color: Colors.white70, size: 28),
+                                const SizedBox(width: 10),
+                                const Text(
+                                  "Solde du compte",
+                                  style: TextStyle(
+                                    color: Colors.white70,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                const Spacer(),
+                                // Icône œil pour afficher/cacher le solde
+                                InkWell(
+                                  borderRadius: BorderRadius.circular(20),
+                                  onTap: () {
+                                    setState(() {
+                                      _showBalance = !_showBalance;
+                                    });
+                                    // Dans un cas réel, on utiliserait le BLoC ici
+                                    // BlocProvider.of<SoutraWalletBloc>(context)
+                                    //   .add(ToggleSoutraBalanceVisibility(showBalance: !_showBalance));
+                                  },
+                                  child: Icon(
+                                    _showBalance
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                    color: Colors.white,
+                                    size: 26,
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                // QR Code fictif
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white.withOpacity(0.13),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  padding: const EdgeInsets.all(6),
+                                  child: const Icon(Icons.qr_code_rounded,
+                                      color: Colors.white, size: 28),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 16),
+                            // Affichage du solde avec séparateurs ou caché
+                            Text(
+                              _showBalance ? "$formattedBalance FCFA" : "••••••••",
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 32,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 1.2,
+                              ),
+                            ),
+                            const SizedBox(height: 18),
+                            // Boutons d'action
+                            Row(
+                              children: [
+                                _walletActionButton(
+                                  icon: Icons.add_circle_outline,
+                                  label: "Recharger",
+                                  color: Colors.white,
+                                  onTap: () {
+                                    // Naviguer vers l'écran de recharge avec GoRouter et passer le BLoC actuel
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => BlocProvider.value(
+                                          value: BlocProvider.of<SoutraWalletBloc>(context),
+                                          child: const SoutraRechargeScreen(),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                                const SizedBox(width: 12),
+                                _walletActionButton(
+                                  icon: Icons.send_rounded,
+                                  label: "Transférer",
+                                  color: Colors.white,
+                                  onTap: () {
+                                    // Naviguer vers l'écran de transfert avec GoRouter et passer le BLoC actuel
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => BlocProvider.value(
+                                          value: BlocProvider.of<SoutraWalletBloc>(context),
+                                          child: const SoutraTransferScreen(),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                                const SizedBox(width: 12),
+                                _walletActionButton(
+                                  icon: Icons.history,
+                                  label: "Historique",
+                                  color: Colors.white,
+                                  onTap: () {
+                                    // Afficher un dialogue ou un modal bottom sheet avec l'historique des transactions
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('Historique des transactions (à implémenter)'),
+                                        duration: Duration(seconds: 2),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
-                      const SizedBox(height: 18),
-                      // Boutons d'action
-                      Row(
-                        children: [
-                          _walletActionButton(
-                            icon: Icons.add_circle_outline,
-                            label: "Recharger",
-                            color: Colors.white,
-                            onTap: () {},
-                          ),
-                          const SizedBox(width: 12),
-                          _walletActionButton(
-                            icon: Icons.send_rounded,
-                            label: "Transférer",
-                            color: Colors.white,
-                            onTap: () {},
-                          ),
-                          const SizedBox(width: 12),
-                          _walletActionButton(
-                            icon: Icons.history,
-                            label: "Historique",
-                            color: Colors.white,
-                            onTap: () {},
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
-            // Titre section transactions
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 8.0),
-              child: Text(
-                "Dernières transactions",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                  color: Colors.black87,
-                ),
-              ),
-            ),
-            // Liste des transactions
-            ListView.separated(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: transactions.length,
-              separatorBuilder: (_, __) => const Divider(height: 1),
-              itemBuilder: (context, index) {
-                final tx = transactions[index];
-                return ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: (tx['color'] as Color).withOpacity(0.13),
-                    child: Icon(tx['icon'], color: tx['color']),
-                  ),
-                  title: Text(
-                    tx['type'],
-                    style: const TextStyle(fontWeight: FontWeight.w600),
-                  ),
-                  subtitle: Text(tx['date']),
-                  trailing: Text(
-                    "${tx['amount'] > 0 ? '+' : ''}${NumberFormat("#,##0.00", "fr_FR").format(tx['amount'])} FCFA",
-                    style: TextStyle(
-                      color: tx['amount'] > 0 ? Colors.green : Colors.red,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
                     ),
                   ),
-                );
-              },
+                  const SizedBox(height: 10),
+                  // Titre section transactions
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 8.0),
+                    child: Text(
+                      "Dernières transactions",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: Colors.black87,
+                      ),
+                    ),
+                  ),
+                  // Liste des transactions
+                  ListView.separated(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: transactions.length,
+                    separatorBuilder: (_, __) => const Divider(height: 1),
+                    itemBuilder: (context, index) {
+                      final tx = transactions[index];
+                      return ListTile(
+                        leading: CircleAvatar(
+                          backgroundColor: (tx['color'] as Color).withOpacity(0.13),
+                          child: Icon(tx['icon'], color: tx['color']),
+                        ),
+                        title: Text(
+                          tx['type'],
+                          style: const TextStyle(fontWeight: FontWeight.w600),
+                        ),
+                        subtitle: Text(tx['date']),
+                        trailing: Text(
+                          "${tx['amount'] > 0 ? '+' : ''}${NumberFormat("#,##0.00", "fr_FR").format(tx['amount'])} FCFA",
+                          style: TextStyle(
+                            color: tx['amount'] > 0 ? Colors.green : Colors.red,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 18),
+                ],
+              ),
             ),
-            const SizedBox(height: 18),
-          ],
-        ),
+          );
+        },
       ),
     );
   }

@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
-import 'package:sdealsapp/web/data/models/service.dart';
+import 'package:sdealsapp/data/models/service.dart';
 
-import '../../../../../../data/models/categorie.dart';
+import 'package:sdealsapp/data/models/categorie.dart';
 
 
 class ContentDetailsState extends Equatable {

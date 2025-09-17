@@ -1,9 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sdealsapp/web/data/models/service.dart';
+import 'package:sdealsapp/data/models/service.dart';
 
 
-import '../../../../../../data/models/categorie.dart';
-import '../../../../../../data/services/api_client.dart';
+import 'package:sdealsapp/data/models/categorie.dart';
+import 'package:sdealsapp/data/services/api_client.dart';
 import 'contentDetailsEvent.dart';
 import 'contentDetailsState.dart';
 
@@ -20,8 +20,8 @@ class ContentDetailsBloc extends Bloc<ContentDetailsEvent, ContentDetailsState> 
     ApiClient apiClient = ApiClient();
     print("Try");
     try {
-      var categorieid = event.categorieid ;
-      List<Service> list_service = await apiClient.fetchService(categorieid);
+      var nomGroupe = event.nomGroupe ;
+      List<Service> list_service = await apiClient.fetchServices(nomGroupe);
       print("List Categorie");
       emit(state.copyWith(listItems: list_service, isLoading: false));
     } catch (error) {

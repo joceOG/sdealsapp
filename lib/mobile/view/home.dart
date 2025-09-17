@@ -18,7 +18,7 @@ import 'chatpagem/screens/chatPageScreenM.dart';
 import 'homepagem/homepageblocm/homePageBlocM.dart';
 import 'morepagem/morepageblocm/morePageBlocM.dart';
 import 'morepagem/screens/morePageScreenM.dart';
-import 'orderpagem/orderpageblocm/orderPageBlocM.dart';
+import 'orderpagem/orderpageblocm/commande_bloc.dart';
 import 'orderpagem/screens/orderPageScreenM.dart';
 
 class Home extends StatefulWidget {
@@ -33,8 +33,7 @@ List<Widget> _pageList = [
   BlocProvider(create: (_) => HomePageBlocM(), child: HomePageScreenM()),
   BlocProvider(create: (_) => WalletPageBlocM(), child: WalletPageScreenM()),
   BlocProvider(create: (_) => ChatPageBlocM(), child: ChatPageScreenM()),
-  BlocProvider(
-      create: (_) => OrderPageBlocM(), child: OrderPageScreenM()),
+  BlocProvider(create: (_) => CommandeBloc(), child: OrderPageScreenM()),
   BlocProvider(create: (_) => ProfilPageBlocM(), child: ProfilPageScreenM()),
 ];
 

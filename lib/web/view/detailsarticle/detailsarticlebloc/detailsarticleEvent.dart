@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:sdealsapp/web/data/models/article.dart';
+import 'package:sdealsapp/data/models/article.dart';
 
 abstract class DetailsArticleEvent extends Equatable {
 

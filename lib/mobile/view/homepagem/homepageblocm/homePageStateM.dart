@@ -6,21 +6,18 @@ import 'package:sdealsapp/web/view/homepage/homepagebloc/homePageBloc.dart';
 import 'package:sdealsapp/web/view/homepage/homepagebloc/homePageEvent.dart';
 import 'package:sdealsapp/web/view/homepage/homepagebloc/homePageState.dart';
 
-import '../../../../web/data/models/categorie.dart';
+import 'package:sdealsapp/data/models/categorie.dart';
 
 
 class HomePageStateM extends Equatable {
-
-  final bool? isLoading;
+  final bool isLoading;
   final List<Categorie>? listItems;
   final String? error;
 
-
-  const HomePageStateM( {
-
-    this.isLoading,
+  const HomePageStateM({
+    this.isLoading = true,
     this.listItems,
-    this.error,
+    this.error = '',
   });
 
   factory HomePageStateM.initial() {
@@ -32,13 +29,11 @@ class HomePageStateM extends Equatable {
   }
 
   HomePageStateM copyWith({
-
     bool? isLoading,
     List<Categorie>? listItems,
     String? error,
-  }){
+  }) {
     return HomePageStateM(
-
       isLoading: isLoading ?? this.isLoading,
       listItems: listItems ?? this.listItems,
       error: error ?? this.error,
@@ -46,11 +41,8 @@ class HomePageStateM extends Equatable {
   }
 
   @override
-  List<Object?> get props => [ isLoading, listItems, error ];
+  List<Object?> get props => [isLoading, listItems, error];
 }
-
-
-
 
 
 
