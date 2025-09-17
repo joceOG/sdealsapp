@@ -4,6 +4,9 @@ import 'package:sdealsapp/ai_services/interfaces/provider_matching_service.dart'
 import 'package:sdealsapp/ai_services/models/ai_recommendation_model.dart';
 import 'package:sdealsapp/data/models/prestataire.dart';
 
+import '../../data/models/service.dart';
+import '../../data/models/utilisateur.dart';
+
 /// Implémentation mock du service de matching des prestataires
 /// Cette classe simule le comportement d'un service de matching IA avec des données préfabriquées
 class MockProviderMatchingService implements ProviderMatchingService {
@@ -135,17 +138,50 @@ class MockProviderMatchingService implements ProviderMatchingService {
       
       // Créer un prestataire à partir des données mock
       final prestataire = Prestataire(
-        idutilisateur: providerData['id'].toString(), 
-        nomprenom: providerData['nom'],
-        telephone: providerData['telephone'] ?? '+225 0700000000',
-        idservice: providerData['categoryId'] ?? '0',
-        nomservice: providerData['category'] ?? 'Service général',
-        prixmoyen: providerData['averagePrice']?.toString() ?? '5000',
-        localisation: providerData['zone'] ?? 'Abidjan',
-        note: providerData['rating']?.toString() ?? '4.0',
-        verifier: providerData['verified'] ? '1' : '0',
+        idprestataire: 'prest001',
+        utilisateur: Utilisateur(
+          idutilisateur: 'user001',
+          nom: 'KOUASSI',
+          prenom: 'Jocelyn',
+          email: 'jocelyn.kouassi@example.com',
+          password: 'password123',
+          telephone: '+2250700000000',
+          genre: 'Homme',
+          note: '4.5',
+        ),
+        service: Service(
+          idservice: 'serv001',
+          nomservice: 'Plomberie',
+          imageservice: 'https://example.com/images/plomberie.png',
+          prixmoyen: '15000',
+          categorie: null,
+        ),
+        prixprestataire: 18000,
+        localisation: 'Abidjan, Cocody',
+        localisationMaps: LocalisationMaps(
+          latitude: 5.345,
+          longitude: -4.024,
+        ),
+        note: '4.7',
+        verifier: true,
+        cni1: 'https://example.com/documents/cni1.png',
+        cni2: 'https://example.com/documents/cni2.png',
+        selfie: 'https://example.com/documents/selfie.png',
+        numeroCNI: '1234567890',
+        specialite: ['Réparation', 'Installation', 'Maintenance'],
+        anneeExperience: '5',
+        description: 'Plombier professionnel avec 5 ans d’expérience.',
+        rayonIntervention: 15.0,
+        zoneIntervention: ['Abidjan', 'Yopougon', 'Marcory'],
+        tarifHoraireMin: 3000,
+        tarifHoraireMax: 7000,
+        diplomeCertificat: ['Diplôme en plomberie', 'Certificat de sécurité'],
+        attestationAssurance: 'Assurance ABC123',
+        numeroAssurance: 'ASS123456',
+        numeroRCCM: 'RCCM78910',
       );
-      
+
+
       // Générer une raison de match explicative
       final matchReason = _generateMatchReason(matchScore, providerData, queryEntities);
       
