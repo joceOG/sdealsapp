@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:sdealsapp/web/data/models/categorie.dart';
+import 'package:sdealsapp/data/models/categorie.dart';
 
 import 'package:sdealsapp/web/view/homepage/homepagebloc/homePageBloc.dart';
 import 'package:sdealsapp/web/view/homepage/homepagebloc/homePageEvent.dart';
@@ -12,7 +12,8 @@ abstract class JobPageEventM extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadCategorieDataM extends JobPageEventM {}
+class LoadCategorieDataJobM extends JobPageEventM {}
+class LoadServiceDataJobM extends JobPageEventM {}
 
 class LoadPriceEstimationM extends JobPageEventM {
   final String serviceType;

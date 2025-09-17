@@ -1,58 +1,59 @@
-
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
-
-import 'package:sdealsapp/web/view/homepage/homepagebloc/homePageBloc.dart';
-import 'package:sdealsapp/web/view/homepage/homepagebloc/homePageEvent.dart';
-import 'package:sdealsapp/web/view/homepage/homepagebloc/homePageState.dart';
-
-import '../../../../web/data/models/categorie.dart';
+import 'package:sdealsapp/data/models/categorie.dart';
 import 'package:sdealsapp/ai_services/models/ai_recommendation_model.dart';
 import 'package:sdealsapp/ai_services/models/provider_match_explanation.dart';
-import 'package:sdealsapp/web/data/models/prestataire.dart';
-
+import 'package:sdealsapp/data/models/prestataire.dart';
+import 'package:sdealsapp/data/models/service.dart';
 
 class JobPageStateM extends Equatable {
+  final bool isLoading;
+  final List<Categorie> listItems;
+  final String error;
+  final bool isLoading2;
+  final List<Service> listItems2;
+  final String error2;
 
-  final bool? isLoading;
-  final List<Categorie>? listItems;
-  final String? error;
 
   // Estimation de prix IA
   final AIPriceEstimation? priceEstimation;
-  final bool? isPriceLoading;
-  final String? priceError;
+  final bool isPriceLoading;
+  final String priceError;
 
   // Matching prestataires IA
-  final List<Prestataire>? matchedProviders;
+  final List<Prestataire> matchedProviders;
   final ProviderMatchExplanation? matchExplanation;
-  final bool? isMatchingLoading;
-  final String? matchError;
+  final bool isMatchingLoading;
+  final String matchError;
 
-
-  const JobPageStateM( {
-
-    this.isLoading,
-    this.listItems,
-    this.error,
+  const JobPageStateM({
+    required this.isLoading,
+    required this.listItems,
+    required this.error,
+    required this.isLoading2,
+    required this.listItems2,
+    required this.error2,
     this.priceEstimation,
-    this.isPriceLoading,
-    this.priceError,
-    this.matchedProviders,
+    required this.isPriceLoading,
+    required this.priceError,
+    required this.matchedProviders,
     this.matchExplanation,
-    this.isMatchingLoading,
-    this.matchError,
+    required this.isMatchingLoading,
+    required this.matchError,
   });
 
+  /// État initial "safe"
   factory JobPageStateM.initial() {
     return const JobPageStateM(
       isLoading: true,
-      listItems: null,
+      listItems: [], // ✅ liste vide, plus de null
       error: '',
+      isLoading2: true,
+      listItems2: [],
+      error2: '',
       priceEstimation: null,
       isPriceLoading: false,
       priceError: '',
-      matchedProviders: null,
+      matchedProviders: [], // ✅ liste vide
       matchExplanation: null,
       isMatchingLoading: false,
       matchError: '',
@@ -60,10 +61,12 @@ class JobPageStateM extends Equatable {
   }
 
   JobPageStateM copyWith({
-
     bool? isLoading,
     List<Categorie>? listItems,
     String? error,
+    bool? isLoading2,
+    List<Service>? listItems2,
+    String? error2,
     AIPriceEstimation? priceEstimation,
     bool? isPriceLoading,
     String? priceError,
@@ -71,12 +74,14 @@ class JobPageStateM extends Equatable {
     ProviderMatchExplanation? matchExplanation,
     bool? isMatchingLoading,
     String? matchError,
-  }){
+  }) {
     return JobPageStateM(
-
       isLoading: isLoading ?? this.isLoading,
       listItems: listItems ?? this.listItems,
       error: error ?? this.error,
+      isLoading2: isLoading2 ?? this.isLoading2,
+      listItems2: listItems2 ?? this.listItems2,
+      error2: error2 ?? this.error2,
       priceEstimation: priceEstimation ?? this.priceEstimation,
       isPriceLoading: isPriceLoading ?? this.isPriceLoading,
       priceError: priceError ?? this.priceError,
@@ -92,6 +97,9 @@ class JobPageStateM extends Equatable {
     isLoading,
     listItems,
     error,
+    isLoading2,
+    listItems2,
+    error2,
     priceEstimation,
     isPriceLoading,
     priceError,
@@ -101,12 +109,3 @@ class JobPageStateM extends Equatable {
     matchError,
   ];
 }
-
-
-
-
-
-
-
-
-

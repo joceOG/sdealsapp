@@ -2,7 +2,9 @@ import 'dart:math';
 
 import 'package:sdealsapp/ai_services/interfaces/demand_prediction_service.dart';
 import 'package:sdealsapp/ai_services/models/ai_recommendation_model.dart';
-import 'package:sdealsapp/web/data/models/categorie.dart';
+import 'package:sdealsapp/data/models/categorie.dart';
+
+import '../../data/models/groupe.dart';
 
 /// Implémentation mock du service de prédiction de la demande
 /// Cette classe simule le comportement d'un système de prédiction de demande
@@ -121,16 +123,56 @@ class MockDemandPredictionService implements DemandPredictionService {
     
     // Créer une liste de catégories fictives
     List<Categorie> mockCategories = [
-      Categorie(idcategorie: '1', nomcategorie: 'Plomberie', imagecategorie: 'plumbing.png', groupe: 'Habitat'),
-      Categorie(idcategorie: '2', nomcategorie: 'Électricité', imagecategorie: 'electricity.png', groupe: 'Habitat'),
-      Categorie(idcategorie: '3', nomcategorie: 'Coiffure', imagecategorie: 'hairdressing.png', groupe: 'Beauté'),
-      Categorie(idcategorie: '4', nomcategorie: 'Mécanique', imagecategorie: 'mechanics.png', groupe: 'Auto'),
-      Categorie(idcategorie: '5', nomcategorie: 'Ménage', imagecategorie: 'cleaning.png', groupe: 'Habitat'),
-      Categorie(idcategorie: '6', nomcategorie: 'Jardinage', imagecategorie: 'gardening.png', groupe: 'Habitat'),
-      Categorie(idcategorie: '7', nomcategorie: 'Informatique', imagecategorie: 'it.png', groupe: 'Tech'),
-      Categorie(idcategorie: '8', nomcategorie: 'Transport', imagecategorie: 'transport.png', groupe: 'Mobilité'),
+      Categorie(
+        idcategorie: '1',
+        nomcategorie: 'Plomberie',
+        imagecategorie: 'plumbing.png',
+        groupe: Groupe(idgroupe: 'g1', nomgroupe: 'Habitat'),
+      ),
+      Categorie(
+        idcategorie: '2',
+        nomcategorie: 'Électricité',
+        imagecategorie: 'electricity.png',
+        groupe: Groupe(idgroupe: 'g1', nomgroupe: 'Habitat'),
+      ),
+      Categorie(
+        idcategorie: '3',
+        nomcategorie: 'Coiffure',
+        imagecategorie: 'hairdressing.png',
+        groupe: Groupe(idgroupe: 'g2', nomgroupe: 'Beauté'),
+      ),
+      Categorie(
+        idcategorie: '4',
+        nomcategorie: 'Mécanique',
+        imagecategorie: 'mechanics.png',
+        groupe: Groupe(idgroupe: 'g3', nomgroupe: 'Auto'),
+      ),
+      Categorie(
+        idcategorie: '5',
+        nomcategorie: 'Ménage',
+        imagecategorie: 'cleaning.png',
+        groupe: Groupe(idgroupe: 'g1', nomgroupe: 'Habitat'),
+      ),
+      Categorie(
+        idcategorie: '6',
+        nomcategorie: 'Jardinage',
+        imagecategorie: 'gardening.png',
+        groupe: Groupe(idgroupe: 'g1', nomgroupe: 'Habitat'),
+      ),
+      Categorie(
+        idcategorie: '7',
+        nomcategorie: 'Informatique',
+        imagecategorie: 'it.png',
+        groupe: Groupe(idgroupe: 'g4', nomgroupe: 'Tech'),
+      ),
+      Categorie(
+        idcategorie: '8',
+        nomcategorie: 'Transport',
+        imagecategorie: 'transport.png',
+        groupe: Groupe(idgroupe: 'g5', nomgroupe: 'Mobilité'),
+      ),
     ];
-    
+
     // Liste pour stocker les prédictions calculées
     List<AIDemandPrediction> trendingPredictions = [];
     

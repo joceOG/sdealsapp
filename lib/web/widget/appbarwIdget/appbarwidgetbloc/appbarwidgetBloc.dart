@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/models/categorie.dart';
-import '../../../data/services/api_client.dart';
+import 'package:sdealsapp/data/models/categorie.dart';
+import 'package:sdealsapp/data/services/api_client.dart';
 import 'appbarwidgetEvent.dart';
 import 'appbarwidgetState.dart';
 

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:sdealsapp/mobile/view/service_provider_registration/screens/service_provider_registration_screen.dart';
+import 'package:go_router/go_router.dart';
+import 'package:sdealsapp/mobile/view/serviceproviderregistrationpagem/screens/serviceProviderRegistrationScreenM.dart';
 
-class ServiceProviderWelcomeScreen extends StatelessWidget {
+class ServiceProviderWelcomeScreenM extends StatelessWidget {
   final List<dynamic> categories;
   
-  const ServiceProviderWelcomeScreen({super.key, required this.categories});
+  const ServiceProviderWelcomeScreenM({super.key, required this.categories});
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +25,7 @@ class ServiceProviderWelcomeScreen extends StatelessWidget {
         ),
         child: ElevatedButton(
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const ServiceProviderRegistrationScreen(),
-              ),
-            );
+            GoRouter.of(context).push('/serviceProviderRegistration');
           },
           style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.symmetric(vertical: 16),

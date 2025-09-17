@@ -7,8 +7,8 @@ import 'package:sdealsapp/mobile/view/chatpagem/chatpageblocm/chatPageEventM.dar
 import 'package:sdealsapp/mobile/view/chatpagem/chatpageblocm/chatPageStateM.dart';
 import '../../../data/models/conversation_model.dart';
 import '../../../data/models/message_model.dart';
-import '../../../../web/data/models/categorie.dart';
-import '../../../../web/data/services/api_client.dart';
+import 'package:sdealsapp/data/models/categorie.dart';
+import 'package:sdealsapp/data/services/api_client.dart';
 
 class ChatPageBlocM extends Bloc<ChatPageEventM, ChatPageStateM> {
   final ApiClient _apiClient = ApiClient();

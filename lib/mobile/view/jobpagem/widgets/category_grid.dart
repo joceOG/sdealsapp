@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -12,6 +13,7 @@ class CategoryGrid extends StatefulWidget {
 class _CategoryGridState extends State<CategoryGrid> {
   List<Map<String, dynamic>> _categories = [];
   bool _isLoading = true;
+  String? apiUrl = dotenv.env['API_URL'];
 
   @override
   void initState() {
@@ -22,7 +24,7 @@ class _CategoryGridState extends State<CategoryGrid> {
   Future<void> _loadCategories() async {
     try {
       final response =
-          await http.get(Uri.parse('http://localhost:3000/api/categorie'));
+          await http.get(Uri.parse('$apiUrl/api/categorie'));
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body);
         setState(() {

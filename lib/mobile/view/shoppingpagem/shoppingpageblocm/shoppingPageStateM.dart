@@ -2,7 +2,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart'; // Import pour RangeValues
 
-import '../../../../web/data/models/categorie.dart';
+import 'package:sdealsapp/data/models/categorie.dart';
 
 // Définition du modèle Product pour éviter l'import cyclique
 class Product {

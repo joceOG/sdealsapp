@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:sdealsapp/ai_services/models/ai_recommendation_model.dart';
-import 'package:sdealsapp/web/data/models/categorie.dart';
+import 'package:sdealsapp/data/models/categorie.dart';
 
 abstract class ProviderDashboardState extends Equatable {
   @override

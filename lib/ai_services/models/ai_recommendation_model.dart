@@ -1,5 +1,5 @@
-import 'package:sdealsapp/web/data/models/prestataire.dart';
-import 'package:sdealsapp/web/data/models/categorie.dart';
+import 'package:sdealsapp/data/models/prestataire.dart';
+import 'package:sdealsapp/data/models/categorie.dart';
 
 /// Modèle représentant une recommandation de prestataire générée par l'IA
 class AIProviderRecommendation {

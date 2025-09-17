@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import '../../../data/models/conversation_model.dart';
 import '../../../data/models/message_model.dart';
-import '../../../../web/data/models/categorie.dart';
+import 'package:sdealsapp/data/models/categorie.dart';
 
 enum ChatPageStatus {
   initial,

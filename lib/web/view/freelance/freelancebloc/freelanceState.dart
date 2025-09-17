@@ -6,9 +6,9 @@ import 'package:sdealsapp/web/view/freelance/freelancebloc/freelanceBloc.dart';
 import 'package:sdealsapp/web/view/freelance/freelancebloc/freelanceEvent.dart';
 import 'package:sdealsapp/web/view/freelance/freelancebloc/freelanceState.dart';
 
-import '../../../data/models/categorie.dart';
-import '../../../data/models/groupe.dart';
-import '../../../data/models/service.dart';
+import 'package:sdealsapp/data/models/categorie.dart';
+import 'package:sdealsapp/data/models/groupe.dart';
+import 'package:sdealsapp/data/models/service.dart';
 
 class FreelanceState extends Equatable {
 

@@ -1,5 +1,5 @@
 import 'package:sdealsapp/ai_services/models/ai_recommendation_model.dart';
-import 'package:sdealsapp/web/data/models/categorie.dart';
+import 'package:sdealsapp/data/models/categorie.dart';
 
 /// Interface pour le service de prédiction de la demande
 abstract class DemandPredictionService {

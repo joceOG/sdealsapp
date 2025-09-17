@@ -6,9 +6,9 @@ import 'package:sdealsapp/web/view/homepage/homepagebloc/homePageBloc.dart';
 import 'package:sdealsapp/web/view/homepage/homepagebloc/homePageEvent.dart';
 import 'package:sdealsapp/web/view/homepage/homepagebloc/homePageState.dart';
 
-import '../../../data/models/categorie.dart';
-import '../../../data/models/groupe.dart';
-import '../../../data/models/service.dart';
+import 'package:sdealsapp/data/models/categorie.dart';
+import 'package:sdealsapp/data/models/groupe.dart';
+import 'package:sdealsapp/data/models/service.dart';
 
 class HomePageState extends Equatable {
 

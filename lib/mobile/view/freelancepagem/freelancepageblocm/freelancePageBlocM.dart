@@ -5,8 +5,8 @@ import 'package:sdealsapp/mobile/view/freelancepagem/models/freelance_model.dart
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 
-import '../../../../web/data/models/categorie.dart';
-import '../../../../web/data/services/api_client.dart';
+import 'package:sdealsapp/data/models/categorie.dart';
+import 'package:sdealsapp/data/services/api_client.dart';
 
 class FreelancePageBlocM extends Bloc<FreelancePageEventM, FreelancePageStateM> {
   FreelancePageBlocM() : super(FreelancePageStateM.initial()) {

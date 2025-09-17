@@ -3,7 +3,9 @@ import 'package:sdealsapp/ai_services/interfaces/demand_prediction_service.dart'
 import 'package:sdealsapp/ai_services/mock_implementations/mock_demand_prediction_service.dart';
 import 'package:sdealsapp/mobile/view/provider_dashboard/provider_dashboardblocm/provider_dashboard_event.dart';
 import 'package:sdealsapp/mobile/view/provider_dashboard/provider_dashboardblocm/provider_dashboard_state.dart';
-import 'package:sdealsapp/web/data/models/categorie.dart';
+import 'package:sdealsapp/data/models/categorie.dart';
+
+import '../../../../data/models/groupe.dart';
 
 class ProviderDashboardBloc extends Bloc<ProviderDashboardEvent, ProviderDashboardState> {
   final DemandPredictionService _demandService = MockDemandPredictionService();
@@ -33,9 +35,20 @@ class ProviderDashboardBloc extends Bloc<ProviderDashboardEvent, ProviderDashboa
       
       // Catégories du prestataire (simulées)
       final providerCategories = [
-        Categorie(idcategorie: '1', nomcategorie: 'Plomberie', imagecategorie: 'plumbing.png', groupe: 'Habitat'),
-        Categorie(idcategorie: '2', nomcategorie: 'Électricité', imagecategorie: 'electricity.png', groupe: 'Habitat'),
+        Categorie(
+          idcategorie: '1',
+          nomcategorie: 'Plomberie',
+          imagecategorie: 'plumbing.png',
+          groupe: Groupe(idgroupe: 'g1', nomgroupe: 'Habitat'),
+        ),
+        Categorie(
+          idcategorie: '2',
+          nomcategorie: 'Électricité',
+          imagecategorie: 'electricity.png',
+          groupe: Groupe(idgroupe: 'g1', nomgroupe: 'Habitat'),
+        ),
       ];
+
       
       // Localisation par défaut
       const String location = 'Abidjan';

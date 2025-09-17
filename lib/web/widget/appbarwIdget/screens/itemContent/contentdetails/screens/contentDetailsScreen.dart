@@ -10,13 +10,13 @@ import '../contentdetailsbloc/contentDetailsEvent.dart';
 
 class ContentDetailsScreen extends StatelessWidget {
 
-  final String categorieid;
-  const ContentDetailsScreen({required this.categorieid});
+  final String nomGroupe;
+  const ContentDetailsScreen({required this.nomGroupe});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => ContentDetailsBloc()..add(LoadServiceData(categorieid: this.categorieid)),
+      create: (_) => ContentDetailsBloc()..add(LoadServiceData(nomGroupe: this.nomGroupe)),
       child: const MyItemStatefulWidget(),
     );
   }

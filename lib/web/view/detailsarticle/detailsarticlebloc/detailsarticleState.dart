@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:sdealsapp/web/data/models/article.dart';
+import 'package:sdealsapp/data/models/article.dart';
 
 class DetailsArticleState extends Equatable {
   final Article? article;

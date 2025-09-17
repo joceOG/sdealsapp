@@ -3,8 +3,8 @@ import 'package:sdealsapp/web/view/freelance/freelancebloc/freelanceState.dart';
 
 import 'package:bloc/bloc.dart';
 
-import '../../../data/models/categorie.dart';
-import '../../../data/services/api_client.dart';
+import 'package:sdealsapp/data/models/categorie.dart';
+import 'package:sdealsapp/data/services/api_client.dart';
 
 class FreelanceBloc extends Bloc<FreelanceEvent, FreelanceState> {
 
