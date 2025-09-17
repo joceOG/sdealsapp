@@ -3,8 +3,8 @@ import 'package:sdealsapp/mobile/view/shoppingpagem/shoppingpageblocm/shoppingPa
 
 import 'package:bloc/bloc.dart';
 
-import '../../../../web/data/models/categorie.dart';
-import '../../../../web/data/services/api_client.dart';
+import 'package:sdealsapp/data/models/categorie.dart';
+import 'package:sdealsapp/data/services/api_client.dart';
 
 class ShoppingPageBlocM extends Bloc<ShoppingPageEventM, ShoppingPageStateM> {
   final ApiClient _apiClient = ApiClient();

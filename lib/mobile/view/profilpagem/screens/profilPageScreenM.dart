@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../auth/screens/loginPageScreenM.dart';
+import '../../loginpagem/screens/loginPageScreenM.dart';
 import '../profilpageblocm/profilPageBlocM.dart';
 
 class ProfilPageScreenM extends StatefulWidget {

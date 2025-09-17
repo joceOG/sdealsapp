@@ -1,4 +1,4 @@
-import 'package:sdealsapp/web/data/models/prestataire.dart';
+import 'package:sdealsapp/data/models/prestataire.dart';
 
 /// Modèle pour les explications de correspondance entre prestataires et demandes
 class ProviderMatchExplanation {

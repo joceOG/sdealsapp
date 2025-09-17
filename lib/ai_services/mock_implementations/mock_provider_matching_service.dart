@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:sdealsapp/ai_services/interfaces/provider_matching_service.dart';
 import 'package:sdealsapp/ai_services/models/ai_recommendation_model.dart';
-import 'package:sdealsapp/web/data/models/prestataire.dart';
+import 'package:sdealsapp/data/models/prestataire.dart';
 
 /// Implémentation mock du service de matching des prestataires
 /// Cette classe simule le comportement d'un service de matching IA avec des données préfabriquées

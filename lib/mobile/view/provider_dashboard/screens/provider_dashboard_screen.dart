@@ -6,7 +6,7 @@ import 'package:sdealsapp/mobile/view/provider_dashboard/provider_dashboardblocm
 import 'package:sdealsapp/mobile/view/provider_dashboard/widgets/ai_insights_widget.dart';
 import 'package:sdealsapp/mobile/view/provider_dashboard/widgets/dashboard_stat_card.dart';
 import 'package:sdealsapp/mobile/view/provider_dashboard/widgets/mission_list_item.dart';
-import 'package:sdealsapp/web/data/models/categorie.dart';
+import 'package:sdealsapp/data/models/categorie.dart';
 
 class ProviderDashboardScreen extends StatefulWidget {
   const ProviderDashboardScreen({Key? key}) : super(key: key);

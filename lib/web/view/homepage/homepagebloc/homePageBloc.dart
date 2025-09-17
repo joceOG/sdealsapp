@@ -1,12 +1,12 @@
 
-import 'package:sdealsapp/web/data/models/service.dart';
+import 'package:sdealsapp/data/models/service.dart';
 import 'package:sdealsapp/web/view/homepage/homepagebloc/homePageEvent.dart';
 import 'package:sdealsapp/web/view/homepage/homepagebloc/homePageState.dart';
 
 import 'package:bloc/bloc.dart';
 
-import '../../../data/models/categorie.dart';
-import '../../../data/services/api_client.dart';
+import 'package:sdealsapp/data/models/categorie.dart';
+import 'package:sdealsapp/data/services/api_client.dart';
 
 class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
 
@@ -41,8 +41,8 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     ApiClient apiClient = ApiClient();
     print("Try");
     try {
-      var categorieId = "Métiers" ;
-      List<Service> list_service = await apiClient.fetchService(categorieId);
+      var nomGroupe = "Métiers" ;
+      List<Service> list_service = await apiClient.fetchServices(nomGroupe);
       print("List Service");
       emit(state.copyWith(listItems2: list_service, isLoading2: false));
     } catch (error) {

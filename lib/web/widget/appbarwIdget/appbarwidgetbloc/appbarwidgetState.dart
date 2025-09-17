@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
-
-import '../../../data/models/categorie.dart';
+import 'package:sdealsapp/data/models/categorie.dart';
 
 class AppBarWidgetState extends Equatable {
 

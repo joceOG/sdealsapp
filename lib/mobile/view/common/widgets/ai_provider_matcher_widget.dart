@@ -3,7 +3,7 @@ import 'package:sdealsapp/ai_services/interfaces/provider_matching_service.dart'
 import 'package:sdealsapp/ai_services/mock_implementations/mock_provider_matching_service.dart';
 import 'package:sdealsapp/ai_services/models/provider_match_explanation.dart';
 import 'package:sdealsapp/ai_services/models/ai_recommendation_model.dart';
-import 'package:sdealsapp/web/data/models/prestataire.dart';
+import 'package:sdealsapp/data/models/prestataire.dart';
 
 /// Widget pour afficher les prestataires recommandés par IA
 class AIProviderMatcherWidget extends StatefulWidget {
@@ -70,7 +70,7 @@ class _AIProviderMatcherWidgetState extends State<AIProviderMatcherWidget> {
         providers.add(recommendation.prestataire);
         
         // Utiliser l'ID comme clé pour les scores et forces
-        final idKey = recommendation.prestataire.idutilisateur;
+        final idKey = recommendation.prestataire.utilisateur.idutilisateur;
         providerScores[idKey] = recommendation.matchScore;
         providerStrengths[idKey] = [recommendation.matchReason];
         if (recommendation.matchDetails.isNotEmpty) {
@@ -218,7 +218,7 @@ class _AIProviderMatcherWidgetState extends State<AIProviderMatcherWidget> {
           itemCount: _matchedProviders!.length > 3 ? 3 : _matchedProviders!.length,
           itemBuilder: (context, index) {
             final provider = _matchedProviders![index];
-            final matchScore = _matchExplanation?.providerScores[provider.idutilisateur] ?? 0.0;
+            final matchScore = _matchExplanation?.providerScores[provider.utilisateur.idutilisateur] ?? 0.0;
             final matchPercent = (matchScore * 100).toInt();
             
             return InkWell(
@@ -249,7 +249,7 @@ class _AIProviderMatcherWidgetState extends State<AIProviderMatcherWidget> {
                             children: [
                               Flexible(
                                 child: Text(
-                                  provider.nomprenom,
+                                  provider.utilisateur.prenom,
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16,
@@ -287,7 +287,7 @@ class _AIProviderMatcherWidgetState extends State<AIProviderMatcherWidget> {
                               const Icon(Icons.star, size: 16, color: Colors.amber),
                               const SizedBox(width: 4),
                               Text(
-                                provider.note,
+                                provider.utilisateur.note!,
                                 style: const TextStyle(fontWeight: FontWeight.bold),
                               ),
                               const Text(' (12 avis)'),
@@ -296,11 +296,11 @@ class _AIProviderMatcherWidgetState extends State<AIProviderMatcherWidget> {
                           const SizedBox(height: 4),
                           
                           // Points forts du prestataire
-                          if (_matchExplanation?.providerStrengths[provider.idutilisateur] != null)
+                          if (_matchExplanation?.providerStrengths[provider.utilisateur.idutilisateur] != null)
                             Wrap(
                               spacing: 4,
                               runSpacing: 4,
-                              children: _matchExplanation!.providerStrengths[provider.idutilisateur]!
+                              children: _matchExplanation!.providerStrengths[provider.utilisateur.idutilisateur]!
                                   .take(2)
                                   .map((strength) => _buildStrengthTag(strength))
                                   .toList(),

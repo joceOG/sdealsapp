@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:sdealsapp/web/data/models/categorie.dart';
+import 'package:sdealsapp/data/models/categorie.dart';
 
 import 'package:sdealsapp/web/view/freelance/freelancebloc/freelanceBloc.dart';
 import 'package:sdealsapp/web/view/freelance/freelancebloc/freelanceEvent.dart';
