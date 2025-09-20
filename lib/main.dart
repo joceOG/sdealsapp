@@ -38,13 +38,14 @@ import 'mobile/view/serviceproviderwelcomepagem/screens/serviceProviderWelcomeSc
 import 'mobile/view/shoppingpagem/screens/productDetailsScreenM.dart';
 import 'mobile/view/shoppingpagem/shoppingpageblocm/shoppingPageBlocM.dart';
 import 'mobile/view/shoppingpagem/shoppingpageblocm/shoppingPageEventM.dart'
-as shoppingPageEventM;
+    as shoppingPageEventM;
 import 'mobile/view/splashcreenm/screens/splashScreenM.dart';
 import 'mobile/view/splashcreenm/splashscreenblocm/splashscreenBlocM.dart';
 import 'mobile/view/splashcreenm/splashscreenblocm/splashscreenEventM.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-
+import 'mobile/view/shoppingpagem/screens/vendorDetailsScreenM.dart';
+import 'data/models/vendeur.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -202,6 +203,32 @@ class MyApp extends StatelessWidget {
           );
         },
       ),
+      GoRoute(
+        path: '/vendeurDetails',
+        builder: (context, state) {
+          final vendeur = state.extra as Vendeur?;
+          if (vendeur == null) {
+            // Si aucun vendeur n'est passé, rediriger vers la page d'accueil
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              context.go('/');
+            });
+            return const Scaffold(
+              body: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.error, size: 64, color: Colors.red),
+                    SizedBox(height: 16),
+                    Text('Vendeur introuvable'),
+                    Text('Redirection en cours...'),
+                  ],
+                ),
+              ),
+            );
+          }
+          return VendorDetailsScreenM(vendeur: vendeur);
+        },
+      ),
     ],
   );
 
@@ -218,7 +245,7 @@ class MyApp extends StatelessWidget {
       ],
       child: ResponsiveBuilder(builder: (context, sizingInformation) {
         GoRouter router =
-        sizingInformation.isDesktop ? desktopRouter : mobileRouter;
+            sizingInformation.isDesktop ? desktopRouter : mobileRouter;
 
         return MaterialApp.router(
           routerConfig: router,
@@ -240,8 +267,8 @@ class MyApp extends StatelessWidget {
                       color: Colors.grey,
                       width: 1.5,
                     )),
-                focusedBorder:
-                OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey)),
                 hintStyle: TextStyle(color: Colors.grey, fontSize: 14)),
           ),
         );

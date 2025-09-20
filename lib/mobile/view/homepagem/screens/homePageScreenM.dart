@@ -8,7 +8,6 @@ import 'package:sdealsapp/mobile/view/shoppingpagem/screens/shoppingPageScreenM.
 import 'package:sdealsapp/mobile/view/shoppingpagem/shoppingpageblocm/shoppingPageBlocM.dart';
 import '../../freelancepagem/screens/freelancePageScreen.dart';
 import '../../loginpagem/screens/loginPageScreenM.dart';
-import '../../registerpagem/screens/registerPageScreenM.dart';
 import '../homepageblocm/homePageBlocM.dart';
 import '../homepageblocm/homePageEventM.dart';
 import '../homepageblocm/homePageStateM.dart';
@@ -35,14 +34,13 @@ class _HomePageScreenStateM extends State<HomePageScreenM>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
     BlocProvider.of<HomePageBlocM>(context).add(LoadCategorieDataM());
 
     _tabsData = [
       {"label": "Métiers", "icon": Icons.work, "page": null},
       {"label": "Freelance", "icon": Icons.person, "page": null},
       {"label": "Marketplace", "icon": Icons.shopping_cart, "page": null},
-      {"label": "Prestataires", "icon": Icons.person, "page": null},
     ];
 
     _tabController.addListener(() {
@@ -72,8 +70,6 @@ class _HomePageScreenStateM extends State<HomePageScreenM>
         create: (context) => ShoppingPageBlocM(),
         child: const ShoppingPageScreenM(),
       );
-
-      _tabsData[3]["page"] = FreelancePageScreen(categories: categories);
 
       setState(() {});
     } catch (e) {
@@ -200,18 +196,18 @@ class _HomePageScreenStateM extends State<HomePageScreenM>
           ),
           body: state.isLoading == true && state.listItems == null
               ? const Center(
-              child: CircularProgressIndicator(color: Colors.green))
+                  child: CircularProgressIndicator(color: Colors.green))
               : state.error != null && state.error!.isNotEmpty
-              ? _buildError(state.error!)
-              : TabBarView(
-            controller: _tabController,
-            children: _tabsData
-                .map<Widget>((tab) => tab["page"] != null
-                ? tab["page"] as Widget
-                : const Center(
-                child: Text("Chargement des données...")))
-                .toList(),
-          ),
+                  ? _buildError(state.error!)
+                  : TabBarView(
+                      controller: _tabController,
+                      children: _tabsData
+                          .map<Widget>((tab) => tab["page"] != null
+                              ? tab["page"] as Widget
+                              : const Center(
+                                  child: Text("Chargement des données...")))
+                          .toList(),
+                    ),
         );
       },
     );
@@ -247,7 +243,13 @@ class _HomePageScreenStateM extends State<HomePageScreenM>
                       ),
                     ),
                   ),
-                  _buildAuthButtons(),
+                  Row(
+                    children: [
+                      _buildRoleSwitcher(),
+                      const SizedBox(width: 8),
+                      _buildAuthButtons(),
+                    ],
+                  ),
                 ],
               ),
               if (_isSearchVisible) _buildSearchField(),
@@ -262,15 +264,52 @@ class _HomePageScreenStateM extends State<HomePageScreenM>
     );
   }
 
+  Widget _buildRoleSwitcher() {
+    return BlocBuilder<AuthCubit, AuthState>(builder: (context, state) {
+      if (state is! AuthAuthenticated) return const SizedBox.shrink();
+      final roles = state.roles;
+      if (roles.isEmpty) return const SizedBox.shrink();
+      final active = state.activeRole ?? roles.first;
+      return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.15),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: DropdownButtonHideUnderline(
+          child: DropdownButton<String>(
+            dropdownColor: Colors.green,
+            value: active,
+            iconEnabledColor: Colors.white,
+            style: const TextStyle(color: Colors.white, fontSize: 12),
+            items: roles
+                .map((r) => DropdownMenuItem(
+                      value: r,
+                      child:
+                          Text(r, style: const TextStyle(color: Colors.white)),
+                    ))
+                .toList(),
+            onChanged: (val) {
+              if (val != null) {
+                context.read<AuthCubit>().switchActiveRole(val);
+              }
+            },
+          ),
+        ),
+      );
+    });
+  }
+
   Widget _buildAuthButtons() {
     return BlocBuilder<AuthCubit, AuthState>(
       builder: (context, state) {
         if (state is AuthAuthenticated) {
           final utilisateur = state.utilisateur;
-          final initials = ((utilisateur.nom.isNotEmpty || utilisateur.prenom.isNotEmpty))
+          final initials = ((utilisateur.nom.isNotEmpty ||
+                  utilisateur.prenom.isNotEmpty))
               ? '${utilisateur.nom.isNotEmpty ? utilisateur.nom[0] : ''}'
-              '${utilisateur.prenom.isNotEmpty ? utilisateur.prenom[0] : ''}'
-              .toUpperCase()
+                      '${utilisateur.prenom.isNotEmpty ? utilisateur.prenom[0] : ''}'
+                  .toUpperCase()
               : '';
 
           return Row(
@@ -282,13 +321,32 @@ class _HomePageScreenStateM extends State<HomePageScreenM>
                   style: const TextStyle(color: Colors.white),
                 ),
               ),
+              if (_hasAnyPendingRole(context)) ...[
+                const SizedBox(width: 6),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: Colors.orangeAccent,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Text(
+                    'PENDING',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
               const SizedBox(width: 8),
               IconButton(
                 icon: const Icon(Icons.search, color: Colors.white, size: 20),
                 onPressed: _toggleSearch,
               ),
               IconButton(
-                icon: const Icon(Icons.notifications, color: Colors.white, size: 20),
+                icon: const Icon(Icons.notifications,
+                    color: Colors.white, size: 20),
                 onPressed: _openNotifications,
               ),
             ],
@@ -304,7 +362,8 @@ class _HomePageScreenStateM extends State<HomePageScreenM>
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
                   foregroundColor: Colors.green,
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
                   minimumSize: const Size(70, 30),
                 ),
                 child: const Text(
@@ -320,7 +379,8 @@ class _HomePageScreenStateM extends State<HomePageScreenM>
                 style: OutlinedButton.styleFrom(
                   foregroundColor: Colors.white,
                   side: const BorderSide(color: Colors.white),
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
                   minimumSize: const Size(70, 30),
                 ),
                 child: const Text(
@@ -334,7 +394,8 @@ class _HomePageScreenStateM extends State<HomePageScreenM>
                 onPressed: _toggleSearch,
               ),
               IconButton(
-                icon: const Icon(Icons.notifications, color: Colors.white, size: 20),
+                icon: const Icon(Icons.notifications,
+                    color: Colors.white, size: 20),
                 onPressed: _openNotifications,
               ),
             ],
@@ -342,6 +403,17 @@ class _HomePageScreenStateM extends State<HomePageScreenM>
         }
       },
     );
+  }
+
+  bool _hasAnyPendingRole(BuildContext context) {
+    final state = context.read<AuthCubit>().state;
+    if (state is! AuthAuthenticated) return false;
+    final d = state.roleDetails;
+    if (d == null) return false;
+    final prestPending = (d['prestataire']?['verifier'] == false);
+    final freePending = ((d['freelance']?['accountStatus']) == 'Pending');
+    final vendPending = (d['vendeur']?['verifier'] == false);
+    return prestPending || freePending || vendPending;
   }
 
   Widget _buildSearchField() {
@@ -378,14 +450,16 @@ class _HomePageScreenStateM extends State<HomePageScreenM>
         indicatorColor: Colors.transparent,
         tabs: _tabsData
             .map((tab) => Tab(
-          child: OutlinedButton.icon(
-            onPressed: () =>
-                _tabController.animateTo(_tabsData.indexOf(tab)),
-            icon: Icon(tab["icon"] as IconData, color: Colors.white, size: 16),
-            label: Text(tab["label"] as String,
-                style: const TextStyle(color: Colors.white, fontSize: 11)),
-          ),
-        ))
+                  child: OutlinedButton.icon(
+                    onPressed: () =>
+                        _tabController.animateTo(_tabsData.indexOf(tab)),
+                    icon: Icon(tab["icon"] as IconData,
+                        color: Colors.white, size: 16),
+                    label: Text(tab["label"] as String,
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 11)),
+                  ),
+                ))
             .toList(),
       ),
     );
@@ -402,13 +476,14 @@ class _HomePageScreenStateM extends State<HomePageScreenM>
         onPressed: isLoading ? null : toggleLocation,
         icon: isLoading
             ? const SizedBox(
-          width: 14,
-          height: 14,
-          child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
-        )
+                width: 14,
+                height: 14,
+                child: CircularProgressIndicator(
+                    strokeWidth: 2, color: Colors.white),
+              )
             : Icon(Icons.location_on,
-            size: 18,
-            color: isLocationEnabled ? Colors.amber : Colors.white),
+                size: 18,
+                color: isLocationEnabled ? Colors.amber : Colors.white),
         label: Text('Autour de moi',
             style: TextStyle(
                 color: isLocationEnabled ? Colors.amber : Colors.white,
@@ -427,8 +502,8 @@ class _HomePageScreenStateM extends State<HomePageScreenM>
           Text('Erreur: $error', style: const TextStyle(color: Colors.red)),
           const SizedBox(height: 16),
           ElevatedButton(
-            onPressed: () =>
-                BlocProvider.of<HomePageBlocM>(context).add(LoadCategorieDataM()),
+            onPressed: () => BlocProvider.of<HomePageBlocM>(context)
+                .add(LoadCategorieDataM()),
             child: const Text('Réessayer'),
           ),
         ],

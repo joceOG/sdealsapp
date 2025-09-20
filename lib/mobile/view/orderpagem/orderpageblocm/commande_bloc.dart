@@ -2,6 +2,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../data/models/commande_model.dart';
 import 'commande_event.dart';
 import 'commande_state.dart';
+// NOTE: imports non utilisés pour le flux e-commerce actuel; le flux Prestation
+// utilisera un Cubit dédié dans un fichier séparé.
 
 class CommandeBloc extends Bloc<CommandeEvent, CommandeState> {
   CommandeBloc() : super(CommandeState.initial()) {
@@ -23,8 +25,9 @@ class CommandeBloc extends Bloc<CommandeEvent, CommandeState> {
     try {
       // Ici, on utiliserait normalement une API pour récupérer les commandes
       // Pour l'exemple, on utilise les données simulées
-      await Future.delayed(const Duration(seconds: 1)); // Simulation de délai réseau
-      
+      await Future.delayed(
+          const Duration(seconds: 1)); // Simulation de délai réseau
+
       emit(state.copyWith(
         isLoading: false,
         commandes: commandesSimulees,
@@ -62,7 +65,7 @@ class CommandeBloc extends Bloc<CommandeEvent, CommandeState> {
       }
       return commande;
     }).toList();
-    
+
     emit(state.copyWith(commandes: updatedCommandes));
   }
 
@@ -80,7 +83,7 @@ class CommandeBloc extends Bloc<CommandeEvent, CommandeState> {
       }
       return commande;
     }).toList();
-    
+
     emit(state.copyWith(commandes: updatedCommandes));
   }
 
@@ -101,7 +104,7 @@ class CommandeBloc extends Bloc<CommandeEvent, CommandeState> {
       }
       return commande;
     }).toList();
-    
+
     emit(state.copyWith(commandes: updatedCommandes));
   }
 }

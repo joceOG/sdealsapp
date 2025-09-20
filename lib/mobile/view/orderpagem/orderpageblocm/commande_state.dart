@@ -33,23 +33,31 @@ class CommandeState extends Equatable {
       return commandes.where((commande) {
         // Applique le filtre de recherche si présent
         if (searchQuery != null && searchQuery!.isNotEmpty) {
-          return commande.prestataireName.toLowerCase().contains(searchQuery!.toLowerCase()) ||
-              commande.typeService.toLowerCase().contains(searchQuery!.toLowerCase());
+          return commande.prestataireName
+                  .toLowerCase()
+                  .contains(searchQuery!.toLowerCase()) ||
+              commande.typeService
+                  .toLowerCase()
+                  .contains(searchQuery!.toLowerCase());
         }
         return true;
       }).toList();
     }
-    
+
     // Filtre par statut et recherche si applicable
     return commandes.where((commande) {
       bool matchStatus = commande.status == filtreStatus;
-      
+
       if (searchQuery != null && searchQuery!.isNotEmpty) {
-        bool matchSearch = commande.prestataireName.toLowerCase().contains(searchQuery!.toLowerCase()) ||
-            commande.typeService.toLowerCase().contains(searchQuery!.toLowerCase());
+        bool matchSearch = commande.prestataireName
+                .toLowerCase()
+                .contains(searchQuery!.toLowerCase()) ||
+            commande.typeService
+                .toLowerCase()
+                .contains(searchQuery!.toLowerCase());
         return matchStatus && matchSearch;
       }
-      
+
       return matchStatus;
     }).toList();
   }
@@ -80,5 +88,23 @@ class CommandeState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [isLoading, commandes, error, searchQuery, filtreStatus];
+  List<Object?> get props =>
+      [isLoading, commandes, error, searchQuery, filtreStatus];
+}
+
+// États pour le flux Prestation (service request)
+abstract class ServiceRequestState {}
+
+class ServiceRequestInitial extends ServiceRequestState {}
+
+class ServiceRequestLoading extends ServiceRequestState {}
+
+class ServiceRequestSuccess extends ServiceRequestState {
+  final Map<String, dynamic> data;
+  ServiceRequestSuccess(this.data);
+}
+
+class ServiceRequestError extends ServiceRequestState {
+  final String message;
+  ServiceRequestError(this.message);
 }

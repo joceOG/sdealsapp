@@ -1,20 +1,23 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
 
 import 'package:sdealsapp/data/models/categorie.dart';
 import '../models/freelance_model.dart';
 
 class FreelancePageStateM extends Equatable {
-
   final bool isLoading;
   final List<Categorie>? listItems;
   final String? error;
-  
+
   // Nouveaux champs pour la gestion des freelancers
   final List<FreelanceModel> freelancers;
   final List<FreelanceModel> filteredFreelancers;
   final String? selectedCategory;
   final String searchQuery;
+
+  // ✅ NOUVEAU : États pour l'inscription freelance
+  final bool isRegistrationLoading;
+  final String? registrationError;
+  final String? registrationSuccess;
 
   const FreelancePageStateM({
     required this.isLoading,
@@ -24,6 +27,9 @@ class FreelancePageStateM extends Equatable {
     required this.filteredFreelancers,
     required this.selectedCategory,
     required this.searchQuery,
+    required this.isRegistrationLoading,
+    required this.registrationError,
+    required this.registrationSuccess,
   });
 
   factory FreelancePageStateM.initial() {
@@ -35,6 +41,9 @@ class FreelancePageStateM extends Equatable {
       filteredFreelancers: [],
       selectedCategory: null,
       searchQuery: '',
+      isRegistrationLoading: false,
+      registrationError: null,
+      registrationSuccess: null,
     );
   }
 
@@ -47,6 +56,9 @@ class FreelancePageStateM extends Equatable {
         filteredFreelancers,
         selectedCategory,
         searchQuery,
+        isRegistrationLoading,
+        registrationError,
+        registrationSuccess,
       ];
 
   FreelancePageStateM copyWith({
@@ -57,6 +69,9 @@ class FreelancePageStateM extends Equatable {
     List<FreelanceModel>? filteredFreelancers,
     String? selectedCategory,
     String? searchQuery,
+    bool? isRegistrationLoading,
+    String? registrationError,
+    String? registrationSuccess,
   }) {
     return FreelancePageStateM(
       isLoading: isLoading ?? this.isLoading,
@@ -66,12 +81,10 @@ class FreelancePageStateM extends Equatable {
       filteredFreelancers: filteredFreelancers ?? this.filteredFreelancers,
       selectedCategory: selectedCategory ?? this.selectedCategory,
       searchQuery: searchQuery ?? this.searchQuery,
+      isRegistrationLoading:
+          isRegistrationLoading ?? this.isRegistrationLoading,
+      registrationError: registrationError ?? this.registrationError,
+      registrationSuccess: registrationSuccess ?? this.registrationSuccess,
     );
   }
 }
-
-
-
-
-
-

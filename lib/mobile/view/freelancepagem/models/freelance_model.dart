@@ -51,6 +51,26 @@ class FreelanceModel extends Equatable {
         responseTime,
       ];
 
+  // ✅ NOUVELLE FACTORY : Convertir depuis le backend
+  factory FreelanceModel.fromBackend(Map<String, dynamic> json) {
+    return FreelanceModel(
+      id: json['_id'] as String,
+      name: json['name'] as String,
+      job: json['job'] as String,
+      category: json['category'] as String,
+      imagePath: json['imagePath'] as String? ?? '',
+      rating: (json['rating'] as num?)?.toDouble() ?? 0.0,
+      completedJobs: json['completedJobs'] as int? ?? 0,
+      isTopRated: json['isTopRated'] as bool? ?? false,
+      isFeatured: json['isFeatured'] as bool? ?? false,
+      isNew: json['isNew'] as bool? ?? true,
+      skills: json['skills'] != null ? List<String>.from(json['skills']) : [],
+      hourlyRate: (json['hourlyRate'] as num?)?.toDouble() ?? 0.0,
+      description: json['description'] as String? ?? '',
+      responseTime: json['responseTime'] as int? ?? 24,
+    );
+  }
+
   // Méthode factory pour créer une instance à partir d'un Map (JSON)
   factory FreelanceModel.fromJson(Map<String, dynamic> json) {
     return FreelanceModel(
@@ -64,7 +84,10 @@ class FreelanceModel extends Equatable {
       isTopRated: json['isTopRated'] as bool? ?? false,
       isFeatured: json['isFeatured'] as bool? ?? false,
       isNew: json['isNew'] as bool? ?? false,
-      skills: (json['skills'] as List<dynamic>?)?.map((e) => e as String).toList() ?? const [],
+      skills: (json['skills'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
       hourlyRate: (json['hourlyRate'] as num?)?.toDouble() ?? 0.0,
       description: json['description'] as String? ?? '',
       responseTime: json['responseTime'] as int? ?? 24,
@@ -141,7 +164,8 @@ List<FreelanceModel> getMockFreelancers() {
       isTopRated: true,
       skills: ['Anglais', 'Français', 'Espagnol', 'Arabe'],
       hourlyRate: 25.0,
-      description: 'Traductrice professionnelle avec plus de 5 ans d\'expérience',
+      description:
+          'Traductrice professionnelle avec plus de 5 ans d\'expérience',
       responseTime: 2,
     ),
     const FreelanceModel(
@@ -197,9 +221,15 @@ List<FreelanceModel> getMockFreelancers() {
       rating: 4.6,
       completedJobs: 72,
       isNew: true,
-      skills: ['Montage vidéo', 'Motion Design', 'After Effects', 'Premiere Pro'],
+      skills: [
+        'Montage vidéo',
+        'Motion Design',
+        'After Effects',
+        'Premiere Pro'
+      ],
       hourlyRate: 30.0,
-      description: 'Vidéaste professionnelle spécialisée dans le marketing digital',
+      description:
+          'Vidéaste professionnelle spécialisée dans le marketing digital',
       responseTime: 6,
     ),
     const FreelanceModel(
@@ -226,7 +256,8 @@ List<FreelanceModel> getMockFreelancers() {
       isTopRated: true,
       skills: ['Portrait', 'Produit', 'Événementiel', 'Retouche photo'],
       hourlyRate: 45.0,
-      description: 'Photographe professionnelle, spécialisation en photo commerciale',
+      description:
+          'Photographe professionnelle, spécialisation en photo commerciale',
       responseTime: 8,
     ),
   ];

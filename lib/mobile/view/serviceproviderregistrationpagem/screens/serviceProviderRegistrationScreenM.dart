@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sdealsapp/data/services/authCubit.dart';
 import 'package:sdealsapp/mobile/view/provider_dashboard/screens/provider_main_screen.dart';
 import 'package:sdealsapp/mobile/view/serviceproviderregistrationpagem/screens/steps/provider_personal_info_step.dart';
 import 'package:sdealsapp/mobile/view/serviceproviderregistrationpagem/screens/steps/provider_professional_info_step.dart';
@@ -117,9 +118,14 @@ class _ServiceProviderRegistrationScreenMState
 
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
+      // ✅ Injecter l'userId existant s'il est connecté
+      final auth = context.read<AuthCubit>().state;
+      if (auth is AuthAuthenticated) {
+        formData['existingUserId'] = auth.utilisateur.idutilisateur;
+      }
       context.read<ServiceProviderRegistrationBlocM>().add(
-        SubmitServiceProviderRegistrationEvent(formData: formData),
-      );
+            SubmitServiceProviderRegistrationEvent(formData: formData),
+          );
     }
   }
 

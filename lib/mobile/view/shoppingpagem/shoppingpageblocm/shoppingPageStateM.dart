@@ -1,8 +1,8 @@
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart'; // Import pour RangeValues
 
 import 'package:sdealsapp/data/models/categorie.dart';
+import 'package:sdealsapp/data/models/vendeur.dart';
 
 // Définition du modèle Product pour éviter l'import cyclique
 class Product {
@@ -27,19 +27,26 @@ class Product {
   });
 }
 
-
 class ShoppingPageStateM extends Equatable {
   // États d'origine pour les catégories
   final bool? isLoading;
   final List<Categorie>? listItems;
   final String? error;
-  
+
   // Nouveaux états pour la gestion des produits
   final List<Product>? products; // Liste de tous les produits
   final List<Product>? filteredProducts; // Liste des produits filtrés
   final List<String>? favoriteProductIds; // IDs des produits favoris
-  final List<Product>? productsToCompare; // Produits sélectionnés pour comparaison
-  
+  final List<Product>?
+      productsToCompare; // Produits sélectionnés pour comparaison
+
+  // ✅ NOUVEAUX ÉTATS POUR LES VENDEURS
+  final bool
+      showVendeurs; // true = afficher vendeurs, false = afficher produits
+  final List<Vendeur>? vendeurs; // Liste de tous les vendeurs
+  final List<Vendeur>? filteredVendeurs; // Liste des vendeurs filtrés
+  final List<String>? favoriteVendeurIds; // IDs des vendeurs favoris
+
   // États pour les filtres
   final String? selectedFilter; // Filtre actuellement sélectionné
   final String? searchQuery; // Texte de recherche
@@ -57,6 +64,11 @@ class ShoppingPageStateM extends Equatable {
     this.filteredProducts,
     this.favoriteProductIds,
     this.productsToCompare,
+    // ✅ NOUVEAUX PARAMÈTRES VENDEURS
+    this.showVendeurs = false, // Par défaut, afficher les produits
+    this.vendeurs,
+    this.filteredVendeurs,
+    this.favoriteVendeurIds,
     this.selectedFilter,
     this.searchQuery,
     this.selectedBrand,
@@ -93,6 +105,11 @@ class ShoppingPageStateM extends Equatable {
     List<Product>? filteredProducts,
     List<String>? favoriteProductIds,
     List<Product>? productsToCompare,
+    // ✅ NOUVEAUX PARAMÈTRES VENDEURS
+    bool? showVendeurs,
+    List<Vendeur>? vendeurs,
+    List<Vendeur>? filteredVendeurs,
+    List<String>? favoriteVendeurIds,
     String? selectedFilter,
     String? searchQuery,
     String? selectedBrand,
@@ -109,6 +126,11 @@ class ShoppingPageStateM extends Equatable {
       filteredProducts: filteredProducts ?? this.filteredProducts,
       favoriteProductIds: favoriteProductIds ?? this.favoriteProductIds,
       productsToCompare: productsToCompare ?? this.productsToCompare,
+      // ✅ NOUVEAUX PARAMÈTRES VENDEURS
+      showVendeurs: showVendeurs ?? this.showVendeurs,
+      vendeurs: vendeurs ?? this.vendeurs,
+      filteredVendeurs: filteredVendeurs ?? this.filteredVendeurs,
+      favoriteVendeurIds: favoriteVendeurIds ?? this.favoriteVendeurIds,
       selectedFilter: selectedFilter ?? this.selectedFilter,
       searchQuery: searchQuery ?? this.searchQuery,
       selectedBrand: selectedBrand ?? this.selectedBrand,
@@ -128,6 +150,11 @@ class ShoppingPageStateM extends Equatable {
         filteredProducts,
         favoriteProductIds,
         productsToCompare,
+        // ✅ NOUVEAUX PROPS VENDEURS
+        showVendeurs,
+        vendeurs,
+        filteredVendeurs,
+        favoriteVendeurIds,
         selectedFilter,
         searchQuery,
         selectedBrand,
@@ -137,12 +164,3 @@ class ShoppingPageStateM extends Equatable {
         selectedLocation,
       ];
 }
-
-
-
-
-
-
-
-
-

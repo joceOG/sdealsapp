@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sdealsapp/data/services/authCubit.dart';
 import 'package:sdealsapp/mobile/view/freelancepagem/freelancepageblocm/freelancePageBlocM.dart';
 import 'package:sdealsapp/mobile/view/freelancepagem/freelancepageblocm/freelancePageEventM.dart';
 import 'package:sdealsapp/mobile/view/freelancepagem/freelancepageblocm/freelancePageStateM.dart';
@@ -21,14 +22,16 @@ class FreelanceRegistrationScreen extends StatelessWidget {
 
 class _FreelanceRegistrationContent extends StatefulWidget {
   @override
-  State<_FreelanceRegistrationContent> createState() => _FreelanceRegistrationContentState();
+  State<_FreelanceRegistrationContent> createState() =>
+      _FreelanceRegistrationContentState();
 }
 
-class _FreelanceRegistrationContentState extends State<_FreelanceRegistrationContent> {
+class _FreelanceRegistrationContentState
+    extends State<_FreelanceRegistrationContent> {
   final Set<String> _selectedCategories = {};
   final Set<String> _selectedServices = {};
   int _estimatedHoursPerWeek = 20; // Valeur par défaut
-  
+
   // Icônes pour chaque catégorie
   final Map<String, IconData> categoryIcons = {
     'Développement': Icons.code,
@@ -50,8 +53,8 @@ class _FreelanceRegistrationContentState extends State<_FreelanceRegistrationCon
       appBar: AppBar(
         backgroundColor: Colors.green.shade700,
         elevation: 0,
-        title: const Text('Devenir Freelance', 
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        title: const Text('Devenir Freelance',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.of(context).pop(),
@@ -62,7 +65,7 @@ class _FreelanceRegistrationContentState extends State<_FreelanceRegistrationCon
           if (state.isLoading) {
             return const Center(child: CircularProgressIndicator());
           }
-          
+
           if (state.error != null) {
             return Center(child: Text('Erreur: ${state.error}'));
           }
@@ -176,9 +179,11 @@ class _FreelanceRegistrationContentState extends State<_FreelanceRegistrationCon
             itemCount: categories.length,
             itemBuilder: (context, index) {
               final category = categories[index];
-              final isSelected = _selectedCategories.contains(category.nomcategorie);
-              final icon = categoryIcons[category.nomcategorie] ?? Icons.category;
-              
+              final isSelected =
+                  _selectedCategories.contains(category.nomcategorie);
+              final icon =
+                  categoryIcons[category.nomcategorie] ?? Icons.category;
+
               return InkWell(
                 onTap: () {
                   setState(() {
@@ -192,10 +197,14 @@ class _FreelanceRegistrationContentState extends State<_FreelanceRegistrationCon
                 child: Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: isSelected ? Colors.green.shade100 : Colors.grey.shade100,
+                    color: isSelected
+                        ? Colors.green.shade100
+                        : Colors.grey.shade100,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
-                      color: isSelected ? Colors.green.shade700 : Colors.grey.shade300,
+                      color: isSelected
+                          ? Colors.green.shade700
+                          : Colors.grey.shade300,
                       width: isSelected ? 2 : 1,
                     ),
                   ),
@@ -204,15 +213,19 @@ class _FreelanceRegistrationContentState extends State<_FreelanceRegistrationCon
                     children: [
                       Icon(
                         icon,
-                        color: isSelected ? Colors.green.shade700 : Colors.grey.shade700,
+                        color: isSelected
+                            ? Colors.green.shade700
+                            : Colors.grey.shade700,
                         size: 28,
                       ),
                       const SizedBox(height: 8),
                       Text(
                         category.nomcategorie,
                         style: TextStyle(
-                          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                          color: isSelected ? Colors.green.shade700 : Colors.black,
+                          fontWeight:
+                              isSelected ? FontWeight.bold : FontWeight.normal,
+                          color:
+                              isSelected ? Colors.green.shade700 : Colors.black,
                         ),
                       ),
                       const SizedBox(height: 4),
@@ -237,18 +250,51 @@ class _FreelanceRegistrationContentState extends State<_FreelanceRegistrationCon
   Widget _buildPopularServicesSection(FreelancePageStateM state) {
     // Pour simuler des services populaires par catégorie
     final List<Map<String, dynamic>> mockServices = [
-      {'nom': 'Création de logo', 'categorie': 'Design', 'demande': 'Élevée', 'tarif': '15,000 FCFA'},
-      {'nom': 'Développement mobile', 'categorie': 'Développement', 'demande': 'Très élevée', 'tarif': '25,000 FCFA'},
-      {'nom': 'Rédaction web SEO', 'categorie': 'Rédaction', 'demande': 'Élevée', 'tarif': '10,000 FCFA'},
-      {'nom': 'Montage vidéo', 'categorie': 'Vidéo', 'demande': 'Moyenne', 'tarif': '20,000 FCFA'},
-      {'nom': 'Traduction Français-Anglais', 'categorie': 'Traduction', 'demande': 'Élevée', 'tarif': '8,000 FCFA'},
-      {'nom': 'Gestion réseaux sociaux', 'categorie': 'Marketing', 'demande': 'Très élevée', 'tarif': '30,000 FCFA'},
+      {
+        'nom': 'Création de logo',
+        'categorie': 'Design',
+        'demande': 'Élevée',
+        'tarif': '15,000 FCFA'
+      },
+      {
+        'nom': 'Développement mobile',
+        'categorie': 'Développement',
+        'demande': 'Très élevée',
+        'tarif': '25,000 FCFA'
+      },
+      {
+        'nom': 'Rédaction web SEO',
+        'categorie': 'Rédaction',
+        'demande': 'Élevée',
+        'tarif': '10,000 FCFA'
+      },
+      {
+        'nom': 'Montage vidéo',
+        'categorie': 'Vidéo',
+        'demande': 'Moyenne',
+        'tarif': '20,000 FCFA'
+      },
+      {
+        'nom': 'Traduction Français-Anglais',
+        'categorie': 'Traduction',
+        'demande': 'Élevée',
+        'tarif': '8,000 FCFA'
+      },
+      {
+        'nom': 'Gestion réseaux sociaux',
+        'categorie': 'Marketing',
+        'demande': 'Très élevée',
+        'tarif': '30,000 FCFA'
+      },
     ];
-    
+
     // Filtrer les services pertinents pour les catégories sélectionnées
     List<Map<String, dynamic>> relevantServices = _selectedCategories.isEmpty
         ? mockServices
-        : mockServices.where((service) => _selectedCategories.contains(service['categorie'])).toList();
+        : mockServices
+            .where(
+                (service) => _selectedCategories.contains(service['categorie']))
+            .toList();
 
     return Container(
       padding: const EdgeInsets.all(24),
@@ -280,7 +326,7 @@ class _FreelanceRegistrationContentState extends State<_FreelanceRegistrationCon
             itemBuilder: (context, index) {
               final service = relevantServices[index];
               final isSelected = _selectedServices.contains(service['nom']);
-              
+
               return CheckboxListTile(
                 value: isSelected,
                 onChanged: (value) {
@@ -293,7 +339,8 @@ class _FreelanceRegistrationContentState extends State<_FreelanceRegistrationCon
                   });
                 },
                 title: Text(service['nom']),
-                subtitle: Text('${service['categorie']} • Demande: ${service['demande']}'),
+                subtitle: Text(
+                    '${service['categorie']} • Demande: ${service['demande']}'),
                 secondary: Text(
                   service['tarif'],
                   style: const TextStyle(
@@ -314,7 +361,7 @@ class _FreelanceRegistrationContentState extends State<_FreelanceRegistrationCon
     // Calculer les revenus estimés
     final int minRevenue = _selectedServices.length * 15000;
     final int maxRevenue = _selectedServices.length * 30000;
-    
+
     return Container(
       margin: const EdgeInsets.all(24),
       padding: const EdgeInsets.all(24),
@@ -399,9 +446,12 @@ class _FreelanceRegistrationContentState extends State<_FreelanceRegistrationCon
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => FreelanceFormScreen(
-                    preSelectedCategories: _selectedCategories,
-                    preSelectedServices: _selectedServices,
+                  builder: (context) => BlocProvider.value(
+                    value: context.read<FreelancePageBlocM>(),
+                    child: FreelanceFormScreen(
+                      preSelectedCategories: _selectedCategories,
+                      preSelectedServices: _selectedServices,
+                    ),
                   ),
                 ),
               );

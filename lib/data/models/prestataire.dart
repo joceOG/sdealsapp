@@ -58,6 +58,64 @@ class Prestataire {
     this.numeroRCCM,
   });
 
+  // ✅ NOUVELLE FACTORY : Convertir depuis le backend avec nouveau modèle
+  factory Prestataire.fromBackend(Map<String, dynamic> json) {
+    try {
+      return Prestataire(
+        idprestataire: json['_id'] as String,
+        utilisateur: json['utilisateur'] != null
+            ? Utilisateur.fromJson(json['utilisateur'])
+            : Utilisateur(
+                idutilisateur: '',
+                nom: 'Inconnu',
+                prenom: '',
+                genre: 'Homme',
+                email: '',
+                password: '',
+                telephone: ''),
+        service: json['service'] != null
+            ? Service.fromJson(json['service'])
+            : Service(
+                idservice: '',
+                nomservice: 'Service inconnu',
+                imageservice: '',
+                prixmoyen: '0'),
+        prixprestataire: (json['hourlyRate'] as num?)?.toDouble() ??
+            0.0, // Mapping nouveau modèle
+        localisation: json['location'] as String? ?? '',
+        localisationMaps: json['localisationmaps'] != null
+            ? LocalisationMaps.fromJson(json['localisationmaps'])
+            : null,
+        note: json['description'] as String?,
+        verifier:
+            json['verificationDocuments']?['isVerified'] as bool? ?? false,
+        cni1: json['verificationDocuments']?['cni1'] as String?,
+        cni2: json['verificationDocuments']?['cni2'] as String?,
+        selfie: json['verificationDocuments']?['selfie'] as String?,
+        numeroCNI: json['numeroCNI'] as String?,
+        specialite:
+            json['skills'] != null ? List<String>.from(json['skills']) : null,
+        anneeExperience: json['experienceLevel'] as String?,
+        description: json['description'] as String?,
+        rayonIntervention: json['rayonIntervention'] as double?,
+        zoneIntervention: json['zoneIntervention'] != null
+            ? List<String>.from(json['zoneIntervention'])
+            : null,
+        tarifHoraireMin: json['tarifHoraireMin'] as double?,
+        tarifHoraireMax: json['tarifHoraireMax'] as double?,
+        diplomeCertificat: json['diplomeCertificat'] != null
+            ? List<String>.from(json['diplomeCertificat'])
+            : null,
+        attestationAssurance: json['attestationAssurance'] as String?,
+        numeroAssurance: json['numeroAssurance'] as String?,
+        numeroRCCM: json['numeroRCCM'] as String?,
+      );
+    } catch (e) {
+      print('Erreur conversion prestataire backend: $e');
+      rethrow;
+    }
+  }
+
   factory Prestataire.fromJson(dynamic json) {
     final map = json as Map<String, dynamic>;
     return Prestataire(
@@ -75,14 +133,26 @@ class Prestataire {
       cni2: map['cni2'] as String?,
       selfie: map['selfie'] as String?,
       numeroCNI: map['numeroCNI'] as String?,
-      specialite: map['specialite'] != null ? List<String>.from(map['specialite']) : null,
+      specialite: map['specialite'] != null
+          ? List<String>.from(map['specialite'])
+          : null,
       anneeExperience: map['anneeExperience'] as String?,
       description: map['description'] as String?,
-      rayonIntervention: map['rayonIntervention'] != null ? (map['rayonIntervention'] as num).toDouble() : null,
-      zoneIntervention: map['zoneIntervention'] != null ? List<String>.from(map['zoneIntervention']) : null,
-      tarifHoraireMin: map['tarifHoraireMin'] != null ? (map['tarifHoraireMin'] as num).toDouble() : null,
-      tarifHoraireMax: map['tarifHoraireMax'] != null ? (map['tarifHoraireMax'] as num).toDouble() : null,
-      diplomeCertificat: map['diplomeCertificat'] != null ? List<String>.from(map['diplomeCertificat']) : null,
+      rayonIntervention: map['rayonIntervention'] != null
+          ? (map['rayonIntervention'] as num).toDouble()
+          : null,
+      zoneIntervention: map['zoneIntervention'] != null
+          ? List<String>.from(map['zoneIntervention'])
+          : null,
+      tarifHoraireMin: map['tarifHoraireMin'] != null
+          ? (map['tarifHoraireMin'] as num).toDouble()
+          : null,
+      tarifHoraireMax: map['tarifHoraireMax'] != null
+          ? (map['tarifHoraireMax'] as num).toDouble()
+          : null,
+      diplomeCertificat: map['diplomeCertificat'] != null
+          ? List<String>.from(map['diplomeCertificat'])
+          : null,
       attestationAssurance: map['attestationAssurance'] as String?,
       numeroAssurance: map['numeroAssurance'] as String?,
       numeroRCCM: map['numeroRCCM'] as String?,
@@ -120,7 +190,6 @@ class Prestataire {
   Map<String, dynamic> toMap() => toJson();
 }
 
-
 class LocalisationMaps {
   double latitude;
   double longitude;
@@ -136,9 +205,9 @@ class LocalisationMaps {
   }
 
   Map<String, dynamic> toJson() => {
-    'latitude': latitude,
-    'longitude': longitude,
-  };
+        'latitude': latitude,
+        'longitude': longitude,
+      };
 
   Map<String, dynamic> toMap() => toJson();
 }

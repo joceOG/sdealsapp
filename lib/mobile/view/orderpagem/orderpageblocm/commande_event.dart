@@ -8,6 +8,23 @@ abstract class CommandeEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+// Événements dédiés aux prestations (service requests)
+class ServiceRequestCreate extends CommandeEvent {
+  final Map<String, dynamic>
+      payload; // contient adresse, ville, dateHeure, etc.
+  const ServiceRequestCreate(this.payload);
+  @override
+  List<Object?> get props => [payload];
+}
+
+class ServiceRequestFetchMine extends CommandeEvent {
+  final String utilisateurId;
+  final String? status;
+  const ServiceRequestFetchMine({required this.utilisateurId, this.status});
+  @override
+  List<Object?> get props => [utilisateurId, status];
+}
+
 // Événement pour charger toutes les commandes
 class ChargerCommandes extends CommandeEvent {
   const ChargerCommandes();
