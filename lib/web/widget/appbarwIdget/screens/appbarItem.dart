@@ -27,8 +27,9 @@ class MyStatefulWidget extends StatelessWidget {
   const MyStatefulWidget({required this.title});
   @override
   Widget build(BuildContext context) {
-    return ConstrainedBox(
-      constraints: BoxConstraints.tight(Size(92.0, 80.0)),
+    return SizedBox(
+      width: 92.0,
+      height: 80.0,
       child: BlocBuilder<AppBarWidgetBloc, AppBarWidgetState>(
         builder: (context, state) {
           return MouseRegion(
@@ -40,22 +41,26 @@ class MyStatefulWidget extends StatelessWidget {
                 await showMenu(
                   context: context,
                   constraints: const BoxConstraints(
-                    minWidth: 1200, // Set the desired width here
+                    minWidth: 1200,
                     maxWidth: 1200,
+                    minHeight: 600,
+                    maxHeight: 600,
                   ),
+                  useRootNavigator: true,
                   position: const RelativeRect.fromLTRB(100, 100, 100, 100),
                   items: [
                     PopupMenuItem(
                       enabled: false,
-                      child: SizedBox(
+                      child: Container(
                         width: 1100,
                         height: 600,
-                        child: Row(
-                          children: [
-                            // Part 1: Elevated Button
-                            SizedBox(
-                              width: 350,
-                              child: Container(
+                        child: SingleChildScrollView(
+                          child: Row(
+                            children: [
+                              // Part 1: Elevated Button
+                              Container(
+                                width: 350,
+                                height: 600,
                                 color: Color(0xFFDFEBE2),
                                 child: Stack(children: [
                                   Positioned(
@@ -67,8 +72,8 @@ class MyStatefulWidget extends StatelessWidget {
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: Colors.green,
                                           shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                                0), // Bords arrondis
+                                            borderRadius:
+                                                BorderRadius.circular(0),
                                           ),
                                         ),
                                         onPressed: () {
@@ -82,13 +87,14 @@ class MyStatefulWidget extends StatelessWidget {
                                             ),
                                             const SizedBox(width: 8),
                                             const Text(
-                                                'Prestataires de services',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontFamily: 'Jost',
-                                                    fontSize: 20,
-                                                    fontWeight:
-                                                        FontWeight.bold)),
+                                              'Prestataires de services',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontFamily: 'Jost',
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -96,14 +102,13 @@ class MyStatefulWidget extends StatelessWidget {
                                   ),
                                 ]),
                               ),
-                            ),
-                            const SizedBox(
-                                width: 16), // Add spacing between parts
-                            // Part 2: First List of Text
-                            Expanded(
-                              child: ItemContentScreen(title: title),
-                            ),
-                          ],
+                              const SizedBox(width: 16),
+                              // Part 2: First List of Text
+                              Expanded(
+                                child: ItemContentScreen(title: title),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),

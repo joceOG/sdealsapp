@@ -8,4 +8,7 @@ abstract class EmarcheEvent extends Equatable {
 }
 
 class LoadCategorieEData extends EmarcheEvent {}
+
 class LoadServiceEData extends EmarcheEvent {}
+
+class LoadVendeursEData extends EmarcheEvent {}
