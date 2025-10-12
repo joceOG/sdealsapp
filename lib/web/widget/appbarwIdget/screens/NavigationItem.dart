@@ -1,20 +1,83 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:hover_menu/hover_menu.dart';
-import 'package:hover_menu/hover_menu_lastitem.dart';
 import 'package:sdealsapp/web/widget/appbarwIdget/screens/appbarItem.dart';
 
-
-class NavigationItem extends StatelessWidget {
-
+class NavigationItem extends StatefulWidget {
   final String title;
-  const NavigationItem({required this.title});
+  const NavigationItem({required this.title, super.key});
+
+  @override
+  State<NavigationItem> createState() => _NavigationItemState();
+}
+
+class _NavigationItemState extends State<NavigationItem>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _scaleAnimation;
+  bool _isHovered = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 200),
+      vsync: this,
+    );
+    _scaleAnimation = Tween<double>(
+      begin: 1.0,
+      end: 1.05,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    ));
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: AppbarItem (title: title,),
+      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+      child: MouseRegion(
+        onEnter: (_) {
+          setState(() => _isHovered = true);
+          _animationController.forward();
+        },
+        onExit: (_) {
+          setState(() => _isHovered = false);
+          _animationController.reverse();
+        },
+        child: AnimatedBuilder(
+          animation: _scaleAnimation,
+          builder: (context, child) {
+            return Transform.scale(
+              scale: _scaleAnimation.value,
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
+                decoration: BoxDecoration(
+                  color: _isHovered
+                      ? const Color(0xFF1CBF3F).withOpacity(0.1)
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(12),
+                  border: _isHovered
+                      ? Border.all(
+                          color: const Color(0xFF1CBF3F).withOpacity(0.3),
+                          width: 1,
+                        )
+                      : null,
+                ),
+                child: AppbarItem(title: widget.title),
+              ),
+            );
+          },
+        ),
+      ),
     );
   }
 }

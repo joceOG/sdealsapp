@@ -20,12 +20,13 @@ import 'package:sdealsapp/web/view/homepage/homepagebloc/homePageEvent.dart';
 import 'package:sdealsapp/web/view/homepage/screens/homePageScreen.dart';
 import 'package:sdealsapp/web/view/inscription/inscriptionbloc/inscriptionBloc.dart';
 import 'package:sdealsapp/web/view/inscription/screens/inscriptionScreen.dart';
+import 'package:sdealsapp/web/view/apropos/screens/aproposScreen.dart';
+import 'package:sdealsapp/web/widget/appbarwIdget/screens/AppBarWidget.dart';
 import 'package:sdealsapp/web/view/prestataire/prestatairebloc/prestataireBloc.dart';
 import 'package:sdealsapp/web/view/prestataire/screens/prestataireScreen.dart';
 import 'package:sdealsapp/web/view/splashcreen/screens/splashScreen.dart';
 import 'package:sdealsapp/web/view/splashcreen/splashscreenbloc/splashscreenBloc.dart';
 import 'package:sdealsapp/web/view/splashcreen/splashscreenbloc/splashscreenEvent.dart';
-import 'data/models/categorie.dart';
 import 'data/services/authCubit.dart';
 import 'mobile/view/home.dart';
 import 'mobile/view/loginpagem/loginpageblocm/loginPageBlocM.dart';
@@ -117,10 +118,18 @@ class MyApp extends StatelessWidget {
       GoRoute(
         path: '/detailsarticle',
         builder: (context, state) {
-          final article = state.extra as Article;
+          final article = state.extra as Article?;
+          // Créer un article par défaut si aucun n'est fourni
+          final defaultArticle = article ??
+              Article(
+                nomArticle: 'Produit par défaut',
+                prixArticle: '25,000 FCFA',
+                quantiteArticle: 1,
+                photoArticle: 'assets/prestataire.jpeg',
+              );
           return BlocProvider(
             create: (context) => DetailsArticleBloc(),
-            child: DetailsArticleScreen(article: article),
+            child: DetailsArticleScreen(article: defaultArticle),
           );
         },
       ),
@@ -139,6 +148,19 @@ class MyApp extends StatelessWidget {
           return BlocProvider(
             create: (context) => InscriptionBloc(),
             child: InscriptionScreen(),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/apropos',
+        builder: (context, state) {
+          return BlocProvider(
+            create: (context) => HomePageBloc()..add(LoadCategorieData()),
+            child: Scaffold(
+              backgroundColor: Colors.white,
+              appBar: AppBarWidget(),
+              body: const AproposScreen(),
+            ),
           );
         },
       ),

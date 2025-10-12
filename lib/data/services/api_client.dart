@@ -14,7 +14,7 @@ class ApiClient {
   // final String baseUrl='http://180.149.197.115:3000/api';
   // URL configurable selon la plateforme
 
-  var apiUrl = dotenv.env['API_URL'];
+  var apiUrl = dotenv.env['REACT_APP_API_URL'] ?? dotenv.env['API_URL'];
 
   Future<List<Categorie>> fetchCategorie(String nomGroupe) async {
     print('Récupération des catégories pour le groupe: $nomGroupe');
@@ -252,19 +252,31 @@ class ApiClient {
     final nom = parts.isNotEmpty ? parts.first : "";
     final prenom = parts.length > 1 ? parts.sublist(1).join(" ") : "";
 
+    // Déterminer si c'est un email ou un téléphone
+    final isEmail = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(phone);
+
     print("🌍 Appel API: $url");
+    print("📤 Contact: $phone (${isEmail ? 'email' : 'téléphone'})");
     print(
-        "📤 Données envoyées: { nom: $nom, prenom: $prenom, telephone: $phone, password: ***** }");
+        "📤 Données envoyées: { nom: $nom, prenom: $prenom, password: ***** }");
+
+    // Préparer les données selon le type de contact
+    final requestData = {
+      "nom": nom,
+      "prenom": prenom,
+      "password": password,
+    };
+
+    if (isEmail) {
+      requestData["email"] = phone;
+    } else {
+      requestData["telephone"] = phone;
+    }
 
     final response = await http.post(
       url,
       headers: {"Content-Type": "application/json"},
-      body: jsonEncode({
-        "nom": nom,
-        "prenom": prenom,
-        "telephone": phone,
-        "password": password, // 👈 correspond à ton backend
-      }),
+      body: jsonEncode(requestData),
     );
 
     print("📥 StatusCode: ${response.statusCode}");
@@ -397,8 +409,13 @@ class ApiClient {
     print('Récupération des vendeurs depuis le backend');
 
     try {
-      final response =
-          await http.get(Uri.parse('${dotenv.env['API_URL']}/vendeur'));
+      final response = await http.get(
+        Uri.parse('$apiUrl/vendeur'),
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+          'Accept': 'application/json; charset=utf-8',
+        },
+      );
 
       if (response.statusCode == 200) {
         dynamic responseData = jsonDecode(response.body);
@@ -407,7 +424,10 @@ class ApiClient {
         final preview = response.body.length > 300
             ? response.body.substring(0, 300) + '...'
             : response.body;
-        print('Aperçu réponse: ${preview.replaceAll('\n', ' ')}');
+        // Nettoyer les caractères problématiques pour l'affichage
+        final cleanPreview = preview.replaceAll('\n', ' ').replaceAll(
+            RegExp(r'[^\x00-\x7F]'), '?'); // Remplacer caractères non-ASCII
+        print('Aperçu réponse: $cleanPreview');
 
         List<dynamic> vendeursJson;
 

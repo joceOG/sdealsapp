@@ -3,36 +3,63 @@ import 'package:sdealsapp/data/models/article.dart';
 
 class DetailsArticleState extends Equatable {
   final Article? article;
+  final List<Article> similarArticles;
+  final bool isLoading;
+  final bool isFavorite;
+  final int quantity;
   final String? error;
-  final int? counterValue;
+  final bool isAddedToCart;
 
   const DetailsArticleState({
     this.article,
+    this.similarArticles = const [],
+    this.isLoading = false,
+    this.isFavorite = false,
+    this.quantity = 1,
     this.error,
-    this.counterValue,
+    this.isAddedToCart = false,
   });
 
   factory DetailsArticleState.initial() {
     return const DetailsArticleState(
-      article:null,
-      error: '',
-      counterValue: 0,
+      article: null,
+      similarArticles: [],
+      isLoading: false,
+      isFavorite: false,
+      quantity: 1,
+      error: null,
+      isAddedToCart: false,
     );
   }
 
   DetailsArticleState copyWith({
-
     Article? article,
+    List<Article>? similarArticles,
+    bool? isLoading,
+    bool? isFavorite,
+    int? quantity,
     String? error,
-    int? counterValue,
-  }){
-    return  DetailsArticleState(
+    bool? isAddedToCart,
+  }) {
+    return DetailsArticleState(
       article: article ?? this.article,
+      similarArticles: similarArticles ?? this.similarArticles,
+      isLoading: isLoading ?? this.isLoading,
+      isFavorite: isFavorite ?? this.isFavorite,
+      quantity: quantity ?? this.quantity,
       error: error ?? this.error,
-      counterValue: counterValue ?? this.counterValue,
+      isAddedToCart: isAddedToCart ?? this.isAddedToCart,
     );
   }
 
   @override
-  List<Object?> get props => [article,error,counterValue];
+  List<Object?> get props => [
+        article,
+        similarArticles,
+        isLoading,
+        isFavorite,
+        quantity,
+        error,
+        isAddedToCart,
+      ];
 }

@@ -36,15 +36,15 @@ class MyStatefulWidget extends StatelessWidget {
             onHover: (_) async {
               context
                   .read<AppBarWidgetBloc>()
-                  .add(const HoverMenuEvent(nomgroupe: "Métiers"));
+                  .add(HoverMenuEvent(nomgroupe: title));
               if (title == "Métiers") {
                 await showMenu(
                   context: context,
                   constraints: const BoxConstraints(
-                    minWidth: 1200,
-                    maxWidth: 1200,
-                    minHeight: 600,
-                    maxHeight: 600,
+                    minWidth: 1000,
+                    maxWidth: 1000,
+                    minHeight: 500,
+                    maxHeight: 500,
                   ),
                   useRootNavigator: true,
                   position: const RelativeRect.fromLTRB(100, 100, 100, 100),
@@ -52,60 +52,439 @@ class MyStatefulWidget extends StatelessWidget {
                     PopupMenuItem(
                       enabled: false,
                       child: Container(
-                        width: 1100,
-                        height: 600,
+                        width: 1000,
+                        height: 500,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 20,
+                              spreadRadius: 0,
+                              offset: const Offset(0, 8),
+                            ),
+                          ],
+                        ),
                         child: SingleChildScrollView(
                           child: Row(
                             children: [
-                              // Part 1: Elevated Button
+                              // Part 1: Header avec gradient
                               Container(
-                                width: 350,
-                                height: 600,
-                                color: Color(0xFFDFEBE2),
-                                child: Stack(children: [
-                                  Positioned(
-                                    top: 20,
-                                    child: SizedBox(
-                                      width: 350,
-                                      height: 70,
-                                      child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.green,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(0),
-                                          ),
+                                width: 300,
+                                height: 500,
+                                decoration: BoxDecoration(
+                                  gradient: const LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    colors: [
+                                      Color(0xFF1CBF3F),
+                                      Color(0xFF16A34A),
+                                    ],
+                                  ),
+                                  borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(16),
+                                    bottomLeft: Radius.circular(16),
+                                  ),
+                                ),
+                                child: Stack(
+                                  children: [
+                                    // Icône décorative
+                                    Positioned(
+                                      top: 20,
+                                      right: 20,
+                                      child: Container(
+                                        width: 60,
+                                        height: 60,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white.withOpacity(0.2),
+                                          borderRadius:
+                                              BorderRadius.circular(30),
                                         ),
-                                        onPressed: () {
-                                          // Handle button press
-                                        },
-                                        child: Row(
-                                          children: [
-                                            Image.asset(
-                                              'assets/business.png',
-                                              width: 30,
-                                            ),
-                                            const SizedBox(width: 8),
-                                            const Text(
-                                              'Prestataires de services',
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontFamily: 'Jost',
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ],
+                                        child: const Icon(
+                                          Icons.build,
+                                          color: Colors.white,
+                                          size: 30,
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ]),
+                                    // Contenu
+                                    Positioned(
+                                      top: 40,
+                                      left: 20,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            padding: const EdgeInsets.all(12),
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  Colors.white.withOpacity(0.2),
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                            ),
+                                            child: Image.asset(
+                                              'assets/business.png',
+                                              width: 24,
+                                              height: 24,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 20),
+                                          const Text(
+                                            'Prestataires de services',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 8),
+                                          const Text(
+                                            'Découvrez nos artisans et prestataires qualifiés',
+                                            style: TextStyle(
+                                              color: Colors.white70,
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 30),
+                                          Container(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 16,
+                                              vertical: 8,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  Colors.white.withOpacity(0.2),
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                            ),
+                                            child: const Text(
+                                              'Voir tous les métiers',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                              const SizedBox(width: 16),
-                              // Part 2: First List of Text
+                              const SizedBox(width: 20),
+                              // Part 2: Contenu des catégories
                               Expanded(
-                                child: ItemContentScreen(title: title),
+                                child: Container(
+                                  padding: const EdgeInsets.all(20),
+                                  child: ItemContentScreen(title: title),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              } else if (title == "Freelance") {
+                await showMenu(
+                  context: context,
+                  constraints: const BoxConstraints(
+                    minWidth: 1000,
+                    maxWidth: 1000,
+                    minHeight: 500,
+                    maxHeight: 500,
+                  ),
+                  useRootNavigator: true,
+                  position: const RelativeRect.fromLTRB(100, 100, 100, 100),
+                  items: [
+                    PopupMenuItem(
+                      enabled: false,
+                      child: Container(
+                        width: 1000,
+                        height: 500,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 20,
+                              spreadRadius: 0,
+                              offset: const Offset(0, 8),
+                            ),
+                          ],
+                        ),
+                        child: SingleChildScrollView(
+                          child: Row(
+                            children: [
+                              // Part 1: Header avec gradient pour Freelance
+                              Container(
+                                width: 300,
+                                height: 500,
+                                decoration: BoxDecoration(
+                                  gradient: const LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    colors: [
+                                      Color(0xFF3B82F6),
+                                      Color(0xFF1D4ED8),
+                                    ],
+                                  ),
+                                  borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(16),
+                                    bottomLeft: Radius.circular(16),
+                                  ),
+                                ),
+                                child: Stack(
+                                  children: [
+                                    // Icône décorative
+                                    Positioned(
+                                      top: 20,
+                                      right: 20,
+                                      child: Container(
+                                        width: 60,
+                                        height: 60,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white.withOpacity(0.2),
+                                          borderRadius:
+                                              BorderRadius.circular(30),
+                                        ),
+                                        child: const Icon(
+                                          Icons.work,
+                                          color: Colors.white,
+                                          size: 30,
+                                        ),
+                                      ),
+                                    ),
+                                    // Contenu
+                                    Positioned(
+                                      top: 40,
+                                      left: 20,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            padding: const EdgeInsets.all(12),
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  Colors.white.withOpacity(0.2),
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                            ),
+                                            child: const Icon(
+                                              Icons.work_outline,
+                                              color: Colors.white,
+                                              size: 24,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 20),
+                                          const Text(
+                                            'Freelances & Consultants',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 8),
+                                          const Text(
+                                            'Professionnels indépendants et consultants experts',
+                                            style: TextStyle(
+                                              color: Colors.white70,
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 30),
+                                          Container(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 16,
+                                              vertical: 8,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  Colors.white.withOpacity(0.2),
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                            ),
+                                            child: const Text(
+                                              'Voir tous les freelances',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(width: 20),
+                              // Part 2: Contenu des catégories
+                              Expanded(
+                                child: Container(
+                                  padding: const EdgeInsets.all(20),
+                                  child: ItemContentScreen(title: title),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              } else if (title == "Emarche") {
+                await showMenu(
+                  context: context,
+                  constraints: const BoxConstraints(
+                    minWidth: 1000,
+                    maxWidth: 1000,
+                    minHeight: 500,
+                    maxHeight: 500,
+                  ),
+                  useRootNavigator: true,
+                  position: const RelativeRect.fromLTRB(100, 100, 100, 100),
+                  items: [
+                    PopupMenuItem(
+                      enabled: false,
+                      child: Container(
+                        width: 1000,
+                        height: 500,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 20,
+                              spreadRadius: 0,
+                              offset: const Offset(0, 8),
+                            ),
+                          ],
+                        ),
+                        child: SingleChildScrollView(
+                          child: Row(
+                            children: [
+                              // Part 1: Header avec gradient pour E-marché
+                              Container(
+                                width: 300,
+                                height: 500,
+                                decoration: BoxDecoration(
+                                  gradient: const LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    colors: [
+                                      Color(0xFF8B5CF6),
+                                      Color(0xFF7C3AED),
+                                    ],
+                                  ),
+                                  borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(16),
+                                    bottomLeft: Radius.circular(16),
+                                  ),
+                                ),
+                                child: Stack(
+                                  children: [
+                                    // Icône décorative
+                                    Positioned(
+                                      top: 20,
+                                      right: 20,
+                                      child: Container(
+                                        width: 60,
+                                        height: 60,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white.withOpacity(0.2),
+                                          borderRadius:
+                                              BorderRadius.circular(30),
+                                        ),
+                                        child: const Icon(
+                                          Icons.store,
+                                          color: Colors.white,
+                                          size: 30,
+                                        ),
+                                      ),
+                                    ),
+                                    // Contenu
+                                    Positioned(
+                                      top: 40,
+                                      left: 20,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            padding: const EdgeInsets.all(12),
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  Colors.white.withOpacity(0.2),
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                            ),
+                                            child: const Icon(
+                                              Icons.shopping_bag,
+                                              color: Colors.white,
+                                              size: 24,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 20),
+                                          const Text(
+                                            'E-marché & Boutiques',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 8),
+                                          const Text(
+                                            'Produits et services en ligne',
+                                            style: TextStyle(
+                                              color: Colors.white70,
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 30),
+                                          Container(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 16,
+                                              vertical: 8,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  Colors.white.withOpacity(0.2),
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                            ),
+                                            child: const Text(
+                                              'Voir tous les produits',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(width: 20),
+                              // Part 2: Contenu des catégories
+                              Expanded(
+                                child: Container(
+                                  padding: const EdgeInsets.all(20),
+                                  child: ItemContentScreen(title: title),
+                                ),
                               ),
                             ],
                           ),
