@@ -61,68 +61,70 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
         // Navigation moderne - Centrée verticalement
         Container(
           height: 80,
-          margin: const EdgeInsets.symmetric(horizontal: 20),
+          margin: const EdgeInsets.symmetric(horizontal: 5),
           child: Center(
             child: NavigationBar(),
           ),
         ),
 
         // Barre de recherche moderne - Centrée verticalement
-        Container(
-          width: 300,
-          height: 40,
-          margin: const EdgeInsets.only(right: 20),
-          decoration: BoxDecoration(
-            color: const Color(0xFFF8FAFC),
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(
-              color: const Color(0xFFE2E8F0),
-              width: 1,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.1),
-                blurRadius: 8,
-                spreadRadius: 0,
-                offset: const Offset(0, 2),
+        Flexible(
+          child: Container(
+            width: 180,
+            height: 40,
+            margin: const EdgeInsets.only(right: 5),
+            decoration: BoxDecoration(
+              color: const Color(0xFFF8FAFC),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: const Color(0xFFE2E8F0),
+                width: 1,
               ),
-            ],
-          ),
-          child: TextField(
-            decoration: InputDecoration(
-              hintText: 'Rechercher des services, produits...',
-              hintStyle: const TextStyle(
-                color: Color(0xFF94A3B8),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.1),
+                  blurRadius: 8,
+                  spreadRadius: 0,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'Rechercher des services, produits...',
+                hintStyle: const TextStyle(
+                  color: Color(0xFF94A3B8),
+                  fontSize: 14,
+                ),
+                prefixIcon: const Icon(
+                  Icons.search,
+                  color: Color(0xFF1CBF3F),
+                  size: 20,
+                ),
+                suffixIcon: Container(
+                  margin: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFF1CBF3F), Color(0xFF16A34A)],
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Icon(
+                    Icons.tune,
+                    color: Colors.white,
+                    size: 16,
+                  ),
+                ),
+                border: InputBorder.none,
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
+              ),
+              style: const TextStyle(
+                color: Color(0xFF1E293B),
                 fontSize: 14,
               ),
-              prefixIcon: const Icon(
-                Icons.search,
-                color: Color(0xFF1CBF3F),
-                size: 20,
-              ),
-              suffixIcon: Container(
-                margin: const EdgeInsets.all(4),
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFF1CBF3F), Color(0xFF16A34A)],
-                  ),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: const Icon(
-                  Icons.tune,
-                  color: Colors.white,
-                  size: 16,
-                ),
-              ),
-              border: InputBorder.none,
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 12,
-              ),
-            ),
-            style: const TextStyle(
-              color: Color(0xFF1E293B),
-              fontSize: 14,
             ),
           ),
         ),
@@ -130,7 +132,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
         // Bouton connexion moderne - Centré verticalement
         Container(
           height: 80,
-          margin: const EdgeInsets.only(right: 20),
+          margin: const EdgeInsets.only(right: 5),
           child: Center(
             child: FilledButton(
               onPressed: () {
@@ -140,8 +142,8 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
                 backgroundColor: const Color(0xFF1CBF3F),
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 12,
+                  horizontal: 16,
+                  vertical: 8,
                 ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
@@ -154,16 +156,16 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
                 children: [
                   Icon(
                     Icons.login,
-                    size: 18,
+                    size: 16,
                     color: Colors.white,
                   ),
-                  SizedBox(width: 8),
+                  SizedBox(width: 4),
                   Text(
                     'Se connecter',
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w600,
-                      fontSize: 14,
+                      fontSize: 12,
                     ),
                   ),
                 ],

@@ -44,9 +44,9 @@ class JobPageBlocM extends Bloc<JobPageEventM, JobPageStateM> {
   }
 
   Future<void> _onLoadServiceDataJobM(
-      LoadServiceDataJobM event,
-      Emitter<JobPageStateM> emit,
-      ) async {
+    LoadServiceDataJobM event,
+    Emitter<JobPageStateM> emit,
+  ) async {
     emit(state.copyWith(isLoading2: true));
 
     ApiClient apiClient = ApiClient();
@@ -96,9 +96,8 @@ class JobPageBlocM extends Bloc<JobPageEventM, JobPageStateM> {
           await apiClient.fetchPrestataires();
 
       // Convertir vers le modèle Prestataire
-      List<Prestataire> providers = prestatairesData
-          .map((data) => Prestataire.fromBackend(data))
-          .toList();
+      List<Prestataire> providers =
+          prestatairesData.map((data) => Prestataire.fromJson(data)).toList();
 
       print("✅ Prestataires chargés depuis le backend: ${providers.length}");
 
@@ -106,10 +105,11 @@ class JobPageBlocM extends Bloc<JobPageEventM, JobPageStateM> {
       if (event.serviceType.isNotEmpty) {
         providers = providers
             .where((p) =>
-                p.service.nomservice
-                    .toLowerCase()
-                    .contains(event.serviceType.toLowerCase()) ||
-                (p.specialite?.any((s) => s
+                (p.serviceName
+                        ?.toLowerCase()
+                        .contains(event.serviceType.toLowerCase()) ??
+                    false) ||
+                (p.competences?.any((s) => s
                         .toLowerCase()
                         .contains(event.serviceType.toLowerCase())) ??
                     false))
@@ -122,23 +122,24 @@ class JobPageBlocM extends Bloc<JobPageEventM, JobPageStateM> {
       // 📍 Filtrer par localisation si spécifié
       if (event.location.isNotEmpty) {
         providers = providers
-            .where((p) => p.localisation
-                .toLowerCase()
-                .contains(event.location.toLowerCase()))
+            .where((p) => (p.localisation
+                    ?.toLowerCase()
+                    .contains(event.location.toLowerCase()) ??
+                false))
             .toList();
 
         print("📍 Prestataires dans '${event.location}': ${providers.length}");
       }
 
-      // 🏆 Trier par note (vérifiés en premier, puis par expérience)
+      // 🏆 Trier par note (vérifiés en premier, puis par note)
       providers.sort((a, b) {
         if (a.verifier && !b.verifier) return -1;
         if (!a.verifier && b.verifier) return 1;
 
-        // Comparer les années d'expérience
-        int expA = int.tryParse(a.anneeExperience ?? '0') ?? 0;
-        int expB = int.tryParse(b.anneeExperience ?? '0') ?? 0;
-        return expB.compareTo(expA);
+        // Comparer par note
+        double noteA = a.note ?? 0.0;
+        double noteB = b.note ?? 0.0;
+        return noteB.compareTo(noteA);
       });
 
       // 🎯 Limiter les résultats à 5 maximum
@@ -157,7 +158,7 @@ class JobPageBlocM extends Bloc<JobPageEventM, JobPageStateM> {
 
       // Générer des scores basés sur les critères réels
       for (final provider in providers) {
-        final idKey = provider.utilisateur.idutilisateur;
+        final idKey = provider.id;
         double score = 0.0;
         List<String> strengths = [];
 
@@ -167,25 +168,25 @@ class JobPageBlocM extends Bloc<JobPageEventM, JobPageStateM> {
           strengths.add("Profil vérifié");
         }
 
-        // Points pour expérience
-        int exp = int.tryParse(provider.anneeExperience ?? '0') ?? 0;
-        if (exp > 5) {
+        // Points pour note
+        if (provider.note != null && provider.note! > 4.0) {
           score += 25;
-          strengths.add("${exp} ans d'expérience");
-        } else if (exp > 2) {
+          strengths.add("Note élevée (${provider.note!.toStringAsFixed(1)})");
+        } else if (provider.note != null && provider.note! > 3.0) {
           score += 15;
-          strengths.add("${exp} ans d'expérience");
+          strengths.add("Bonne note (${provider.note!.toStringAsFixed(1)})");
         }
 
-        // Points pour spécialités
-        if (provider.specialite != null && provider.specialite!.isNotEmpty) {
+        // Points pour compétences
+        if (provider.competences != null && provider.competences!.isNotEmpty) {
           score += 20;
           strengths
-              .add("Spécialisé en ${provider.specialite!.take(2).join(', ')}");
+              .add("Compétences: ${provider.competences!.take(2).join(', ')}");
         }
 
         // Points pour localisation
-        if (provider.localisation.isNotEmpty) {
+        if (provider.localisation != null &&
+            provider.localisation!.isNotEmpty) {
           score += 15;
           strengths.add("Basé à ${provider.localisation}");
         }
@@ -221,9 +222,9 @@ class JobPageBlocM extends Bloc<JobPageEventM, JobPageStateM> {
             await matchingService.getRecommendedProviders(
           query: '${event.serviceType} ${event.preferences?.join(' ') ?? ''}'
               .trim(),
-        location: event.location,
-        maxResults: 5,
-      );
+          location: event.location,
+          maxResults: 5,
+        );
 
         List<Prestataire> providers =
             recommendations.map((r) => r.prestataire).toList();
@@ -235,20 +236,20 @@ class JobPageBlocM extends Bloc<JobPageEventM, JobPageStateM> {
           providerStrengths: {},
         );
 
-      emit(state.copyWith(
-        matchedProviders: providers,
-        matchExplanation: explanation,
-        isMatchingLoading: false,
-      ));
+        emit(state.copyWith(
+          matchedProviders: providers,
+          matchExplanation: explanation,
+          isMatchingLoading: false,
+        ));
 
         print("🔄 Fallback vers données mock réussi");
       } catch (mockError) {
         print("💥 Erreur critique: $mockError");
-      emit(state.copyWith(
-        isMatchingLoading: false,
+        emit(state.copyWith(
+          isMatchingLoading: false,
           matchError: error.toString(),
-      ));
+        ));
+      }
     }
-  }
   }
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sdealsapp/data/services/authCubit.dart';
 import 'package:sdealsapp/mobile/view/freelancepagem/freelancepageblocm/freelancePageBlocM.dart';
 import 'package:sdealsapp/mobile/view/freelancepagem/freelancepageblocm/freelancePageEventM.dart';
 import 'package:sdealsapp/mobile/view/freelancepagem/freelancepageblocm/freelancePageStateM.dart';

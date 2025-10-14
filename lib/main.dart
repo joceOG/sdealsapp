@@ -24,6 +24,7 @@ import 'package:sdealsapp/web/view/apropos/screens/aproposScreen.dart';
 import 'package:sdealsapp/web/widget/appbarwIdget/screens/AppBarWidget.dart';
 import 'package:sdealsapp/web/view/prestataire/prestatairebloc/prestataireBloc.dart';
 import 'package:sdealsapp/web/view/prestataire/screens/prestataireScreen.dart';
+import 'package:sdealsapp/web/view/prestataire/prestatairebloc/prestataireEvent.dart';
 import 'package:sdealsapp/web/view/splashcreen/screens/splashScreen.dart';
 import 'package:sdealsapp/web/view/splashcreen/splashscreenbloc/splashscreenBloc.dart';
 import 'package:sdealsapp/web/view/splashcreen/splashscreenbloc/splashscreenEvent.dart';
@@ -90,8 +91,9 @@ class MyApp extends StatelessWidget {
         path: '/prestataire',
         builder: (context, state) {
           return BlocProvider(
-            create: (context) => PrestataireBloc(),
-            child: PrestataireScreen(),
+            create: (context) =>
+                PrestataireBloc()..add(const LoadPrestataires()),
+            child: const PrestataireScreen(),
           );
         },
       ),

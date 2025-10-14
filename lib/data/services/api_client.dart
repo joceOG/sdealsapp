@@ -14,7 +14,22 @@ class ApiClient {
   // final String baseUrl='http://180.149.197.115:3000/api';
   // URL configurable selon la plateforme
 
-  var apiUrl = dotenv.env['REACT_APP_API_URL'] ?? dotenv.env['API_URL'];
+  var apiUrl = 'http://localhost:3000/api';
+
+  // Vérifier la connectivité de l'API
+  Future<bool> checkApiConnectivity() async {
+    try {
+      final response = await http.get(
+        Uri.parse('$apiUrl/health'),
+        headers: {'Content-Type': 'application/json'},
+      ).timeout(const Duration(seconds: 5));
+
+      return response.statusCode == 200;
+    } catch (e) {
+      print('❌ API non accessible: $e');
+      return false;
+    }
+  }
 
   Future<List<Categorie>> fetchCategorie(String nomGroupe) async {
     print('Récupération des catégories pour le groupe: $nomGroupe');
@@ -385,8 +400,13 @@ class ApiClient {
     print('Récupération des prestataires depuis le backend');
 
     try {
-      final response =
-          await http.get(Uri.parse('${dotenv.env['API_URL']}/prestataire'));
+      final response = await http.get(
+        Uri.parse('$apiUrl/prestataire'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      );
 
       if (response.statusCode == 200) {
         List<dynamic> prestatairesJson = jsonDecode(response.body);
@@ -395,6 +415,8 @@ class ApiClient {
         // Retourner la liste de Map pour que le BLoC puisse la convertir
         return prestatairesJson.cast<Map<String, dynamic>>();
       } else {
+        print('Status code de la réponse: ${response.statusCode}');
+        print('Contenu de la réponse: ${response.body}');
         throw Exception(
             'Échec de récupération des prestataires: ${response.statusCode}');
       }
@@ -480,7 +502,7 @@ class ApiClient {
   }) async {
     print('Récupération des prestataires par service...');
     try {
-      final base = '${dotenv.env['API_URL']}/prestataire';
+      final base = '$apiUrl/prestataire';
       final Map<String, String> queryParams = {};
       if (serviceId != null && serviceId.isNotEmpty) {
         queryParams['service'] = serviceId;
@@ -499,14 +521,24 @@ class ApiClient {
           ? Uri.parse(base)
           : Uri.parse(base).replace(queryParameters: queryParams);
 
-      final response = await http.get(uri);
+      final response = await http.get(
+        uri,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      );
       if (response.statusCode == 200) {
         final List<dynamic> jsonList = jsonDecode(response.body);
+        print('✅ Prestataires par service récupérés: ${jsonList.length}');
         return jsonList.cast<Map<String, dynamic>>();
       }
 
       // Si l'API ne supporte pas encore les query params, fallback client
-      print('Fallback client-side filtering (status ${response.statusCode})');
+      print(
+          '⚠️ Fallback client-side filtering (status ${response.statusCode})');
+      print('URL appelée: $uri');
+      print('Réponse: ${response.body}');
       final all = await fetchPrestataires();
       return all
           .where((p) {

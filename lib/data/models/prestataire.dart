@@ -1,213 +1,166 @@
-import 'service.dart';
-import 'utilisateur.dart';
+import 'package:equatable/equatable.dart';
 
-class Prestataire {
-  String idprestataire;
-  Utilisateur utilisateur;
-  Service service;
-  double prixprestataire;
-  String localisation;
-  LocalisationMaps? localisationMaps; // ✅ maintenant structuré
-  String? note;
-  bool verifier;
+class Prestataire extends Equatable {
+  final String id;
+  final String nom;
+  final String prenom;
+  final String telephone;
+  final String? email;
+  final String? photo;
+  final String? adresse;
+  final String? ville;
+  final String? quartier;
+  final double? latitude;
+  final double? longitude;
+  final String? serviceId;
+  final String? serviceName;
+  final String? categorieId;
+  final String? categorieName;
+  final bool verifier;
+  final double? note;
+  final int? nombreAvis;
+  final String? description;
+  final List<String>? competences;
+  final List<String>? photos;
+  final DateTime? dateCreation;
+  final bool actif;
+  final String? localisation;
 
-  // Identité
-  String? cni1;
-  String? cni2;
-  String? selfie;
-  String? numeroCNI;
-
-  // Métier
-  List<String>? specialite;
-  String? anneeExperience;
-  String? description;
-  double? rayonIntervention;
-  List<String>? zoneIntervention;
-  double? tarifHoraireMin;
-  double? tarifHoraireMax;
-
-  // Diplômes / Certificats
-  List<String>? diplomeCertificat;
-  String? attestationAssurance;
-  String? numeroAssurance;
-  String? numeroRCCM;
-
-  Prestataire({
-    required this.idprestataire,
-    required this.utilisateur,
-    required this.service,
-    required this.prixprestataire,
-    required this.localisation,
-    this.localisationMaps,
-    this.note,
+  const Prestataire({
+    required this.id,
+    required this.nom,
+    required this.prenom,
+    required this.telephone,
+    this.email,
+    this.photo,
+    this.adresse,
+    this.ville,
+    this.quartier,
+    this.latitude,
+    this.longitude,
+    this.serviceId,
+    this.serviceName,
+    this.categorieId,
+    this.categorieName,
     this.verifier = false,
-    this.cni1,
-    this.cni2,
-    this.selfie,
-    this.numeroCNI,
-    this.specialite,
-    this.anneeExperience,
+    this.note,
+    this.nombreAvis,
     this.description,
-    this.rayonIntervention,
-    this.zoneIntervention,
-    this.tarifHoraireMin,
-    this.tarifHoraireMax,
-    this.diplomeCertificat,
-    this.attestationAssurance,
-    this.numeroAssurance,
-    this.numeroRCCM,
+    this.competences,
+    this.photos,
+    this.dateCreation,
+    this.actif = true,
+    this.localisation,
   });
 
-  // ✅ NOUVELLE FACTORY : Convertir depuis le backend avec nouveau modèle
-  factory Prestataire.fromBackend(Map<String, dynamic> json) {
-    try {
-      return Prestataire(
-        idprestataire: json['_id'] as String,
-        utilisateur: json['utilisateur'] != null
-            ? Utilisateur.fromJson(json['utilisateur'])
-            : Utilisateur(
-                idutilisateur: '',
-                nom: 'Inconnu',
-                prenom: '',
-                genre: 'Homme',
-                email: '',
-                password: '',
-                telephone: ''),
-        service: json['service'] != null
-            ? Service.fromJson(json['service'])
-            : Service(
-                idservice: '',
-                nomservice: 'Service inconnu',
-                imageservice: '',
-                prixmoyen: '0'),
-        prixprestataire: (json['hourlyRate'] as num?)?.toDouble() ??
-            0.0, // Mapping nouveau modèle
-        localisation: json['location'] as String? ?? '',
-        localisationMaps: json['localisationmaps'] != null
-            ? LocalisationMaps.fromJson(json['localisationmaps'])
-            : null,
-        note: json['description'] as String?,
-        verifier:
-            json['verificationDocuments']?['isVerified'] as bool? ?? false,
-        cni1: json['verificationDocuments']?['cni1'] as String?,
-        cni2: json['verificationDocuments']?['cni2'] as String?,
-        selfie: json['verificationDocuments']?['selfie'] as String?,
-        numeroCNI: json['numeroCNI'] as String?,
-        specialite:
-            json['skills'] != null ? List<String>.from(json['skills']) : null,
-        anneeExperience: json['experienceLevel'] as String?,
-        description: json['description'] as String?,
-        rayonIntervention: json['rayonIntervention'] as double?,
-        zoneIntervention: json['zoneIntervention'] != null
-            ? List<String>.from(json['zoneIntervention'])
-            : null,
-        tarifHoraireMin: json['tarifHoraireMin'] as double?,
-        tarifHoraireMax: json['tarifHoraireMax'] as double?,
-        diplomeCertificat: json['diplomeCertificat'] != null
-            ? List<String>.from(json['diplomeCertificat'])
-            : null,
-        attestationAssurance: json['attestationAssurance'] as String?,
-        numeroAssurance: json['numeroAssurance'] as String?,
-        numeroRCCM: json['numeroRCCM'] as String?,
-      );
-    } catch (e) {
-      print('Erreur conversion prestataire backend: $e');
-      rethrow;
-    }
-  }
-
-  factory Prestataire.fromJson(dynamic json) {
-    final map = json as Map<String, dynamic>;
+  factory Prestataire.fromJson(Map<String, dynamic> json) {
     return Prestataire(
-      idprestataire: map['_id'] as String,
-      utilisateur: Utilisateur.fromJson(map['utilisateur']),
-      service: Service.fromJson(map['service']),
-      prixprestataire: (map['prixprestataire'] as num).toDouble(),
-      localisation: map['localisation'] as String,
-      localisationMaps: map['localisationmaps'] != null
-          ? LocalisationMaps.fromJson(map['localisationmaps'])
+      id: json['_id'] ?? json['id'] ?? '',
+      nom: json['nom'] ?? '',
+      prenom: json['prenom'] ?? '',
+      telephone: json['telephone'] ?? '',
+      email: json['email'],
+      photo: json['photo'] ?? json['image'],
+      adresse: json['adresse'],
+      ville: json['ville'],
+      quartier: json['quartier'],
+      latitude: json['latitude']?.toDouble(),
+      longitude: json['longitude']?.toDouble(),
+      serviceId: json['service']?['_id'] ?? json['serviceId'],
+      serviceName: json['service']?['nomservice'] ?? json['serviceName'],
+      categorieId: json['categorie']?['_id'] ?? json['categorieId'],
+      categorieName:
+          json['categorie']?['nomcategorie'] ?? json['categorieName'],
+      verifier: json['verifier'] ?? json['verified'] ?? false,
+      note: json['note']?.toDouble(),
+      nombreAvis: json['nombreAvis'] ?? json['avis']?.length,
+      description: json['description'],
+      competences: json['competences'] != null
+          ? List<String>.from(json['competences'])
           : null,
-      note: map['note'] as String?,
-      verifier: map['verifier'] as bool? ?? false,
-      cni1: map['cni1'] as String?,
-      cni2: map['cni2'] as String?,
-      selfie: map['selfie'] as String?,
-      numeroCNI: map['numeroCNI'] as String?,
-      specialite: map['specialite'] != null
-          ? List<String>.from(map['specialite'])
+      photos: json['photos'] != null ? List<String>.from(json['photos']) : null,
+      dateCreation: json['dateCreation'] != null
+          ? DateTime.parse(json['dateCreation'])
           : null,
-      anneeExperience: map['anneeExperience'] as String?,
-      description: map['description'] as String?,
-      rayonIntervention: map['rayonIntervention'] != null
-          ? (map['rayonIntervention'] as num).toDouble()
-          : null,
-      zoneIntervention: map['zoneIntervention'] != null
-          ? List<String>.from(map['zoneIntervention'])
-          : null,
-      tarifHoraireMin: map['tarifHoraireMin'] != null
-          ? (map['tarifHoraireMin'] as num).toDouble()
-          : null,
-      tarifHoraireMax: map['tarifHoraireMax'] != null
-          ? (map['tarifHoraireMax'] as num).toDouble()
-          : null,
-      diplomeCertificat: map['diplomeCertificat'] != null
-          ? List<String>.from(map['diplomeCertificat'])
-          : null,
-      attestationAssurance: map['attestationAssurance'] as String?,
-      numeroAssurance: map['numeroAssurance'] as String?,
-      numeroRCCM: map['numeroRCCM'] as String?,
+      actif: json['actif'] ?? true,
+      localisation: json['localisation'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      '_id': idprestataire,
-      'utilisateur': utilisateur.toJson(),
-      'service': service.toJson(),
-      'prixprestataire': prixprestataire,
-      'localisation': localisation,
-      'localisationmaps': localisationMaps?.toJson(),
-      'note': note,
+      'id': id,
+      'nom': nom,
+      'prenom': prenom,
+      'telephone': telephone,
+      'email': email,
+      'photo': photo,
+      'adresse': adresse,
+      'ville': ville,
+      'quartier': quartier,
+      'latitude': latitude,
+      'longitude': longitude,
+      'serviceId': serviceId,
+      'serviceName': serviceName,
+      'categorieId': categorieId,
+      'categorieName': categorieName,
       'verifier': verifier,
-      'cni1': cni1,
-      'cni2': cni2,
-      'selfie': selfie,
-      'numeroCNI': numeroCNI,
-      'specialite': specialite,
-      'anneeExperience': anneeExperience,
+      'note': note,
+      'nombreAvis': nombreAvis,
       'description': description,
-      'rayonIntervention': rayonIntervention,
-      'zoneIntervention': zoneIntervention,
-      'tarifHoraireMin': tarifHoraireMin,
-      'tarifHoraireMax': tarifHoraireMax,
-      'diplomeCertificat': diplomeCertificat,
-      'attestationAssurance': attestationAssurance,
-      'numeroAssurance': numeroAssurance,
-      'numeroRCCM': numeroRCCM,
+      'competences': competences,
+      'photos': photos,
+      'dateCreation': dateCreation?.toIso8601String(),
+      'actif': actif,
+      'localisation': localisation,
     };
   }
 
-  Map<String, dynamic> toMap() => toJson();
-}
+  String get fullName => '$nom $prenom';
 
-class LocalisationMaps {
-  double latitude;
-  double longitude;
-
-  LocalisationMaps({required this.latitude, required this.longitude});
-
-  factory LocalisationMaps.fromJson(dynamic json) {
-    final map = json as Map<String, dynamic>;
-    return LocalisationMaps(
-      latitude: (map['latitude'] as num).toDouble(),
-      longitude: (map['longitude'] as num).toDouble(),
-    );
+  String get displayLocation {
+    if (ville != null && quartier != null) {
+      return '$quartier, $ville';
+    } else if (ville != null) {
+      return ville!;
+    } else if (localisation != null) {
+      return localisation!;
+    }
+    return 'Localisation non précisée';
   }
 
-  Map<String, dynamic> toJson() => {
-        'latitude': latitude,
-        'longitude': longitude,
-      };
+  String get ratingDisplay {
+    if (note != null) {
+      return '${note!.toStringAsFixed(1)} (${nombreAvis ?? 0} avis)';
+    }
+    return 'Pas encore noté';
+  }
 
-  Map<String, dynamic> toMap() => toJson();
+  @override
+  List<Object?> get props => [
+        id,
+        nom,
+        prenom,
+        telephone,
+        email,
+        photo,
+        adresse,
+        ville,
+        quartier,
+        latitude,
+        longitude,
+        serviceId,
+        serviceName,
+        categorieId,
+        categorieName,
+        verifier,
+        note,
+        nombreAvis,
+        description,
+        competences,
+        photos,
+        dateCreation,
+        actif,
+        localisation,
+      ];
 }

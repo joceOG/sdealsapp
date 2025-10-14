@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:sdealsapp/ai_services/interfaces/provider_matching_service.dart';
 import 'package:sdealsapp/ai_services/mock_implementations/mock_provider_matching_service.dart';
 import 'package:sdealsapp/ai_services/models/provider_match_explanation.dart';
-import 'package:sdealsapp/ai_services/models/ai_recommendation_model.dart';
 import 'package:sdealsapp/data/models/prestataire.dart';
 
 /// Widget pour afficher les prestataires recommandés par IA
@@ -21,11 +20,13 @@ class AIProviderMatcherWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _AIProviderMatcherWidgetState createState() => _AIProviderMatcherWidgetState();
+  _AIProviderMatcherWidgetState createState() =>
+      _AIProviderMatcherWidgetState();
 }
 
 class _AIProviderMatcherWidgetState extends State<AIProviderMatcherWidget> {
-  final ProviderMatchingService _matchingService = MockProviderMatchingService();
+  final ProviderMatchingService _matchingService =
+      MockProviderMatchingService();
   List<Prestataire>? _matchedProviders;
   ProviderMatchExplanation? _matchExplanation;
   bool _isLoading = true;
@@ -44,33 +45,34 @@ class _AIProviderMatcherWidgetState extends State<AIProviderMatcherWidget> {
         _isLoading = true;
         _error = null;
       });
-      
+
       // Convertir le type de service en requête
-      final query = "${widget.serviceType} ${widget.preferences?.join(' ') ?? ''}".trim();
-      
+      final query =
+          "${widget.serviceType} ${widget.preferences?.join(' ') ?? ''}".trim();
+
       // Appeler le service de matching
       final recommendations = await _matchingService.getRecommendedProviders(
         query: query,
         location: widget.location,
         maxResults: 5,
       );
-      
+
       // Créer une explication de mise en correspondance à partir des recommandations
       final matchCriteria = [widget.serviceType, widget.location];
       if (widget.preferences != null && widget.preferences!.isNotEmpty) {
         matchCriteria.addAll(widget.preferences!);
       }
-      
+
       final providerScores = <String, double>{};
       final providerStrengths = <String, List<String>>{};
       final providers = <Prestataire>[];
-      
+
       // Traiter les recommandations
       for (final recommendation in recommendations) {
         providers.add(recommendation.prestataire);
-        
+
         // Utiliser l'ID comme clé pour les scores et forces
-        final idKey = recommendation.prestataire.utilisateur.idutilisateur;
+        final idKey = recommendation.prestataire.id;
         providerScores[idKey] = recommendation.matchScore;
         providerStrengths[idKey] = [recommendation.matchReason];
         if (recommendation.matchDetails.isNotEmpty) {
@@ -81,14 +83,14 @@ class _AIProviderMatcherWidgetState extends State<AIProviderMatcherWidget> {
           });
         }
       }
-      
+
       // Créer l'objet d'explication
       final explanation = ProviderMatchExplanation(
         matchingCriteria: matchCriteria,
         providerScores: providerScores,
         providerStrengths: providerStrengths,
       );
-      
+
       setState(() {
         _matchedProviders = providers;
         _matchExplanation = explanation;
@@ -96,7 +98,8 @@ class _AIProviderMatcherWidgetState extends State<AIProviderMatcherWidget> {
       });
     } catch (e) {
       setState(() {
-        _error = "Impossible de trouver des prestataires correspondants: ${e.toString()}";
+        _error =
+            "Impossible de trouver des prestataires correspondants: ${e.toString()}";
         _isLoading = false;
       });
     }
@@ -204,23 +207,23 @@ class _AIProviderMatcherWidgetState extends State<AIProviderMatcherWidget> {
           ),
           const SizedBox(height: 16),
         ],
-        
         const Text(
           'Prestataires recommandés:',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 12),
-        
         ListView.separated(
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           separatorBuilder: (context, index) => const Divider(),
-          itemCount: _matchedProviders!.length > 3 ? 3 : _matchedProviders!.length,
+          itemCount:
+              _matchedProviders!.length > 3 ? 3 : _matchedProviders!.length,
           itemBuilder: (context, index) {
             final provider = _matchedProviders![index];
-            final matchScore = _matchExplanation?.providerScores[provider.utilisateur.idutilisateur] ?? 0.0;
+            final matchScore =
+                _matchExplanation?.providerScores[provider.id] ?? 0.0;
             final matchPercent = (matchScore * 100).toInt();
-            
+
             return InkWell(
               onTap: () => widget.onProviderSelected?.call(provider),
               child: Padding(
@@ -230,7 +233,8 @@ class _AIProviderMatcherWidgetState extends State<AIProviderMatcherWidget> {
                     // Avatar du prestataire
                     CircleAvatar(
                       radius: 24,
-                      backgroundColor: Theme.of(context).primaryColor.withOpacity(0.2),
+                      backgroundColor:
+                          Theme.of(context).primaryColor.withOpacity(0.2),
                       child: Icon(
                         Icons.person,
                         color: Theme.of(context).primaryColor,
@@ -238,7 +242,7 @@ class _AIProviderMatcherWidgetState extends State<AIProviderMatcherWidget> {
                       ),
                     ),
                     const SizedBox(width: 12),
-                    
+
                     // Informations principales du prestataire
                     Expanded(
                       child: Column(
@@ -249,7 +253,7 @@ class _AIProviderMatcherWidgetState extends State<AIProviderMatcherWidget> {
                             children: [
                               Flexible(
                                 child: Text(
-                                  provider.utilisateur.prenom,
+                                  provider.fullName,
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16,
@@ -259,7 +263,8 @@ class _AIProviderMatcherWidgetState extends State<AIProviderMatcherWidget> {
                                 ),
                               ),
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 4),
                                 decoration: BoxDecoration(
                                   color: Theme.of(context).primaryColor,
                                   borderRadius: BorderRadius.circular(12),
@@ -276,39 +281,45 @@ class _AIProviderMatcherWidgetState extends State<AIProviderMatcherWidget> {
                             ],
                           ),
                           const SizedBox(height: 4),
-                          
+
                           // Localisation du prestataire
-                          Text(provider.localisation),
+                          Text(provider.localisation ?? 'Non spécifié'),
                           const SizedBox(height: 4),
-                          
+
                           // Note et avis (simulés)
                           Row(
                             children: [
-                              const Icon(Icons.star, size: 16, color: Colors.amber),
+                              const Icon(Icons.star,
+                                  size: 16, color: Colors.amber),
                               const SizedBox(width: 4),
                               Text(
-                                provider.utilisateur.note!,
-                                style: const TextStyle(fontWeight: FontWeight.bold),
+                                provider.note?.toStringAsFixed(1) ?? 'N/A',
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
                               ),
                               const Text(' (12 avis)'),
                             ],
                           ),
                           const SizedBox(height: 4),
-                          
+
                           // Points forts du prestataire
-                          if (_matchExplanation?.providerStrengths[provider.utilisateur.idutilisateur] != null)
+                          if (_matchExplanation
+                                  ?.providerStrengths[provider.id] !=
+                              null)
                             Wrap(
                               spacing: 4,
                               runSpacing: 4,
-                              children: _matchExplanation!.providerStrengths[provider.utilisateur.idutilisateur]!
+                              children: _matchExplanation!
+                                  .providerStrengths[provider.id]!
                                   .take(2)
-                                  .map((strength) => _buildStrengthTag(strength))
+                                  .map(
+                                      (strength) => _buildStrengthTag(strength))
                                   .toList(),
                             ),
                         ],
                       ),
                     ),
-                    
+
                     // Icône de flèche pour indiquer l'action
                     Icon(
                       Icons.chevron_right,
@@ -320,7 +331,6 @@ class _AIProviderMatcherWidgetState extends State<AIProviderMatcherWidget> {
             );
           },
         ),
-        
         if (_matchedProviders!.length > 3)
           Center(
             child: TextButton(

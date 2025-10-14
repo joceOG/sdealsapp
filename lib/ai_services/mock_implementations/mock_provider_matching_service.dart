@@ -4,9 +4,6 @@ import 'package:sdealsapp/ai_services/interfaces/provider_matching_service.dart'
 import 'package:sdealsapp/ai_services/models/ai_recommendation_model.dart';
 import 'package:sdealsapp/data/models/prestataire.dart';
 
-import '../../data/models/service.dart';
-import '../../data/models/utilisateur.dart';
-
 /// Implémentation mock du service de matching des prestataires
 /// Cette classe simule le comportement d'un service de matching IA avec des données préfabriquées
 class MockProviderMatchingService implements ProviderMatchingService {
@@ -22,7 +19,8 @@ class MockProviderMatchingService implements ProviderMatchingService {
       'zone': 'Yopougon',
       'note': 4.8,
       'experience': 5,
-      'bio': 'Plombier professionnel avec 5 ans d\'expérience dans les réparations d\'urgence',
+      'bio':
+          'Plombier professionnel avec 5 ans d\'expérience dans les réparations d\'urgence',
     },
     {
       'id': 'pres-002',
@@ -34,7 +32,8 @@ class MockProviderMatchingService implements ProviderMatchingService {
       'zone': 'Cocody',
       'note': 4.9,
       'experience': 8,
-      'bio': 'Électricienne certifiée spécialisée dans les installations domestiques et professionnelles',
+      'bio':
+          'Électricienne certifiée spécialisée dans les installations domestiques et professionnelles',
     },
     {
       'id': 'pres-003',
@@ -46,7 +45,8 @@ class MockProviderMatchingService implements ProviderMatchingService {
       'zone': 'Abobo',
       'note': 4.5,
       'experience': 12,
-      'bio': 'Mécanicien automobile avec atelier équipé pour tout type de réparation',
+      'bio':
+          'Mécanicien automobile avec atelier équipé pour tout type de réparation',
     },
     {
       'id': 'pres-004',
@@ -58,7 +58,8 @@ class MockProviderMatchingService implements ProviderMatchingService {
       'zone': 'Treichville',
       'note': 4.7,
       'experience': 6,
-      'bio': 'Coiffeuse styliste spécialisée dans les tresses africaines et extensions',
+      'bio':
+          'Coiffeuse styliste spécialisée dans les tresses africaines et extensions',
     },
     {
       'id': 'pres-005',
@@ -70,7 +71,8 @@ class MockProviderMatchingService implements ProviderMatchingService {
       'zone': 'Plateau',
       'note': 4.6,
       'experience': 15,
-      'bio': 'Menuisier ébéniste avec atelier artisanal, création de meubles sur mesure',
+      'bio':
+          'Menuisier ébéniste avec atelier artisanal, création de meubles sur mesure',
     },
     {
       'id': 'pres-006',
@@ -82,7 +84,8 @@ class MockProviderMatchingService implements ProviderMatchingService {
       'zone': 'Marcory',
       'note': 4.8,
       'experience': 4,
-      'bio': 'Ingénieure informatique offrant des services de maintenance et formation',
+      'bio':
+          'Ingénieure informatique offrant des services de maintenance et formation',
     },
   ];
 
@@ -109,19 +112,20 @@ class MockProviderMatchingService implements ProviderMatchingService {
   }) async {
     // Simuler un délai de traitement IA
     await Future.delayed(const Duration(milliseconds: 800));
-    
+
     // Extraire les entités de la requête
     final queryEntities = await analyzeUserQuery(query);
-    
+
     // Filtrer les prestataires disponibles si demandé
     var filteredProviders = _mockPrestataires;
     if (filterImmediatelyAvailable) {
-      filteredProviders = filteredProviders.where((p) => p['disponible'] == true).toList();
+      filteredProviders =
+          filteredProviders.where((p) => p['disponible'] == true).toList();
     }
-    
+
     // Identifier la zone correspondante
     String normalizedLocation = _normalizeLocation(location);
-    
+
     // Filtrer par localisation si fournie
     if (location.isNotEmpty) {
       filteredProviders = filteredProviders.where((p) {
@@ -129,62 +133,37 @@ class MockProviderMatchingService implements ProviderMatchingService {
         return _isInSameArea(providerZone, normalizedLocation);
       }).toList();
     }
-    
+
     // Calculer les scores de correspondance pour chaque prestataire
     List<AIProviderRecommendation> recommendations = [];
-    
+
     for (var providerData in filteredProviders) {
       final matchScore = await calculateMatchScore(providerData, queryEntities);
-      
+
       // Créer un prestataire à partir des données mock
       final prestataire = Prestataire(
-        idprestataire: 'prest001',
-        utilisateur: Utilisateur(
-          idutilisateur: 'user001',
-          nom: 'KOUASSI',
-          prenom: 'Jocelyn',
-          email: 'jocelyn.kouassi@example.com',
-          password: 'password123',
-          telephone: '+2250700000000',
-          genre: 'Homme',
-          note: '4.5',
-        ),
-        service: Service(
-          idservice: 'serv001',
-          nomservice: 'Plomberie',
-          imageservice: 'https://example.com/images/plomberie.png',
-          prixmoyen: '15000',
-          categorie: null,
-        ),
-        prixprestataire: 18000,
-        localisation: 'Abidjan, Cocody',
-        localisationMaps: LocalisationMaps(
-          latitude: 5.345,
-          longitude: -4.024,
-        ),
-        note: '4.7',
+        id: 'prest001',
+        nom: 'KOUASSI',
+        prenom: 'Jocelyn',
+        telephone: '+2250700000000',
+        email: 'jocelyn.kouassi@example.com',
+        photo: 'https://example.com/images/profile.jpg',
+        adresse: 'Abidjan, Cocody',
+        ville: 'Abidjan',
+        quartier: 'Cocody',
+        serviceId: 'serv001',
+        serviceName: 'Plomberie',
+        description: 'Plombier professionnel avec 5 ans d\'experience.',
+        note: 4.7,
+        nombreAvis: 12,
         verifier: true,
-        cni1: 'https://example.com/documents/cni1.png',
-        cni2: 'https://example.com/documents/cni2.png',
-        selfie: 'https://example.com/documents/selfie.png',
-        numeroCNI: '1234567890',
-        specialite: ['Réparation', 'Installation', 'Maintenance'],
-        anneeExperience: '5',
-        description: 'Plombier professionnel avec 5 ans d’expérience.',
-        rayonIntervention: 15.0,
-        zoneIntervention: ['Abidjan', 'Yopougon', 'Marcory'],
-        tarifHoraireMin: 3000,
-        tarifHoraireMax: 7000,
-        diplomeCertificat: ['Diplôme en plomberie', 'Certificat de sécurité'],
-        attestationAssurance: 'Assurance ABC123',
-        numeroAssurance: 'ASS123456',
-        numeroRCCM: 'RCCM78910',
+        actif: true,
       );
 
-
       // Générer une raison de match explicative
-      final matchReason = _generateMatchReason(matchScore, providerData, queryEntities);
-      
+      final matchReason =
+          _generateMatchReason(matchScore, providerData, queryEntities);
+
       recommendations.add(AIProviderRecommendation(
         prestataire: prestataire,
         matchScore: matchScore,
@@ -192,12 +171,14 @@ class MockProviderMatchingService implements ProviderMatchingService {
         matchDetails: {
           'queryTerms': queryEntities['terms'],
           'providerTags': providerData['tags'],
-          'categoryMatch': queryEntities['category'] == providerData['profession'],
-          'locationMatch': _isInSameArea(providerData['zone'], normalizedLocation),
+          'categoryMatch':
+              queryEntities['category'] == providerData['profession'],
+          'locationMatch':
+              _isInSameArea(providerData['zone'], normalizedLocation),
         },
       ));
     }
-    
+
     // Trier par score de correspondance et limiter le nombre de résultats
     recommendations.sort((a, b) => b.matchScore.compareTo(a.matchScore));
     return recommendations.take(maxResults).toList();
@@ -207,22 +188,27 @@ class MockProviderMatchingService implements ProviderMatchingService {
   Future<Map<String, dynamic>> analyzeUserQuery(String query) async {
     // Simuler l'analyse NLP d'une requête utilisateur
     final query_lower = query.toLowerCase();
-    
+
     // Extraire la catégorie/profession
     String category = '';
-    if (query_lower.contains('plomb')) category = 'Plombier';
-    else if (query_lower.contains('élect') || query_lower.contains('elect')) category = 'Électricien';
-    else if (query_lower.contains('mécan') || query_lower.contains('mecan')) category = 'Mécanicien';
-    else if (query_lower.contains('coiff')) category = 'Coiffeur';
-    else if (query_lower.contains('menuis')) category = 'Menuisier';
+    if (query_lower.contains('plomb'))
+      category = 'Plombier';
+    else if (query_lower.contains('élect') || query_lower.contains('elect'))
+      category = 'Électricien';
+    else if (query_lower.contains('mécan') || query_lower.contains('mecan'))
+      category = 'Mécanicien';
+    else if (query_lower.contains('coiff'))
+      category = 'Coiffeur';
+    else if (query_lower.contains('menuis'))
+      category = 'Menuisier';
     else if (query_lower.contains('info')) category = 'Informaticien';
-    
+
     // Détecter l'urgence
-    bool isUrgent = query_lower.contains('urgent') || 
-                   query_lower.contains('urgence') || 
-                   query_lower.contains('rapidement') ||
-                   query_lower.contains('immédiat');
-    
+    bool isUrgent = query_lower.contains('urgent') ||
+        query_lower.contains('urgence') ||
+        query_lower.contains('rapidement') ||
+        query_lower.contains('immédiat');
+
     // Extraire la localisation si présente
     String location = '';
     for (var zone in _zoneAliases.keys) {
@@ -230,7 +216,7 @@ class MockProviderMatchingService implements ProviderMatchingService {
         location = zone;
         break;
       }
-      
+
       // Vérifier les alias
       for (var alias in _zoneAliases[zone]!) {
         if (query_lower.contains(alias.toLowerCase())) {
@@ -238,16 +224,16 @@ class MockProviderMatchingService implements ProviderMatchingService {
           break;
         }
       }
-      
+
       if (location.isNotEmpty) break;
     }
-    
+
     // Extraire les termes significatifs
     List<String> terms = query_lower
         .split(' ')
-        .where((term) => term.length > 3)  // Ignorer les mots courts
+        .where((term) => term.length > 3) // Ignorer les mots courts
         .toList();
-    
+
     return {
       'category': category,
       'isUrgent': isUrgent,
@@ -258,89 +244,92 @@ class MockProviderMatchingService implements ProviderMatchingService {
   }
 
   @override
-  Future<double> calculateMatchScore(
-    Map<String, dynamic> providerData, 
-    Map<String, dynamic> queryEntities
-  ) async {
+  Future<double> calculateMatchScore(Map<String, dynamic> providerData,
+      Map<String, dynamic> queryEntities) async {
     double score = 0.0;
-    
+
     // Score pour la correspondance de catégorie/profession
     final providerProfession = providerData['profession'] as String;
     final queryCategory = queryEntities['category'] as String;
-    
+
     if (queryCategory.isNotEmpty && providerProfession == queryCategory) {
       score += 0.5; // 50% du score pour la catégorie correcte
     }
-    
+
     // Score pour les tags correspondants
     final providerTags = providerData['tags'] as List<dynamic>;
     final queryTerms = queryEntities['terms'] as List<dynamic>;
-    
+
     int matchingTerms = 0;
     for (var term in queryTerms) {
       for (var tag in providerTags) {
-        if (tag.toString().toLowerCase().contains(term.toString().toLowerCase())) {
+        if (tag
+            .toString()
+            .toLowerCase()
+            .contains(term.toString().toLowerCase())) {
           matchingTerms++;
           break;
         }
       }
     }
-    
+
     if (queryTerms.isNotEmpty) {
       score += (0.3 * matchingTerms / queryTerms.length); // 30% pour les tags
     }
-    
+
     // Score pour l'expérience
     final experience = providerData['experience'] as int;
-    score += (0.1 * min(experience / 10, 1.0)); // 10% pour l'expérience (max 10 ans)
-    
+    score +=
+        (0.1 * min(experience / 10, 1.0)); // 10% pour l'expérience (max 10 ans)
+
     // Score pour les notes
     final rating = providerData['note'] as double;
     score += (0.1 * (rating / 5.0)); // 10% pour la note (sur 5)
-    
+
     // Ajuster pour l'urgence si demandé et non disponible
-    if (queryEntities['isUrgent'] == true && providerData['disponible'] != true) {
+    if (queryEntities['isUrgent'] == true &&
+        providerData['disponible'] != true) {
       score *= 0.5; // Diviser le score par 2 si urgent mais non disponible
     }
-    
+
     return score;
   }
 
   // Méthodes auxiliaires
-  
+
   String _normalizeLocation(String location) {
     final locationLower = location.toLowerCase();
-    
+
     for (var zone in _zoneAliases.keys) {
       if (locationLower.contains(zone.toLowerCase())) {
         return zone;
       }
-      
+
       for (var alias in _zoneAliases[zone]!) {
         if (locationLower.contains(alias.toLowerCase())) {
           return zone;
         }
       }
     }
-    
+
     return location;
   }
-  
+
   bool _isInSameArea(String providerZone, String queryLocation) {
     if (queryLocation.isEmpty) return true;
-    
+
     final providerZoneLower = providerZone.toLowerCase();
     final queryLocationLower = queryLocation.toLowerCase();
-    
-    if (providerZoneLower.contains(queryLocationLower) || 
+
+    if (providerZoneLower.contains(queryLocationLower) ||
         queryLocationLower.contains(providerZoneLower)) {
       return true;
     }
-    
+
     // Vérifier les alias de zone
     for (var zone in _zoneAliases.keys) {
       final aliases = _zoneAliases[zone]!;
-      
+
       bool providerInZone = providerZoneLower.contains(zone.toLowerCase());
       if (!providerInZone) {
         for (var alias in aliases) {
@@ -350,7 +339,7 @@ class MockProviderMatchingService implements ProviderMatchingService {
           }
         }
       }
-      
+
       bool queryInZone = queryLocationLower.contains(zone.toLowerCase());
       if (!queryInZone) {
         for (var alias in aliases) {
@@ -360,18 +349,15 @@ class MockProviderMatchingService implements ProviderMatchingService {
           }
         }
       }
-      
+
       if (providerInZone && queryInZone) return true;
     }
-    
+
     return false;
   }
-  
-  String _generateMatchReason(
-    double score, 
-    Map<String, dynamic> providerData, 
-    Map<String, dynamic> queryEntities
-  ) {
+
+  String _generateMatchReason(double score, Map<String, dynamic> providerData,
+      Map<String, dynamic> queryEntities) {
     if (score > 0.8) {
       return 'Excellent match! ${providerData['nom']} est spécialisé(e) en ${providerData['profession']} '
           'avec ${providerData['experience']} ans d\'expérience et d\'excellentes évaluations.';

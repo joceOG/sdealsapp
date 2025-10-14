@@ -304,7 +304,8 @@ class _HomePageScreenState extends State<HomePageScreen> {
                       crossAxisCount: 3,
                       crossAxisSpacing: 20,
                       mainAxisSpacing: 20,
-                      childAspectRatio: 0.8,
+                      childAspectRatio:
+                          0.8, // Réduit pour des cartes plus compactes
                     ),
                     itemCount: 6, // Top 6 prestataires
                     itemBuilder: (context, index) {
@@ -1172,37 +1173,55 @@ class _HomePageScreenState extends State<HomePageScreen> {
         'name': 'Kouadio Jean',
         'service': 'Coiffeur',
         'rating': 4.8,
-        'image': 'assets/coiffeur.jpeg'
+        'image': 'assets/coiffeur.jpeg',
+        'verified': true,
+        'reviews': 24,
+        'location': 'Abidjan, Cocody'
       },
       {
         'name': 'Yao Koffi',
         'service': 'Électricien',
         'rating': 4.9,
-        'image': 'assets/coiffuer2.jpeg'
+        'image': 'assets/coiffuer2.jpeg',
+        'verified': true,
+        'reviews': 18,
+        'location': 'Abidjan, Yopougon'
       },
       {
         'name': 'Koné Mariam',
         'service': 'Coiffeuse',
         'rating': 4.7,
-        'image': 'assets/coiffeur.jpeg'
+        'image': 'assets/coiffeur.jpeg',
+        'verified': false,
+        'reviews': 12,
+        'location': 'Abidjan, Marcory'
       },
       {
         'name': 'Traoré Ali',
         'service': 'Plombier',
         'rating': 4.9,
-        'image': 'assets/coiffeur.jpeg'
+        'image': 'assets/coiffeur.jpeg',
+        'verified': true,
+        'reviews': 31,
+        'location': 'Abidjan, Plateau'
       },
       {
         'name': 'Ouattara Fatou',
         'service': 'Nettoyage',
         'rating': 4.8,
-        'image': 'assets/coiffeur.jpeg'
+        'image': 'assets/coiffeur.jpeg',
+        'verified': true,
+        'reviews': 15,
+        'location': 'Abidjan, Riviera'
       },
       {
         'name': 'Diabaté Ibrahim',
         'service': 'Jardinier',
         'rating': 4.6,
-        'image': 'assets/coiffeur.jpeg'
+        'image': 'assets/coiffeur.jpeg',
+        'verified': false,
+        'reviews': 8,
+        'location': 'Abidjan, Angré'
       },
     ];
 
@@ -1215,75 +1234,189 @@ class _HomePageScreenState extends State<HomePageScreen> {
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
-              blurRadius: 10,
-              offset: const Offset(0, 5),
+              color: Colors.grey.withOpacity(0.15),
+              blurRadius: 20,
+              offset: const Offset(0, 8),
             ),
           ],
         ),
         child: Column(
           children: [
-            // Photo du prestataire
-            Expanded(
-              flex: 3,
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius:
-                      const BorderRadius.vertical(top: Radius.circular(15)),
-                  image: DecorationImage(
-                    image: AssetImage(provider['image'] as String),
-                    fit: BoxFit.cover,
+            // Header avec photo ronde et badge de vérification
+            Container(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  // Photo ronde du prestataire
+                  Stack(
+                    children: [
+                      Container(
+                        width: 60,
+                        height: 60,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: const Color(0xFF1CBF3F),
+                            width: 2,
+                          ),
+                          image: DecorationImage(
+                            image: AssetImage(provider['image'] as String),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      // Badge de vérification
+                      if (provider['verified'] as bool)
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: Container(
+                            width: 18,
+                            height: 18,
+                            decoration: const BoxDecoration(
+                              color: Color(0xFF1CBF3F),
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(
+                              Icons.verified,
+                              color: Colors.white,
+                              size: 12,
+                            ),
+                          ),
+                        ),
+                    ],
                   ),
-                ),
+                  const SizedBox(height: 12),
+                  // Nom du prestataire
+                  Text(
+                    provider['name'] as String,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF1E293B),
+                    ),
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 3),
+                  // Service
+                  Text(
+                    provider['service'] as String,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: Color(0xFF64748B),
+                      fontWeight: FontWeight.w500,
+                    ),
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 6),
+                  // Localisation
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.location_on,
+                          size: 12, color: Color(0xFF64748B)),
+                      const SizedBox(width: 3),
+                      Expanded(
+                        child: Text(
+                          provider['location'] as String,
+                          style: const TextStyle(
+                            fontSize: 10,
+                            color: Color(0xFF64748B),
+                          ),
+                          textAlign: TextAlign.center,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
-            // Informations
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.all(12),
-                child: Column(
-                  children: [
-                    Text(
-                      provider['name'] as String,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
-                      ),
-                      textAlign: TextAlign.center,
+            // Divider
+            Container(
+              height: 1,
+              margin: const EdgeInsets.symmetric(horizontal: 16),
+              color: Colors.grey[200],
+            ),
+            // Footer avec note et actions
+            Container(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  // Note avec étoiles
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF1CBF3F).withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(15),
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      provider['service'] as String,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Icon(Icons.star, color: Colors.amber, size: 16),
-                        const SizedBox(width: 4),
+                        const Icon(Icons.star, size: 12, color: Colors.amber),
+                        const SizedBox(width: 3),
                         Text(
                           '${provider['rating']}',
                           style: const TextStyle(
-                            fontSize: 14,
+                            fontSize: 12,
                             fontWeight: FontWeight.bold,
-                            color: Colors.black87,
+                            color: Color(0xFF1E293B),
+                          ),
+                        ),
+                        const SizedBox(width: 3),
+                        Text(
+                          '(${provider['reviews']} avis)',
+                          style: const TextStyle(
+                            fontSize: 10,
+                            color: Color(0xFF64748B),
                           ),
                         ),
                       ],
                     ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 8),
+                  // Bouton d'action
+                  Container(
+                    width: double.infinity,
+                    height: 32,
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFF1CBF3F), Color(0xFF16A34A)],
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                      ),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(20),
+                        onTap: () {
+                          context.go('/prestataire');
+                        },
+                        child: const Center(
+                          child: Text(
+                            'Voir le profil',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
