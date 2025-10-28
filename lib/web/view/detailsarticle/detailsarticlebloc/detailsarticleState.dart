@@ -3,63 +3,69 @@ import 'package:sdealsapp/data/models/article.dart';
 
 class DetailsArticleState extends Equatable {
   final Article? article;
-  final List<Article> similarArticles;
-  final bool isLoading;
-  final bool isFavorite;
-  final int quantity;
   final String? error;
+  final int? counterValue;
+  final bool isLoading;
+  final List<Article> similarArticles;
+  final bool isFavorite;
   final bool isAddedToCart;
+  final int quantity;
 
   const DetailsArticleState({
     this.article,
-    this.similarArticles = const [],
-    this.isLoading = false,
-    this.isFavorite = false,
-    this.quantity = 1,
     this.error,
+    this.counterValue,
+    this.isLoading = false,
+    this.similarArticles = const [],
+    this.isFavorite = false,
     this.isAddedToCart = false,
+    this.quantity = 1,
   });
 
   factory DetailsArticleState.initial() {
     return const DetailsArticleState(
       article: null,
-      similarArticles: [],
-      isLoading: false,
-      isFavorite: false,
-      quantity: 1,
       error: null,
+      counterValue: 0,
+      isLoading: false,
+      similarArticles: [],
+      isFavorite: false,
       isAddedToCart: false,
+      quantity: 1,
     );
   }
 
   DetailsArticleState copyWith({
     Article? article,
-    List<Article>? similarArticles,
-    bool? isLoading,
-    bool? isFavorite,
-    int? quantity,
     String? error,
+    int? counterValue,
+    bool? isLoading,
+    List<Article>? similarArticles,
+    bool? isFavorite,
     bool? isAddedToCart,
+    int? quantity,
   }) {
     return DetailsArticleState(
       article: article ?? this.article,
-      similarArticles: similarArticles ?? this.similarArticles,
-      isLoading: isLoading ?? this.isLoading,
-      isFavorite: isFavorite ?? this.isFavorite,
-      quantity: quantity ?? this.quantity,
       error: error ?? this.error,
+      counterValue: counterValue ?? this.counterValue,
+      isLoading: isLoading ?? this.isLoading,
+      similarArticles: similarArticles ?? this.similarArticles,
+      isFavorite: isFavorite ?? this.isFavorite,
       isAddedToCart: isAddedToCart ?? this.isAddedToCart,
+      quantity: quantity ?? this.quantity,
     );
   }
 
   @override
   List<Object?> get props => [
         article,
-        similarArticles,
-        isLoading,
-        isFavorite,
-        quantity,
         error,
+        counterValue,
+        isLoading,
+        similarArticles,
+        isFavorite,
         isAddedToCart,
+        quantity,
       ];
 }

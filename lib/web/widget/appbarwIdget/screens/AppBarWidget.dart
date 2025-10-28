@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import 'NavigationItem.dart';
 import 'NavigationItem2.dart';
+import 'package:sdealsapp/data/services/authCubit.dart';
 
 class NavigationBar extends StatelessWidget {
   @override
@@ -129,47 +131,21 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
 
-        // Bouton connexion moderne - Centré verticalement
+        // Bouton connexion/profil moderne - Centré verticalement
         Container(
           height: 80,
           margin: const EdgeInsets.only(right: 5),
           child: Center(
-            child: FilledButton(
-              onPressed: () {
-                context.go('/connexion');
+            child: BlocBuilder<AuthCubit, AuthState>(
+              builder: (context, state) {
+                if (state is AuthAuthenticated) {
+                  // Utilisateur connecté - Afficher le profil
+                  return _buildUserProfileButton(context, state);
+                } else {
+                  // Utilisateur non connecté - Afficher le bouton de connexion
+                  return _buildLoginButton(context);
+                }
               },
-              style: FilledButton.styleFrom(
-                backgroundColor: const Color(0xFF1CBF3F),
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 8,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                elevation: 0,
-                shadowColor: Colors.transparent,
-              ),
-              child: const Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.login,
-                    size: 16,
-                    color: Colors.white,
-                  ),
-                  SizedBox(width: 4),
-                  Text(
-                    'Se connecter',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
-              ),
             ),
           ),
         ),
@@ -179,4 +155,158 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => const Size.fromHeight(80);
+
+  // 🎯 BOUTON DE CONNEXION
+  Widget _buildLoginButton(BuildContext context) {
+    return FilledButton(
+      onPressed: () {
+        context.go('/connexion');
+      },
+      style: FilledButton.styleFrom(
+        backgroundColor: const Color(0xFF1CBF3F),
+        foregroundColor: Colors.white,
+        padding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 8,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        elevation: 0,
+        shadowColor: Colors.transparent,
+      ),
+      child: const Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            Icons.login,
+            size: 16,
+            color: Colors.white,
+          ),
+          SizedBox(width: 4),
+          Text(
+            'Se connecter',
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w600,
+              fontSize: 12,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // 🎯 BOUTON PROFIL UTILISATEUR
+  Widget _buildUserProfileButton(
+      BuildContext context, AuthAuthenticated state) {
+    return PopupMenuButton<String>(
+      onSelected: (value) {
+        switch (value) {
+          case 'profile':
+            // TODO: Naviguer vers le profil
+            break;
+          case 'dashboard':
+            if (state.roles.contains('PRESTATAIRE')) {
+              context.go('/prestataire/dashboard');
+            }
+            break;
+          case 'logout':
+            context.read<AuthCubit>().logout();
+            break;
+        }
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          color: const Color(0xFF1CBF3F).withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: const Color(0xFF1CBF3F).withValues(alpha: 0.3),
+            width: 1,
+          ),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CircleAvatar(
+              radius: 12,
+              backgroundColor: const Color(0xFF1CBF3F),
+              child: Text(
+                state.utilisateur.nom.isNotEmpty
+                    ? state.utilisateur.nom[0].toUpperCase()
+                    : 'U',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '${state.utilisateur.prenom} ${state.utilisateur.nom}',
+                  style: const TextStyle(
+                    color: Color(0xFF1CBF3F),
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12,
+                  ),
+                ),
+                Text(
+                  state.activeRole ?? 'Client',
+                  style: TextStyle(
+                    color: const Color(0xFF1CBF3F).withValues(alpha: 0.7),
+                    fontSize: 10,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(width: 4),
+            const Icon(
+              Icons.keyboard_arrow_down,
+              color: Color(0xFF1CBF3F),
+              size: 16,
+            ),
+          ],
+        ),
+      ),
+      itemBuilder: (context) => [
+        const PopupMenuItem(
+          value: 'profile',
+          child: Row(
+            children: [
+              Icon(Icons.person, size: 16),
+              SizedBox(width: 8),
+              Text('Mon profil'),
+            ],
+          ),
+        ),
+        if (state.roles.contains('PRESTATAIRE'))
+          const PopupMenuItem(
+            value: 'dashboard',
+            child: Row(
+              children: [
+                Icon(Icons.dashboard, size: 16),
+                SizedBox(width: 8),
+                Text('Dashboard'),
+              ],
+            ),
+          ),
+        const PopupMenuItem(
+          value: 'logout',
+          child: Row(
+            children: [
+              Icon(Icons.logout, size: 16, color: Colors.red),
+              SizedBox(width: 8),
+              Text('Se déconnecter', style: TextStyle(color: Colors.red)),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
 }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'dart:math';
 import 'package:sdealsapp/web/view/homepage/homepagebloc/homePageState.dart';
+import 'package:sdealsapp/data/services/authCubit.dart';
 
 import '../../../widget/Footer.dart';
 import '../../../widget/appbarwIdget/screens/AppBarWidget.dart';
@@ -121,220 +123,381 @@ class _HomePageScreenState extends State<HomePageScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          ElevatedButton(
-                            onPressed: () {
+                          // 🎯 BOUTON DÉCOUVRIR LES SERVICES MODERNE
+                          Container(
+                            decoration: BoxDecoration(
+                              gradient: const LinearGradient(
+                                colors: [Color(0xFF1CBF3F), Color(0xFF16A34A)],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                              borderRadius: BorderRadius.circular(30),
+                              boxShadow: [
+                                BoxShadow(
+                                  color:
+                                      const Color(0xFF1CBF3F).withOpacity(0.3),
+                                  blurRadius: 8,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
+                            ),
+                            child: Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                borderRadius: BorderRadius.circular(30),
+                                onTap: () {
                               context.go('/prestataire');
                             },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green,
-                              foregroundColor: Colors.white,
+                                child: Container(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 40,
                                 vertical: 20,
                               ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                              elevation: 8,
-                            ),
-                            child: const Text(
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const Icon(
+                                        Icons.explore,
+                                        color: Colors.white,
+                                        size: 20,
+                                      ),
+                                      const SizedBox(width: 12),
+                                      const Text(
                               'Découvrir les services',
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      const Icon(
+                                        Icons.arrow_forward,
+                                        color: Colors.white,
+                                        size: 16,
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
                             ),
                           ),
                           const SizedBox(width: 20),
-                          OutlinedButton(
-                            onPressed: () {
-                              // Action pour devenir prestataire
-                            },
-                            style: OutlinedButton.styleFrom(
-                              foregroundColor: Colors.white,
-                              side: const BorderSide(
-                                  color: Colors.white, width: 2),
+                          // 🎯 BOUTON DEVENIR PRESTATAIRE MODERNE
+                          Container(
+                            decoration: BoxDecoration(
+                              gradient: const LinearGradient(
+                                colors: [Color(0xFF4CAF50), Color(0xFF2E7D32)],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                              borderRadius: BorderRadius.circular(30),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.green.withOpacity(0.3),
+                                  blurRadius: 8,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
+                            ),
+                            child: Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                borderRadius: BorderRadius.circular(30),
+                                onTap: () {
+                                  // Vérifier l'état d'authentification
+                                  final authState = context.read<AuthCubit>().state;
+                                  if (authState is AuthAuthenticated) {
+                                    // Utilisateur connecté - aller vers l'inscription prestataire
+                                    context.go('/prestataire/inscription');
+                                  } else {
+                                    // Utilisateur non connecté - aller vers la connexion
+                                    context.go('/connexion');
+                                  }
+                                },
+                                child: Container(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 40,
                                 vertical: 20,
                               ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
-                              ),
-                            ),
-                            child: const Text(
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const Icon(
+                                        Icons.handyman,
+                                        color: Colors.white,
+                                        size: 20,
+                                      ),
+                                      const SizedBox(width: 12),
+                                      const Text(
                               'Devenir prestataire',
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
+                                          color: Colors.white,
                               ),
                             ),
+                                      const SizedBox(width: 8),
+                                      const Icon(
+                                        Icons.arrow_forward,
+                                        color: Colors.white,
+                                        size: 16,
                           ),
                         ],
+                                  ),
+                                ),
+                              ),
+                            ),
                       ),
                     ],
                   ),
+                    ],
                 ),
               ),
             ),
-            // Section catégories avec design moderne
+            ),
+            // 🎯 SECTION CATÉGORIES MODERNE 2025
             Container(
               padding:
-                  const EdgeInsets.symmetric(vertical: 40.0, horizontal: 40.0),
+                  const EdgeInsets.symmetric(vertical: 48.0, horizontal: 40.0),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Header avec espacement cohérent
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
                     'Top catégories',
                     style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
+                              fontSize: 28,
+                              fontWeight: FontWeight.w700,
+                              color: Color(0xFF1E293B),
+                              letterSpacing: -0.5,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
                   const Text(
                     'Explorez nos services par catégorie',
                     style: TextStyle(
                       fontSize: 16,
-                      color: Colors.grey,
+                              color: Color(0xFF64748B),
+                              fontWeight: FontWeight.w400,
                     ),
                   ),
                 ],
               ),
-            ),
-            Container(
-              padding: EdgeInsets.only(
-                left: 40.0,
-                right: 40.0,
+                      // Bouton "Voir tout" avec animation
+                      AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        child: TextButton(
+                          onPressed: () => context.go('/prestataire'),
+                          style: TextButton.styleFrom(
+                            foregroundColor: const Color(0xFF1CBF3F),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 8),
+                          ),
+                          child: const Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                'Voir tout',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              SizedBox(width: 4),
+                              Icon(Icons.arrow_forward, size: 16),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              height: 260, // Set a height for the container
+            ),
+
+            // 🎨 GRILLE DE CATÉGORIES MODERNE
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 40.0),
+              height: 200, // Réduit de 260 à 200
               child: BlocBuilder<HomePageBloc, HomePageState>(
                 builder: (context, state) {
-                  return state.listItems == null
-                      ? Center(child: CircularProgressIndicator())
-                      : ListView.builder(
+                  if (state.listItems == null) {
+                    return _buildModernLoadingState();
+                  }
+
+                  return ListView.builder(
                           scrollDirection: Axis.horizontal,
-                          itemCount:
-                              state.listItems!.length, // Number of images
+                    itemCount: state.listItems!.length,
                           itemBuilder: (context, index) {
-                            return GestureDetector(
-                                onTap: () {
-                                  context.go('/prestataire');
-                                },
-                                child: Stack(children: [
-                                  FractionallySizedBox(
-                                      alignment: Alignment
-                                          .bottomCenter, // Aligner en haut à gauche
-                                      // Prendre la moitié de la largeur
-                                      heightFactor:
-                                          0.7, // Prendre la moitié de la hauteur
-                                      child: Image.network(
-                                        state.listItems![index]
-                                            .imagecategorie, // Replace with your image URLs
-                                        width: 215,
-                                        height: 240,
-                                        fit: BoxFit.cover,
-                                        errorBuilder:
-                                            (context, error, stackTrace) {
-                                          return Text('Failed to render image');
-                                        },
-                                      )),
-                                  // Half of the container's height for a circular image
-                                  Align(
-                                    alignment: Alignment.bottomCenter,
-                                    child: Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 20.0),
-                                      child: Container(
-                                        width: 200,
-                                        padding: EdgeInsets.all(16),
-                                        color: Colors.white,
-                                        child: Text(
-                                          state.listItems![index].nomcategorie,
-                                          style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ]));
+                      return _buildAnimatedCategoryCard(
+                        category: state.listItems![index],
+                        index: index,
+                        onTap: () => context.go('/prestataire'),
+                      );
                           },
                         );
                 },
               ),
             ),
 
-            // 👥 SECTION PRESTATAIRES POPULAIRES
+            // 👥 SECTION PRESTATAIRES POPULAIRES MODERNE 2025
             Container(
               width: double.infinity,
               padding:
-                  const EdgeInsets.symmetric(vertical: 60.0, horizontal: 40.0),
+                  const EdgeInsets.symmetric(vertical: 64.0, horizontal: 40.0),
               decoration: BoxDecoration(
-                color: Colors.grey.shade50,
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.grey.shade50,
+                    Colors.white,
+                  ],
+                ),
               ),
               child: Column(
+                children: [
+                  // Header moderne avec bouton
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
                     'Prestataires Populaires',
                     style: TextStyle(
-                      fontSize: 36,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ),
-                  ),
-                  const SizedBox(height: 15),
+                              fontSize: 32,
+                              fontWeight: FontWeight.w700,
+                              color: Color(0xFF1E293B),
+                              letterSpacing: -0.5,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
                   const Text(
                     'Découvrez nos prestataires les mieux notés',
                     style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.grey,
+                              fontSize: 16,
+                              color: Color(0xFF64748B),
                       fontWeight: FontWeight.w400,
                     ),
-                    textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                      // Bouton "Voir tout" avec animation
+                      AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        child: TextButton.icon(
+                          onPressed: () => context.go('/prestataire'),
+                          icon: const Icon(Icons.arrow_forward, size: 16),
+                          label: const Text('Voir tout'),
+                          style: TextButton.styleFrom(
+                            foregroundColor: const Color(0xFF1CBF3F),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 12),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 40),
 
-                  // Grille des prestataires populaires
-                  GridView.builder(
+                  const SizedBox(height: 48),
+
+                  // Grille responsive des prestataires
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      int crossAxisCount = 3;
+                      double crossAxisSpacing = 24;
+                      double mainAxisSpacing = 24;
+
+                      // Responsive breakpoints
+                      if (constraints.maxWidth < 768) {
+                        crossAxisCount = 1;
+                        crossAxisSpacing = 16;
+                        mainAxisSpacing = 16;
+                      } else if (constraints.maxWidth < 1024) {
+                        crossAxisCount = 2;
+                        crossAxisSpacing = 20;
+                        mainAxisSpacing = 20;
+                      }
+
+                      return GridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      crossAxisSpacing: 20,
-                      mainAxisSpacing: 20,
-                      childAspectRatio:
-                          0.8, // Réduit pour des cartes plus compactes
-                    ),
-                    itemCount: 6, // Top 6 prestataires
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: crossAxisCount,
+                          crossAxisSpacing: crossAxisSpacing,
+                          mainAxisSpacing: mainAxisSpacing,
+                          childAspectRatio:
+                              0.85, // Plus compact pour réduire la hauteur
+                        ),
+                        itemCount: 6,
                     itemBuilder: (context, index) {
-                      return _buildPopularProviderCard(index);
+                          return _buildModernProviderCard(index);
+                        },
+                      );
                     },
                   ),
 
-                  const SizedBox(height: 30),
-                  ElevatedButton(
-                    onPressed: () {
-                      context.go('/prestataire');
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 40,
-                        vertical: 15,
+                  const SizedBox(height: 40),
+
+                  // Bouton CTA moderne
+                  Container(
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFF1CBF3F), Color(0xFF16A34A)],
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
                       ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25),
-                      ),
-                      elevation: 4,
+                      borderRadius: BorderRadius.circular(30),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0xFF1CBF3F).withOpacity(0.3),
+                          blurRadius: 20,
+                          offset: const Offset(0, 8),
+                        ),
+                      ],
                     ),
-                    child: const Text(
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(30),
+                        onTap: () => context.go('/prestataire'),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 32,
+                            vertical: 16,
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Text(
                       'Voir tous les prestataires',
                       style: TextStyle(
                         fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              const Icon(
+                                Icons.arrow_forward,
+                                size: 18,
+                                color: Colors.white,
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -342,11 +505,11 @@ class _HomePageScreenState extends State<HomePageScreen> {
               ),
             ),
 
-            // 🗺️ SECTION GÉOLOCALISATION PRESTATAIRES
+            // 🗺️ SECTION GÉOLOCALISATION MODERNE 2025
             Container(
               width: double.infinity,
               padding:
-                  const EdgeInsets.symmetric(vertical: 60.0, horizontal: 40.0),
+                  const EdgeInsets.symmetric(vertical: 64.0, horizontal: 40.0),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
@@ -359,283 +522,312 @@ class _HomePageScreenState extends State<HomePageScreen> {
               ),
               child: Column(
                 children: [
+                  // Header moderne
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                   const Text(
                     'Géolocalisation Prestataires',
                     style: TextStyle(
-                      fontSize: 36,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ),
-                  ),
-                  const SizedBox(height: 15),
+                              fontSize: 32,
+                              fontWeight: FontWeight.w700,
+                              color: Color(0xFF1E293B),
+                              letterSpacing: -0.5,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
                   const Text(
                     'Trouvez facilement les prestataires autour de vous grâce à notre système de géolocalisation en temps réel',
                     style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.grey,
+                              fontSize: 16,
+                              color: Color(0xFF64748B),
                       fontWeight: FontWeight.w400,
                     ),
-                    textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                      // Bouton "Voir la carte" avec animation
+                      AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        child: TextButton.icon(
+                          onPressed: () => context.go('/prestataire'),
+                          icon: const Icon(Icons.map, size: 16),
+                          label: const Text('Voir la carte'),
+                          style: TextButton.styleFrom(
+                            foregroundColor: const Color(0xFF1CBF3F),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 12),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 40),
+
+                  const SizedBox(height: 48),
+
+                  // Carte interactive moderne
                   Container(
-                    height: 300,
+                    height: 400,
                     width: double.infinity,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: Colors.grey.shade300, width: 2),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.grey.withOpacity(0.3),
-                          blurRadius: 15,
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 20,
                           offset: const Offset(0, 8),
                         ),
                       ],
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
-                      child: Stack(
-                        children: [
-                          // Carte de fond (placeholder)
-                          Container(
-                            width: double.infinity,
-                            height: double.infinity,
-                            color: Colors.grey.shade200,
-                            child: const Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.map,
-                                    size: 80,
-                                    color: Colors.grey,
-                                  ),
-                                  SizedBox(height: 20),
-                                  Text(
-                                    'Carte Interactive',
-                                    style: TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Prestataires autour de vous',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          // Overlay avec bouton d'action
-                          Positioned(
-                            bottom: 20,
-                            right: 20,
-                            child: ElevatedButton.icon(
-                              onPressed: () {
-                                context.go('/prestataire');
-                              },
-                              icon: const Icon(Icons.location_on),
-                              label: const Text('Voir sur la carte'),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.green,
-                                foregroundColor: Colors.white,
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 20,
-                                  vertical: 12,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(25),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                      child: _InteractiveMapWidget(),
                     ),
+                  ),
+
+                  const SizedBox(height: 32),
+
+                  // Statistiques et fonctionnalités
+                  Row(
+                        children: [
+                      Expanded(
+                        child: _buildLocationFeature(
+                          icon: Icons.location_on,
+                          title: 'Géolocalisation précise',
+                          description:
+                              'Trouvez les prestataires les plus proches',
+                          color: Colors.blue,
+                        ),
+                      ),
+                      const SizedBox(width: 24),
+                      Expanded(
+                        child: _buildLocationFeature(
+                          icon: Icons.directions,
+                          title: 'Itinéraires intégrés',
+                          description:
+                              'Navigation directe vers les prestataires',
+                          color: Colors.green,
+                        ),
+                      ),
+                      const SizedBox(width: 24),
+                      Expanded(
+                        child: _buildLocationFeature(
+                          icon: Icons.access_time,
+                          title: 'Temps de réponse',
+                          description: 'Estimation du temps d\'arrivée',
+                          color: Colors.orange,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
             ),
 
-            Container(
-              padding: const EdgeInsets.only(
-                left: 80.0,
-                right: 40.0,
-                top: 20.0,
+            // 🔧 SECTION TOP SERVICES MODERNE 2025
+                          Container(
+                            width: double.infinity,
+              padding:
+                  const EdgeInsets.symmetric(vertical: 64.0, horizontal: 40.0),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.white,
+                    Colors.grey.shade50,
+                  ],
+                ),
               ),
-              child: const Text(
-                'Top services',
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-              ),
-            ),
-            // 🔧 SECTION TOP SERVICES AVEC LES BONNES DONNÉES
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 40.0),
-              height: 260,
-              child: BlocBuilder<HomePageBloc, HomePageState>(
-                builder: (context, state) {
-                  if (state.listItems2 == null) {
-                    return const Center(
-                      child: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
-                      ),
-                    );
-                  }
-
-                  return ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: state.listItems2!.length,
-                    itemBuilder: (context, index) {
-                      final service = state.listItems2![index];
-                      return GestureDetector(
-                        onTap: () {
-                          context.go('/prestataire');
-                        },
-                        child: Container(
-                          width: 215,
-                          margin: const EdgeInsets.only(right: 20),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.3),
-                                blurRadius: 10,
-                                offset: const Offset(0, 5),
-                              ),
-                            ],
+                              child: Column(
+                                children: [
+                  // Header moderne
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Top Services',
+                                    style: TextStyle(
+                              fontSize: 32,
+                              fontWeight: FontWeight.w700,
+                              color: Color(0xFF1E293B),
+                              letterSpacing: -0.5,
+                            ),
                           ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(15),
-                            child: Stack(
-                              children: [
-                                // Image du service
-                                Positioned.fill(
-                                  child: Image.network(
-                                    service.imageservice,
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return Container(
-                                        color: Colors.grey[300],
-                                        child: const Icon(
-                                          Icons.work,
-                                          size: 50,
-                                          color: Colors.grey,
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                                // Overlay avec gradient
-                                Positioned.fill(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter,
-                                        colors: [
-                                          Colors.transparent,
-                                          Colors.black.withOpacity(0.7),
-                                        ],
-                                      ),
+                          const SizedBox(height: 8),
+                          const Text(
+                            'Découvrez nos services les plus populaires',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                              color: Color(0xFF64748B),
+                              fontWeight: FontWeight.w400,
                                     ),
                                   ),
-                                ),
-                                // Nom du service
-                                Positioned(
-                                  bottom: 0,
-                                  left: 0,
-                                  right: 0,
-                                  child: Container(
-                                    padding: const EdgeInsets.all(16),
-                                    child: Text(
-                                      service.nomservice,
-                                      style: const TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                                ],
+                              ),
+                      // Bouton "Voir tout" avec animation
+                      AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        child: TextButton.icon(
+                          onPressed: () => context.go('/prestataire'),
+                          icon: const Icon(Icons.arrow_forward, size: 16),
+                          label: const Text('Voir tout'),
+                          style: TextButton.styleFrom(
+                            foregroundColor: const Color(0xFF1CBF3F),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 12),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25),
                             ),
                           ),
                         ),
-                      );
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 48),
+
+                  // Liste des services avec BlocBuilder
+                  BlocBuilder<HomePageBloc, HomePageState>(
+                    builder: (context, state) {
+                      if (state.listItems2 == null) {
+                        return _buildModernLoadingState();
+                      }
+
+                      if (state.listItems2!.isEmpty) {
+                        return _buildEmptyState();
+                      }
+
+                      return _buildServicesList(state.listItems2!);
                     },
-                  );
-                },
+                  ),
+                ],
               ),
             ),
 
-            // 🔍 SECTION "COMMENT ÇA MARCHE" (3 ÉTAPES)
+            // 🔍 SECTION "COMMENT ÇA MARCHE" MODERNE 2025
             Container(
               width: double.infinity,
               padding:
-                  const EdgeInsets.symmetric(vertical: 60.0, horizontal: 40.0),
+                  const EdgeInsets.symmetric(vertical: 80.0, horizontal: 40.0),
               decoration: BoxDecoration(
-                color: Colors.grey.shade50,
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.grey.shade50,
+                    Colors.white,
+                  ],
+                ),
               ),
               child: Column(
                 children: [
+                  // Header moderne
                   const Text(
                     'Comment ça marche ?',
                     style: TextStyle(
-                      fontSize: 36,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
+                      fontSize: 40,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xFF1E293B),
+                      letterSpacing: -0.5,
                     ),
+                    textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 15),
+                  const SizedBox(height: 16),
                   const Text(
                     '3 étapes simples pour obtenir le service dont vous avez besoin',
                     style: TextStyle(
                       fontSize: 18,
-                      color: Colors.grey,
+                      color: Color(0xFF64748B),
                       fontWeight: FontWeight.w400,
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 50),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      _buildStepCard(
-                        icon: Icons.search,
-                        title: '1. Trouver',
-                        description: 'Recherchez un prestataire qualifié',
-                        color: Colors.blue,
-                      ),
-                      _buildStepArrow(),
-                      _buildStepCard(
-                        icon: Icons.book_online,
-                        title: '2. Réserver',
-                        description: 'Planifiez votre service en ligne',
-                        color: Colors.orange,
-                      ),
-                      _buildStepArrow(),
-                      _buildStepCard(
-                        icon: Icons.payment,
-                        title: '3. Payer',
-                        description: 'Paiement sécurisé avec SoutraPay',
-                        color: Colors.green,
-                      ),
-                    ],
+                  const SizedBox(height: 64),
+
+                  // Étapes avec layout responsive
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      if (constraints.maxWidth < 768) {
+                        // Layout mobile : vertical
+                        return Column(
+                          children: [
+                            _buildModernStepCard(
+                              icon: Icons.search,
+                              title: '1. Trouver',
+                              description: 'Recherchez un prestataire qualifié',
+                              color: const Color(0xFF3B82F6),
+                              index: 0,
+                            ),
+                            const SizedBox(height: 32),
+                            _buildModernStepCard(
+                              icon: Icons.book_online,
+                              title: '2. Réserver',
+                              description: 'Planifiez votre service en ligne',
+                              color: const Color(0xFFF59E0B),
+                              index: 1,
+                            ),
+                            const SizedBox(height: 32),
+                            _buildModernStepCard(
+                              icon: Icons.payment,
+                              title: '3. Payer',
+                              description: 'Paiement sécurisé avec SoutraPay',
+                              color: const Color(0xFF1CBF3F),
+                              index: 2,
+                            ),
+                          ],
+                        );
+                      } else {
+                        // Layout desktop : horizontal avec flèches
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            _buildModernStepCard(
+                              icon: Icons.search,
+                              title: '1. Trouver',
+                              description: 'Recherchez un prestataire qualifié',
+                              color: const Color(0xFF3B82F6),
+                              index: 0,
+                            ),
+                            _buildModernStepArrow(),
+                            _buildModernStepCard(
+                              icon: Icons.book_online,
+                              title: '2. Réserver',
+                              description: 'Planifiez votre service en ligne',
+                              color: const Color(0xFFF59E0B),
+                              index: 1,
+                            ),
+                            _buildModernStepArrow(),
+                            _buildModernStepCard(
+                              icon: Icons.payment,
+                              title: '3. Payer',
+                              description: 'Paiement sécurisé avec SoutraPay',
+                              color: const Color(0xFF1CBF3F),
+                              index: 2,
+                            ),
+                          ],
+                        );
+                      }
+                    },
                   ),
                 ],
               ),
             ),
 
-            // 🛠️ SECTION "NOS MÉTIERS" (TEASER)
+            // 🛠️ SECTION "NOS MÉTIERS" MODERNE 2025
             Container(
               width: double.infinity,
               padding:
-                  const EdgeInsets.symmetric(vertical: 60.0, horizontal: 40.0),
+                  const EdgeInsets.symmetric(vertical: 80.0, horizontal: 40.0),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
@@ -648,387 +840,346 @@ class _HomePageScreenState extends State<HomePageScreen> {
               ),
               child: Column(
                 children: [
+                  // Header moderne
                   const Text(
                     'Nos Métiers',
                     style: TextStyle(
-                      fontSize: 36,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
+                      fontSize: 40,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xFF1E293B),
+                      letterSpacing: -0.5,
                     ),
+                    textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 15),
+                  const SizedBox(height: 16),
                   const Text(
-                    'Découvrez plus de 100 métiers organisés en 10+ catégories.',
+                    'Découvrez plus de 100 métiers organisés en 10+ catégories',
                     style: TextStyle(
                       fontSize: 18,
-                      color: Colors.grey,
+                      color: Color(0xFF64748B),
                       fontWeight: FontWeight.w400,
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 64),
 
-                  // Métiers mis en avant
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      _buildMetierCard(
-                          'Coiffure', Icons.content_cut, Colors.pink),
-                      _buildMetierCard('Plomberie', Icons.build, Colors.blue),
-                      _buildMetierCard('Électricité', Icons.electrical_services,
-                          Colors.orange),
-                      _buildMetierCard(
-                          'Nettoyage', Icons.cleaning_services, Colors.green),
-                    ],
-                  ),
-
-                  const SizedBox(height: 40),
-                  ElevatedButton(
-                    onPressed: () {
-                      context.go('/prestataire');
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 40,
-                        vertical: 15,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25),
-                      ),
-                      elevation: 4,
-                    ),
-                    child: const Text(
-                      'Voir tous nos métiers',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Expanded(
-                  child: Column(
-                    children: [
-                      Container(
-                        width: 550,
-                        height: 100,
-                        margin: const EdgeInsets.only(
-                          top: 50.0,
-                        ),
-                        child: const Text(
-                            'Que vous recherchiez un DJ, un plombier ou un avocat... '
-                            'Nous vous trouvons les meilleurs, gratuitement.',
-                            style: TextStyle(
-                                fontFamily: 'Krona One', fontSize: 24)),
-                      ),
-                      Container(
-                        width: 550,
-                        height: 50,
-                        margin: EdgeInsets.symmetric(vertical: 10),
-                        padding: EdgeInsets.only(bottom: 3),
-                        child: const Text(
-                            'Consultez les profils, discutez avec les professionnels, aussi depuis notre application mobile.',
-                            style: TextStyle(
-                                fontFamily: 'Kumbh Sans', fontSize: 15)),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Expanded(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment
-                                  .spaceEvenly, // Espacement égal entre les widgets
+                  // Métiers avec layout responsive
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      if (constraints.maxWidth < 768) {
+                        // Layout mobile : 2 colonnes
+                        return Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                Container(
-                                  width: 260,
-                                  height: 80,
-                                  decoration: BoxDecoration(
-                                    color: Colors.black,
-                                    border: Border.all(
-                                        color: Colors.black, width: 1),
-                                    borderRadius: BorderRadius.circular(
-                                        10), // Coins arrondis
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Image.asset(
-                                        'assets/apple.png',
-                                        width: 65,
-                                        height: 63,
-                                      ),
-                                      const Column(
-                                        children: [
-                                          Text(
-                                            'Télécharger sur AppStore',
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 16,
-                                                fontFamily: 'Arial'),
-                                          ),
-                                          Text(
-                                            'AppStore',
-                                            style: TextStyle(
-                                                fontSize: 30,
-                                                color: Colors.white,
-                                                fontFamily: 'Arial Black'),
-                                          )
-                                        ],
-                                      ),
-                                    ],
-                                  ),
+                                _buildModernMetierCard(
+                                  'Coiffure',
+                                  Icons.content_cut,
+                                  const Color(0xFFEC4899),
+                                  0,
                                 ),
-                                Container(
-                                  width: 260,
-                                  height: 80,
-                                  decoration: BoxDecoration(
-                                    color: Colors.black,
-                                    border: Border.all(
-                                        color: Colors.black, width: 1),
-                                    borderRadius: BorderRadius.circular(
-                                        10), // Coins arrondis
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Image.asset(
-                                        'assets/playstore.png',
-                                        width: 65,
-                                        height: 63,
-                                      ),
-                                      const Column(
-                                        children: [
-                                          Text(
-                                            'Télécharger sur PlayStore',
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 16,
-                                                fontFamily: 'Arial'),
-                                          ),
-                                          Text(
-                                            'PlayStore',
-                                            style: TextStyle(
-                                                fontSize: 30,
-                                                color: Colors.white,
-                                                fontFamily: 'Arial Black'),
-                                          )
-                                        ],
-                                      ),
-                                    ],
-                                  ),
+                                _buildModernMetierCard(
+                                  'Plomberie',
+                                  Icons.build,
+                                  const Color(0xFF3B82F6),
+                                  1,
                                 ),
                               ],
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                            const SizedBox(height: 24),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                _buildModernMetierCard(
+                                  'Électricité',
+                                  Icons.electrical_services,
+                                  const Color(0xFFF59E0B),
+                                  2,
+                                ),
+                                _buildModernMetierCard(
+                                  'Nettoyage',
+                                  Icons.cleaning_services,
+                                  const Color(0xFF1CBF3F),
+                                  3,
+                                ),
+                              ],
+                            ),
+                          ],
+                        );
+                      } else {
+                        // Layout desktop : horizontal
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            _buildModernMetierCard(
+                              'Coiffure',
+                              Icons.content_cut,
+                              const Color(0xFFEC4899),
+                              0,
+                            ),
+                            _buildModernMetierCard(
+                              'Plomberie',
+                              Icons.build,
+                              const Color(0xFF3B82F6),
+                              1,
+                            ),
+                            _buildModernMetierCard(
+                              'Électricité',
+                              Icons.electrical_services,
+                              const Color(0xFFF59E0B),
+                              2,
+                            ),
+                            _buildModernMetierCard(
+                              'Nettoyage',
+                              Icons.cleaning_services,
+                              const Color(0xFF1CBF3F),
+                              3,
+                            ),
+                          ],
+                        );
+                      }
+                    },
                   ),
-                ),
-                Expanded(
-                  child: Container(
-                      margin: const EdgeInsets.only(top: 50.0),
-                      child: Image.asset(
-                        'assets/image2.png',
-                        width: 400,
-                        height: 300,
-                      )),
-                )
-              ],
-            ),
 
-            // ⭐ SECTION AVANTAGES + SOUTRAPAY
-            Container(
-              width: double.infinity,
-              padding:
-                  const EdgeInsets.symmetric(vertical: 60.0, horizontal: 40.0),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Colors.green.shade50,
-                    Colors.blue.shade50,
-                  ],
-                ),
-              ),
-              child: Column(
-                children: [
-                  const Text(
-                    'Pourquoi choisir Soutrali Deals ?',
-                    style: TextStyle(
-                      fontSize: 36,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ),
-                  ),
-                  const SizedBox(height: 15),
-                  const Text(
-                    'Découvrez les avantages qui nous différencient',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.grey,
-                      fontWeight: FontWeight.w400,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 50),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      _buildAdvantageCard(
-                        icon: Icons.security,
-                        title: 'Sécurité',
-                        description: 'Transactions protégées et sécurisées',
-                        color: Colors.red,
-                      ),
-                      _buildAdvantageCard(
-                        icon: Icons.location_on,
-                        title: 'Proximité',
-                        description: 'Prestataires locaux à votre service',
-                        color: Colors.blue,
-                      ),
-                      _buildAdvantageCard(
-                        icon: Icons.speed,
-                        title: 'Rapidité',
-                        description: 'Service express et réactif',
-                        color: Colors.orange,
-                      ),
-                      _buildAdvantageCard(
-                        icon: Icons.diversity_3,
-                        title: 'Diversité',
-                        description: 'Large choix de services et métiers',
-                        color: Colors.purple,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 60),
+                  const SizedBox(height: 64),
 
-                  // 💳 SECTION SOUTRAPAY
+                  // Bouton CTA moderne
                   Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(40.0),
                     decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFF3B82F6), Color(0xFF1CBF3F)],
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                      ),
+                      borderRadius: BorderRadius.circular(30),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.grey.withOpacity(0.2),
-                          blurRadius: 15,
+                          color: const Color(0xFF3B82F6).withOpacity(0.3),
+                          blurRadius: 20,
                           offset: const Offset(0, 8),
                         ),
                       ],
                     ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          flex: 2,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(30),
+                        onTap: () => context.go('/prestataire'),
+                        child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                            horizontal: 32,
+                            vertical: 16,
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
-                              Row(
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.all(12),
-                                    decoration: BoxDecoration(
-                                      color: Colors.green.shade100,
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    child: Icon(
-                                      Icons.account_balance_wallet,
-                                      color: Colors.green.shade700,
-                                      size: 32,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 16),
-                                  const Text(
-                                    'SoutraPay',
-                                    style: TextStyle(
-                                      fontSize: 28,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black87,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 20),
                               const Text(
-                                'Vos paiements sécurisés',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.black87,
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              const Text(
-                                'Avec SoutraPay, payez vos prestations et services en toute sécurité via mobile money ou carte bancaire. Vos transactions sont protégées et rapides.',
+                                'Voir tous nos métiers',
                                 style: TextStyle(
                                   fontSize: 16,
-                                  color: Colors.grey,
-                                  height: 1.5,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
                                 ),
                               ),
-                              const SizedBox(height: 20),
-                              Row(
-                                children: [
-                                  Icon(Icons.credit_card,
-                                      color: Colors.green.shade600),
-                                  const SizedBox(width: 8),
-                                  const Text('Cartes bancaires',
-                                      style: TextStyle(fontSize: 14)),
-                                  const SizedBox(width: 20),
-                                  Icon(Icons.phone_android,
-                                      color: Colors.green.shade600),
-                                  const SizedBox(width: 8),
-                                  const Text('Mobile Money',
-                                      style: TextStyle(fontSize: 14)),
-                                ],
+                              const SizedBox(width: 8),
+                              const Icon(
+                                Icons.arrow_forward,
+                                size: 18,
+                                color: Colors.white,
                               ),
                             ],
                           ),
                         ),
-                        const SizedBox(width: 40),
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            height: 200,
-                            decoration: BoxDecoration(
-                              color: Colors.grey.shade100,
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            child: const Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.payment,
-                                    size: 60,
-                                    color: Colors.grey,
-                                  ),
-                                  SizedBox(height: 10),
-                                  Text(
-                                    'Paiement Sécurisé',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                      ),
                             ),
                           ),
+                        ],
+                      ),
+                    ),
+
+            // 📱 SECTION "QUE VOUS RECHERCHIEZ UN DJ" MODERNE 2025
+            Container(
+              width: double.infinity,
+              padding:
+                  const EdgeInsets.symmetric(vertical: 80.0, horizontal: 40.0),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Colors.white,
+                    Colors.grey.shade50,
+                  ],
+                ),
+              ),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  if (constraints.maxWidth < 768) {
+                    // Layout mobile : vertical
+                    return Column(
+                      children: [
+                        _buildModernHeroContent(),
+                        const SizedBox(height: 40),
+                        _buildModernAppImage(),
+                      ],
+                    );
+                  } else {
+                    // Layout desktop : horizontal
+                    return Row(
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: _buildModernHeroContent(),
+                        ),
+                        const SizedBox(width: 60),
+                        Expanded(
+                          flex: 1,
+                          child: _buildModernAppImage(),
                         ),
                       ],
+                    );
+                  }
+                },
+              ),
+            ),
+
+            // ⭐ SECTION "POURQUOI CHOISIR SOUTRALI DEALS" MODERNE 2025
+            Container(
+              width: double.infinity,
+              padding:
+                  const EdgeInsets.symmetric(vertical: 80.0, horizontal: 40.0),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Colors.green.shade50,
+                    Colors.blue.shade50,
+                  ],
+                ),
+              ),
+              child: Column(
+                children: [
+                  // Header moderne
+                  const Text(
+                    'Pourquoi choisir Soutrali Deals ?',
+                    style: TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xFF1E293B),
+                      letterSpacing: -0.5,
                     ),
+                    textAlign: TextAlign.center,
                   ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Découvrez les avantages qui nous différencient',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Color(0xFF64748B),
+                      fontWeight: FontWeight.w400,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 64),
+
+                  // Avantages avec layout responsive
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      if (constraints.maxWidth < 768) {
+                        // Layout mobile : 2 colonnes
+                        return Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                _buildModernAdvantageCard(
+                                  icon: Icons.security,
+                                  title: 'Sécurité',
+                                  description:
+                                      'Transactions protégées et sécurisées',
+                                  color: const Color(0xFFEF4444),
+                                  index: 0,
+                                ),
+                                _buildModernAdvantageCard(
+                                  icon: Icons.location_on,
+                                  title: 'Proximité',
+                                  description:
+                                      'Prestataires locaux à votre service',
+                                  color: const Color(0xFF3B82F6),
+                                  index: 1,
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 24),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                _buildModernAdvantageCard(
+                                  icon: Icons.speed,
+                                  title: 'Rapidité',
+                                  description: 'Service express et réactif',
+                                  color: const Color(0xFFF59E0B),
+                                  index: 2,
+                                ),
+                                _buildModernAdvantageCard(
+                                  icon: Icons.diversity_3,
+                                  title: 'Diversité',
+                                  description:
+                                      'Large choix de services et métiers',
+                                  color: const Color(0xFF8B5CF6),
+                                  index: 3,
+                                ),
+                              ],
+                            ),
+                          ],
+                        );
+                      } else {
+                        // Layout desktop : horizontal
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            _buildModernAdvantageCard(
+                              icon: Icons.security,
+                              title: 'Sécurité',
+                              description:
+                                  'Transactions protégées et sécurisées',
+                              color: const Color(0xFFEF4444),
+                              index: 0,
+                            ),
+                            _buildModernAdvantageCard(
+                              icon: Icons.location_on,
+                              title: 'Proximité',
+                              description:
+                                  'Prestataires locaux à votre service',
+                              color: const Color(0xFF3B82F6),
+                              index: 1,
+                            ),
+                            _buildModernAdvantageCard(
+                              icon: Icons.speed,
+                              title: 'Rapidité',
+                              description: 'Service express et réactif',
+                              color: const Color(0xFFF59E0B),
+                              index: 2,
+                            ),
+                            _buildModernAdvantageCard(
+                              icon: Icons.diversity_3,
+                              title: 'Diversité',
+                              description: 'Large choix de services et métiers',
+                              color: const Color(0xFF8B5CF6),
+                              index: 3,
+                            ),
+                          ],
+                        );
+                      }
+                    },
+                  ),
+
+                  const SizedBox(height: 80),
+
+                  // 💳 SECTION SOUTRAPAY MODERNE
+                  _buildModernSoutraPaySection(),
                 ],
               ),
             ),
@@ -1040,390 +1191,2987 @@ class _HomePageScreenState extends State<HomePageScreen> {
     );
   }
 
-  // 🔧 MÉTHODES HELPER POUR LES SECTIONS
-  Widget _buildStepCard({
-    required IconData icon,
-    required String title,
-    required String description,
-    required Color color,
-  }) {
-    return Container(
-      width: 200,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
+  // 🎨 MÉTHODES HELPER POUR LES CATÉGORIES MODERNES
+
+  Widget _buildModernLoadingState() {
+    return Center(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            padding: const EdgeInsets.all(15),
+            Container(
+            width: 40,
+            height: 40,
             decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(50),
+              color: const Color(0xFF1CBF3F).withOpacity(0.1),
+              borderRadius: BorderRadius.circular(20),
             ),
-            child: Icon(
-              icon,
-              size: 40,
-              color: color,
-            ),
-          ),
-          const SizedBox(height: 15),
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
+            child: const Center(
+              child: SizedBox(
+                width: 20,
+                height: 20,
+                      child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF1CBF3F)),
+                ),
+              ),
             ),
           ),
-          const SizedBox(height: 8),
-          Text(
-            description,
-            style: const TextStyle(
+          const SizedBox(height: 16),
+          const Text(
+            'Chargement des catégories...',
+            style: TextStyle(
               fontSize: 14,
-              color: Colors.grey,
+              color: Color(0xFF64748B),
+              fontWeight: FontWeight.w500,
             ),
-            textAlign: TextAlign.center,
           ),
         ],
-      ),
-    );
-  }
+                      ),
+                    );
+                  }
 
-  Widget _buildStepArrow() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: Icon(
-        Icons.arrow_forward,
-        color: Colors.grey.shade400,
-        size: 30,
-      ),
-    );
-  }
-
-  Widget _buildAdvantageCard({
-    required IconData icon,
-    required String title,
-    required String description,
-    required Color color,
+  // 🎨 WIDGET ANIMÉ POUR LES CARTES DE CATÉGORIES
+  Widget _buildAnimatedCategoryCard({
+    required dynamic category,
+    required int index,
+    required VoidCallback onTap,
   }) {
-    return Container(
-      width: 200,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(15),
-            decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(50),
-            ),
-            child: Icon(
-              icon,
-              size: 40,
-              color: color,
-            ),
-          ),
-          const SizedBox(height: 15),
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            description,
-            style: const TextStyle(
-              fontSize: 14,
-              color: Colors.grey,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
+    return _AnimatedCategoryCard(
+      category: category,
+      index: index,
+      onTap: onTap,
     );
   }
+}
 
-  // 👥 MÉTHODE POUR LES PRESTATAIRES POPULAIRES
-  Widget _buildPopularProviderCard(int index) {
-    final providers = [
+// 🎨 WIDGET ANIMÉ POUR LES CARTES DE CATÉGORIES
+class _AnimatedCategoryCard extends StatefulWidget {
+  final dynamic category;
+  final int index;
+  final VoidCallback onTap;
+
+  const _AnimatedCategoryCard({
+    required this.category,
+    required this.index,
+    required this.onTap,
+  });
+
+  @override
+  State<_AnimatedCategoryCard> createState() => _AnimatedCategoryCardState();
+}
+
+class _AnimatedCategoryCardState extends State<_AnimatedCategoryCard>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _scaleAnimation;
+  late Animation<double> _elevationAnimation;
+  late Animation<Color?> _shadowColorAnimation;
+
+  bool _isHovered = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 200),
+      vsync: this,
+    );
+
+    _scaleAnimation = Tween<double>(
+      begin: 1.0,
+      end: 1.05,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOutCubic,
+    ));
+
+    _elevationAnimation = Tween<double>(
+      begin: 4.0,
+      end: 12.0,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOutCubic,
+    ));
+
+    _shadowColorAnimation = ColorTween(
+      begin: Colors.black.withOpacity(0.08),
+      end: Colors.black.withOpacity(0.20),
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOutCubic,
+    ));
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  void _onHoverEnter() {
+    _animationController.forward();
+  }
+
+  void _onHoverExit() {
+    _animationController.reverse();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 160,
+      margin: const EdgeInsets.only(right: 16),
+      child: MouseRegion(
+        onEnter: (_) => _onHoverEnter(),
+        onExit: (_) => _onHoverExit(),
+        child: AnimatedBuilder(
+          animation: _animationController,
+          builder: (context, child) {
+            return Transform.scale(
+              scale: _scaleAnimation.value,
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: widget.onTap,
+                  borderRadius: BorderRadius.circular(16),
+                        child: Container(
+                          decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                            boxShadow: [
+                              BoxShadow(
+                          color: _shadowColorAnimation.value ??
+                              Colors.black.withOpacity(0.08),
+                          blurRadius: _elevationAnimation.value * 2,
+                          offset: Offset(0, _elevationAnimation.value),
+                              ),
+                            ],
+                          ),
+                          child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                            child: Stack(
+                              children: [
+                          // Image de fond avec gradient overlay
+                                Positioned.fill(
+                                  child: Image.network(
+                              widget.category.imagecategorie,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Container(
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                      colors: [
+                                        const Color(0xFF1CBF3F)
+                                            .withOpacity(0.8),
+                                        const Color(0xFF16A34A)
+                                            .withOpacity(0.9),
+                                      ],
+                                    ),
+                                  ),
+                                  child: const Center(
+                                    child: Icon(
+                                      Icons.category,
+                                      size: 40,
+                                      color: Colors.white,
+                                    ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                          // Gradient overlay pour la lisibilité
+                                Positioned.fill(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: [
+                                          Colors.transparent,
+                                    Colors.black
+                                        .withOpacity(_isHovered ? 0.8 : 0.7),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                          // Contenu de la carte avec animation
+                                Positioned(
+                                  bottom: 0,
+                                  left: 0,
+                                  right: 0,
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 200),
+                              padding: EdgeInsets.all(_isHovered ? 20 : 16),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  // Nom de la catégorie
+                                  Text(
+                                    widget.category.nomcategorie,
+                                    style: TextStyle(
+                                      fontSize: _isHovered ? 17 : 16,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.white,
+                                      letterSpacing: -0.2,
+                                    ),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 4),
+                                  // Indicateur d'action avec animation
+                                  AnimatedContainer(
+                                    duration: const Duration(milliseconds: 200),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          'Découvrir',
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: _isHovered
+                                                ? Colors.white
+                                                : Colors.white70,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 4),
+                                        AnimatedRotation(
+                                          duration:
+                                              const Duration(milliseconds: 200),
+                                          turns: _isHovered ? 0.25 : 0.0,
+                                          child: Icon(
+                                            Icons.arrow_forward,
+                                            size: 12,
+                                            color: _isHovered
+                                                ? Colors.white
+                                                : Colors.white.withOpacity(0.8),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          // Badge de popularité avec animation
+                          if (widget.index < 3)
+                            Positioned(
+                              top: 12,
+                              right: 12,
+                              child: AnimatedContainer(
+                                duration: const Duration(milliseconds: 200),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: _isHovered ? 10 : 8,
+                                  vertical: _isHovered ? 6 : 4,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFF1CBF3F),
+                                  borderRadius: BorderRadius.circular(12),
+                                  boxShadow: _isHovered
+                                      ? [
+                                          BoxShadow(
+                                            color: const Color(0xFF1CBF3F)
+                                                .withOpacity(0.3),
+                                            blurRadius: 8,
+                                            offset: const Offset(0, 2),
+                                          ),
+                                        ]
+                                      : null,
+                                ),
+                                    child: Text(
+                                  'Populaire',
+                                  style: TextStyle(
+                                    fontSize: _isHovered ? 11 : 10,
+                                    fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                      ),
+                                ),
+                              ),
+                            ),
+                          // Overlay de hover avec animation
+                          if (_isHovered)
+                            Positioned.fill(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(16),
+                                  border: Border.all(
+                                    color: const Color(0xFF1CBF3F)
+                                        .withOpacity(0.5),
+                                    width: 2,
+                                  ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                      ),
+                    ),
+                            ),
+                          ),
+                        ),
+                  );
+                },
+              ),
+            ),
+    );
+  }
+}
+
+// 👥 WIDGET ANIMÉ POUR LES CARTES DE PRESTATAIRES
+class _AnimatedProviderCard extends StatefulWidget {
+  final int index;
+  final VoidCallback onTap;
+
+  const _AnimatedProviderCard({
+    required this.index,
+    required this.onTap,
+  });
+
+  @override
+  State<_AnimatedProviderCard> createState() => _AnimatedProviderCardState();
+}
+
+class _AnimatedProviderCardState extends State<_AnimatedProviderCard>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _scaleAnimation;
+  late Animation<double> _elevationAnimation;
+  late Animation<Color?> _shadowColorAnimation;
+  late Animation<double> _borderAnimation;
+
+  bool _isHovered = false;
+
+  final List<Map<String, dynamic>> _providers = [
+    {
+      'name': 'Kouadio Jean',
+      'service': 'Coiffeur',
+      'rating': 4.8,
+      'image': 'assets/coiffeur.jpeg',
+      'verified': true,
+      'reviews': 24,
+      'location': 'Abidjan, Cocody',
+      'price': 'À partir de 5 000 FCFA',
+      'responseTime': '2h',
+    },
+    {
+      'name': 'Yao Koffi',
+      'service': 'Électricien',
+      'rating': 4.9,
+      'image': 'assets/coiffuer2.jpeg',
+      'verified': true,
+      'reviews': 18,
+      'location': 'Abidjan, Yopougon',
+      'price': 'À partir de 8 000 FCFA',
+      'responseTime': '1h',
+    },
+    {
+      'name': 'Koné Mariam',
+      'service': 'Coiffeuse',
+      'rating': 4.7,
+      'image': 'assets/coiffeur.jpeg',
+      'verified': false,
+      'reviews': 12,
+      'location': 'Abidjan, Marcory',
+      'price': 'À partir de 4 500 FCFA',
+      'responseTime': '3h',
+    },
+    {
+      'name': 'Traoré Ali',
+      'service': 'Plombier',
+      'rating': 4.9,
+      'image': 'assets/coiffeur.jpeg',
+      'verified': true,
+      'reviews': 31,
+      'location': 'Abidjan, Plateau',
+      'price': 'À partir de 7 000 FCFA',
+      'responseTime': '1h',
+    },
+    {
+      'name': 'Ouattara Fatou',
+      'service': 'Nettoyage',
+      'rating': 4.8,
+      'image': 'assets/coiffeur.jpeg',
+      'verified': true,
+      'reviews': 15,
+      'location': 'Abidjan, Riviera',
+      'price': 'À partir de 3 000 FCFA',
+      'responseTime': '2h',
+    },
+    {
+      'name': 'Diabaté Ibrahim',
+      'service': 'Jardinier',
+      'rating': 4.6,
+      'image': 'assets/coiffeur.jpeg',
+      'verified': false,
+      'reviews': 8,
+      'location': 'Abidjan, Angré',
+      'price': 'À partir de 6 000 FCFA',
+      'responseTime': '4h',
+    },
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+
+    _scaleAnimation = Tween<double>(
+      begin: 1.0,
+      end: 1.03,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOutCubic,
+    ));
+
+    _elevationAnimation = Tween<double>(
+      begin: 8.0,
+      end: 20.0,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOutCubic,
+    ));
+
+    _shadowColorAnimation = ColorTween(
+      begin: Colors.black.withOpacity(0.1),
+      end: Colors.black.withOpacity(0.25),
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOutCubic,
+    ));
+
+    _borderAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOutCubic,
+    ));
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  void _onHoverEnter() {
+    _animationController.forward();
+  }
+
+  void _onHoverExit() {
+    _animationController.reverse();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final provider = _providers[widget.index];
+
+    return TweenAnimationBuilder<double>(
+      duration: Duration(milliseconds: 400 + (widget.index * 100)),
+      tween: Tween(begin: 0.0, end: 1.0),
+      builder: (context, value, child) {
+        return Transform.translate(
+          offset: Offset(0, 30 * (1 - value)),
+          child: Opacity(
+            opacity: value,
+            child: MouseRegion(
+              onEnter: (_) => _onHoverEnter(),
+              onExit: (_) => _onHoverExit(),
+              child: AnimatedBuilder(
+                animation: _animationController,
+                builder: (context, child) {
+                  return Transform.scale(
+                    scale: _scaleAnimation.value,
+                    child: Container(
+              decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: Color.lerp(
+                            Colors.transparent,
+                            const Color(0xFF1CBF3F).withOpacity(0.3),
+                            _borderAnimation.value,
+                          )!,
+                          width: 2,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: _shadowColorAnimation.value ??
+                                Colors.black.withOpacity(0.1),
+                            blurRadius: _elevationAnimation.value,
+                            offset: Offset(0, _elevationAnimation.value * 0.5),
+                          ),
+                        ],
+                      ),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: widget.onTap,
+                          borderRadius: BorderRadius.circular(20),
+              child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                              // Header avec photo et badges
+                              Container(
+                                padding: const EdgeInsets.all(16),
+                                child: Column(
+                                  children: [
+                                    // Photo ronde avec animation
+                                    Stack(
+                                      children: [
+                                        AnimatedContainer(
+                                          duration:
+                                              const Duration(milliseconds: 200),
+                                          width: _isHovered ? 55 : 50,
+                                          height: _isHovered ? 55 : 50,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                              color: const Color(0xFF1CBF3F),
+                                              width: _isHovered ? 3 : 2,
+                                            ),
+                                            image: DecorationImage(
+                                              image: AssetImage(
+                                                  provider['image'] as String),
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                        // Badge de vérification
+                                        if (provider['verified'] as bool)
+                                          Positioned(
+                                            bottom: 0,
+                                            right: 0,
+                                            child: AnimatedContainer(
+                                              duration: const Duration(
+                                                  milliseconds: 200),
+                                              width: _isHovered ? 18 : 16,
+                                              height: _isHovered ? 18 : 16,
+                                              decoration: BoxDecoration(
+                                                color: const Color(0xFF1CBF3F),
+                                                shape: BoxShape.circle,
+                                                boxShadow: _isHovered
+                                                    ? [
+                                                        BoxShadow(
+                                                          color: const Color(
+                                                                  0xFF1CBF3F)
+                                                              .withOpacity(0.4),
+                                                          blurRadius: 8,
+                                                          offset: const Offset(
+                                                              0, 2),
+                                                        ),
+                                                      ]
+                                                    : null,
+                                              ),
+                                              child: Icon(
+                                                Icons.verified,
+                                                color: Colors.white,
+                                                size: _isHovered ? 12 : 10,
+                                              ),
+                                            ),
+                                          ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 12),
+
+                                    // Nom du prestataire
+                                    Text(
+                                      provider['name'] as String,
+                    style: TextStyle(
+                                        fontSize: _isHovered ? 18 : 16,
+                                        fontWeight: FontWeight.w700,
+                                        color: const Color(0xFF1E293B),
+                                        letterSpacing: -0.2,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    const SizedBox(height: 4),
+
+                                    // Service
+                                    Text(
+                                      provider['service'] as String,
+                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: const Color(0xFF64748B),
+                                        fontWeight: FontWeight.w500,
+                    ),
+                    textAlign: TextAlign.center,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                  ),
+                                    const SizedBox(height: 8),
+
+                                    // Localisation avec icône
+                  Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                    children: [
+                                        Icon(
+                                          Icons.location_on,
+                                          size: 14,
+                                          color: const Color(0xFF64748B),
+                                        ),
+                                        const SizedBox(width: 4),
+                                        Expanded(
+                                          child: Text(
+                                            provider['location'] as String,
+                                            style: const TextStyle(
+                                              fontSize: 12,
+                                              color: Color(0xFF64748B),
+                                            ),
+                                            textAlign: TextAlign.center,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+
+                              // Divider avec animation
+                              AnimatedContainer(
+                                duration: const Duration(milliseconds: 200),
+                                height: 1,
+                                margin: EdgeInsets.symmetric(
+                                    horizontal: _isHovered ? 12 : 16),
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Colors.transparent,
+                                      _isHovered
+                                          ? const Color(0xFF1CBF3F)
+                                              .withOpacity(0.3)
+                                          : Colors.grey[200]!,
+                                      Colors.transparent,
+                                    ],
+                                  ),
+                                ),
+                              ),
+
+                              // Footer avec note et actions
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      // Note avec étoiles
+            Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 12,
+                                          vertical: 6,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xFF1CBF3F)
+                                              .withOpacity(0.1),
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                        ),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            const Icon(Icons.star,
+                                                size: 14, color: Colors.amber),
+                                            const SizedBox(width: 4),
+                                            Text(
+                                              '${provider['rating']}',
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w700,
+                                                color: Color(0xFF1E293B),
+                                              ),
+                                            ),
+                                            const SizedBox(width: 4),
+                                            Text(
+                                              '(${provider['reviews']} avis)',
+                                              style: const TextStyle(
+                                                fontSize: 12,
+                                                color: Color(0xFF64748B),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+
+                                      const SizedBox(height: 8),
+
+                                      // Prix et temps de réponse
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              provider['price'] as String,
+                                              style: const TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w600,
+                                                color: Color(0xFF1CBF3F),
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 8,
+                                              vertical: 4,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xFF64748B)
+                                                  .withOpacity(0.1),
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                            ),
+                                            child: Text(
+                                              'Répond en ${provider['responseTime']}',
+                                              style: const TextStyle(
+                                                fontSize: 10,
+                                                color: Color(0xFF64748B),
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+
+                                      const Spacer(),
+
+                                      // Bouton d'action avec animation
+                                      AnimatedContainer(
+                                        duration:
+                                            const Duration(milliseconds: 200),
+              width: double.infinity,
+                                        height: _isHovered ? 36 : 32,
+                                        decoration: BoxDecoration(
+                                          gradient: LinearGradient(
+                                            colors: [
+                                              const Color(0xFF1CBF3F),
+                                              const Color(0xFF16A34A),
+                                            ],
+                                            begin: Alignment.centerLeft,
+                                            end: Alignment.centerRight,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          boxShadow: _isHovered
+                                              ? [
+                                                  BoxShadow(
+                                                    color:
+                                                        const Color(0xFF1CBF3F)
+                                                            .withOpacity(0.4),
+                                                    blurRadius: 12,
+                                                    offset: const Offset(0, 4),
+                                                  ),
+                                                ]
+                                              : null,
+                                        ),
+                                        child: Material(
+                                          color: Colors.transparent,
+                                          child: InkWell(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                            onTap: widget.onTap,
+                                            child: Center(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    'Voir le profil',
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize:
+                                                          _isHovered ? 14 : 13,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(width: 6),
+                                                  AnimatedRotation(
+                                                    duration: const Duration(
+                                                        milliseconds: 200),
+                                                    turns:
+                                                        _isHovered ? 0.25 : 0.0,
+                                                    child: const Icon(
+                                                      Icons.arrow_forward,
+                                                      size: 14,
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+// 🗺️ WIDGET DE CARTE INTERACTIVE MODERNE
+class _InteractiveMapWidget extends StatefulWidget {
+  @override
+  State<_InteractiveMapWidget> createState() => _InteractiveMapWidgetState();
+}
+
+class _InteractiveMapWidgetState extends State<_InteractiveMapWidget>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _fadeAnimation;
+  late Animation<double> _scaleAnimation;
+
+  bool _isLoading = true;
+  String? _userLocation;
+  List<Map<String, dynamic>> _nearbyProviders = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 800),
+      vsync: this,
+    );
+
+    _fadeAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOutCubic,
+    ));
+
+    _scaleAnimation = Tween<double>(
+      begin: 0.8,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOutCubic,
+    ));
+
+    _initializeMap();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _initializeMap() async {
+    // Simuler le chargement des données
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    // Simuler la géolocalisation utilisateur
+    _userLocation = "Abidjan, Côte d'Ivoire";
+
+    // Simuler les prestataires à proximité
+    _nearbyProviders = [
       {
         'name': 'Kouadio Jean',
         'service': 'Coiffeur',
+        'distance': '0.8 km',
         'rating': 4.8,
-        'image': 'assets/coiffeur.jpeg',
         'verified': true,
-        'reviews': 24,
-        'location': 'Abidjan, Cocody'
+        'available': true,
       },
       {
         'name': 'Yao Koffi',
         'service': 'Électricien',
+        'distance': '1.2 km',
         'rating': 4.9,
-        'image': 'assets/coiffuer2.jpeg',
         'verified': true,
-        'reviews': 18,
-        'location': 'Abidjan, Yopougon'
+        'available': true,
       },
       {
         'name': 'Koné Mariam',
         'service': 'Coiffeuse',
+        'distance': '2.1 km',
         'rating': 4.7,
-        'image': 'assets/coiffeur.jpeg',
         'verified': false,
-        'reviews': 12,
-        'location': 'Abidjan, Marcory'
-      },
-      {
-        'name': 'Traoré Ali',
-        'service': 'Plombier',
-        'rating': 4.9,
-        'image': 'assets/coiffeur.jpeg',
-        'verified': true,
-        'reviews': 31,
-        'location': 'Abidjan, Plateau'
-      },
-      {
-        'name': 'Ouattara Fatou',
-        'service': 'Nettoyage',
-        'rating': 4.8,
-        'image': 'assets/coiffeur.jpeg',
-        'verified': true,
-        'reviews': 15,
-        'location': 'Abidjan, Riviera'
-      },
-      {
-        'name': 'Diabaté Ibrahim',
-        'service': 'Jardinier',
-        'rating': 4.6,
-        'image': 'assets/coiffeur.jpeg',
-        'verified': false,
-        'reviews': 8,
-        'location': 'Abidjan, Angré'
+        'available': false,
       },
     ];
 
-    final provider = providers[index];
+    setState(() {
+      _isLoading = false;
+    });
 
-    return GestureDetector(
-      onTap: () {
-        context.go('/prestataire');
+    _animationController.forward();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_isLoading) {
+      return _buildLoadingState();
+    }
+
+    return AnimatedBuilder(
+      animation: _animationController,
+      builder: (context, child) {
+        return Transform.scale(
+          scale: _scaleAnimation.value,
+          child: Opacity(
+            opacity: _fadeAnimation.value,
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Colors.blue.shade100,
+                    Colors.green.shade100,
+                  ],
+                ),
+              ),
+              child: Stack(
+                children: [
+                  // Fond de carte stylisé
+                  Positioned.fill(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.blue.shade50,
+                    Colors.green.shade50,
+                  ],
+                ),
+              ),
+                      child: CustomPaint(
+                        painter: _MapBackgroundPainter(),
+                      ),
+                    ),
+                  ),
+
+                  // Marqueurs de prestataires
+                  ..._buildProviderMarkers(),
+
+                  // Marqueur utilisateur (centre)
+                  Center(
+                    child: Container(
+                      width: 20,
+                      height: 20,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF1CBF3F),
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.white, width: 3),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xFF1CBF3F).withOpacity(0.3),
+                            blurRadius: 10,
+                            spreadRadius: 2,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  // Contrôles de la carte
+                  Positioned(
+                    top: 16,
+                    right: 16,
+              child: Column(
+                children: [
+                        _buildMapControl(
+                          icon: Icons.my_location,
+                          onTap: () => _centerOnUser(),
+                        ),
+                        const SizedBox(height: 8),
+                        _buildMapControl(
+                          icon: Icons.zoom_in,
+                          onTap: () => _zoomIn(),
+                        ),
+                        const SizedBox(height: 8),
+                        _buildMapControl(
+                          icon: Icons.zoom_out,
+                          onTap: () => _zoomOut(),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  // Informations de localisation
+                  Positioned(
+                    bottom: 16,
+                    left: 16,
+                    right: 16,
+                    child: _buildLocationInfo(),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
       },
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.15),
-              blurRadius: 20,
-              offset: const Offset(0, 8),
+    );
+  }
+
+  Widget _buildLoadingState() {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Colors.blue.shade50,
+            Colors.green.shade50,
+          ],
+        ),
+      ),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.9),
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 20,
+                    offset: const Offset(0, 8),
+                  ),
+                ],
+              ),
+              child: const CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF1CBF3F)),
+                strokeWidth: 3,
+              ),
+            ),
+            const SizedBox(height: 24),
+                  const Text(
+              'Chargement de la carte...',
+                    style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFF1E293B),
+              ),
+            ),
+            const SizedBox(height: 8),
+                  const Text(
+              'Localisation des prestataires à proximité',
+                    style: TextStyle(
+                fontSize: 14,
+                color: Color(0xFF64748B),
+              ),
             ),
           ],
         ),
-        child: Column(
-          children: [
-            // Header avec photo ronde et badge de vérification
-            Container(
-              padding: const EdgeInsets.all(16),
+      ),
+    );
+  }
+
+  List<Widget> _buildProviderMarkers() {
+    return _nearbyProviders.asMap().entries.map((entry) {
+      final index = entry.key;
+      final provider = entry.value;
+      final angle =
+          (index * 120.0) * (3.14159 / 180); // 120° entre chaque marqueur
+      final radius = 80.0;
+
+      return Positioned(
+        left: 200 + radius * cos(angle) - 15,
+        top: 200 + radius * sin(angle) - 15,
+        child: _buildProviderMarker(provider, index),
+      );
+    }).toList();
+  }
+
+  Widget _buildProviderMarker(Map<String, dynamic> provider, int index) {
+    return TweenAnimationBuilder<double>(
+      duration: Duration(milliseconds: 600 + (index * 200)),
+      tween: Tween(begin: 0.0, end: 1.0),
+      builder: (context, value, child) {
+        return Transform.scale(
+          scale: value,
+          child: Container(
+            width: 30,
+            height: 30,
+            decoration: BoxDecoration(
+              color: provider['verified']
+                  ? const Color(0xFF1CBF3F)
+                  : Colors.orange,
+              shape: BoxShape.circle,
+              border: Border.all(color: Colors.white, width: 2),
+              boxShadow: [
+                BoxShadow(
+                  color: (provider['verified']
+                          ? const Color(0xFF1CBF3F)
+                          : Colors.orange)
+                      .withOpacity(0.3),
+                  blurRadius: 8,
+                  spreadRadius: 1,
+                ),
+              ],
+            ),
+            child: Icon(
+              provider['verified'] ? Icons.verified : Icons.person,
+              color: Colors.white,
+              size: 16,
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildMapControl(
+      {required IconData icon, required VoidCallback onTap}) {
+    return Container(
+      width: 40,
+      height: 40,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(8),
+          onTap: onTap,
+          child: Icon(
+            icon,
+            color: const Color(0xFF1CBF3F),
+            size: 20,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLocationInfo() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.95),
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+                    children: [
+              Icon(
+                Icons.location_on,
+                color: const Color(0xFF1CBF3F),
+                size: 20,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                'Votre position: $_userLocation',
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xFF1E293B),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(
+            '${_nearbyProviders.length} prestataires à proximité',
+            style: const TextStyle(
+              fontSize: 12,
+              color: Color(0xFF64748B),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _centerOnUser() {
+    // Animation pour centrer sur l'utilisateur
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Centré sur votre position')),
+    );
+  }
+
+  void _zoomIn() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Zoom avant')),
+    );
+  }
+
+  void _zoomOut() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Zoom arrière')),
+    );
+  }
+}
+
+// 🎨 PAINTER POUR LE FOND DE CARTE
+class _MapBackgroundPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.grey.withOpacity(0.1)
+      ..strokeWidth = 1.0;
+
+    // Dessiner des lignes de grille
+    for (int i = 0; i < size.width; i += 40) {
+      canvas.drawLine(
+        Offset(i.toDouble(), 0),
+        Offset(i.toDouble(), size.height),
+        paint,
+      );
+    }
+
+    for (int i = 0; i < size.height; i += 40) {
+      canvas.drawLine(
+        Offset(0, i.toDouble()),
+        Offset(size.width, i.toDouble()),
+        paint,
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+// 🔧 MÉTHODES HELPER POUR LES SECTIONS
+
+// 🔍 MÉTHODES POUR LA SECTION "COMMENT ÇA MARCHE"
+Widget _buildModernStepCard({
+  required IconData icon,
+  required String title,
+  required String description,
+  required Color color,
+  required int index,
+}) {
+  return TweenAnimationBuilder<double>(
+    duration: Duration(milliseconds: 600 + (index * 200)),
+    tween: Tween(begin: 0.0, end: 1.0),
+    builder: (context, value, child) {
+      return Transform.translate(
+        offset: Offset(0, 30 * (1 - value)),
+        child: Opacity(
+          opacity: value,
+          child: _AnimatedStepCard(
+            icon: icon,
+            title: title,
+            description: description,
+            color: color,
+            index: index,
+          ),
+        ),
+      );
+    },
+  );
+}
+
+Widget _buildModernStepArrow() {
+  return TweenAnimationBuilder<double>(
+    duration: const Duration(milliseconds: 800),
+    tween: Tween(begin: 0.0, end: 1.0),
+    builder: (context, value, child) {
+      return Transform.scale(
+        scale: value,
+        child: Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+            color: const Color(0xFF1CBF3F).withOpacity(0.1),
+            shape: BoxShape.circle,
+          ),
+          child: Icon(
+            Icons.arrow_forward,
+            color: const Color(0xFF1CBF3F),
+            size: 20,
+          ),
+        ),
+      );
+    },
+  );
+}
+
+// 🎨 WIDGET ANIMÉ POUR LES CARTES D'ÉTAPES
+class _AnimatedStepCard extends StatefulWidget {
+  final IconData icon;
+  final String title;
+  final String description;
+  final Color color;
+  final int index;
+
+  const _AnimatedStepCard({
+    required this.icon,
+    required this.title,
+    required this.description,
+    required this.color,
+    required this.index,
+  });
+
+  @override
+  State<_AnimatedStepCard> createState() => _AnimatedStepCardState();
+}
+
+class _AnimatedStepCardState extends State<_AnimatedStepCard>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _scaleAnimation;
+  late Animation<double> _elevationAnimation;
+  late Animation<Color?> _shadowColorAnimation;
+
+  bool _isHovered = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 200),
+      vsync: this,
+    );
+
+    _scaleAnimation = Tween<double>(
+      begin: 1.0,
+      end: 1.05,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOutCubic,
+    ));
+
+    _elevationAnimation = Tween<double>(
+      begin: 8.0,
+      end: 20.0,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOutCubic,
+    ));
+
+    _shadowColorAnimation = ColorTween(
+      begin: Colors.black.withOpacity(0.1),
+      end: Colors.black.withOpacity(0.25),
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOutCubic,
+    ));
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  void _onHoverEnter() {
+    _animationController.forward();
+  }
+
+  void _onHoverExit() {
+    _animationController.reverse();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => _onHoverEnter(),
+      onExit: (_) => _onHoverExit(),
+      child: AnimatedBuilder(
+        animation: _animationController,
+        builder: (context, child) {
+          return Transform.scale(
+            scale: _scaleAnimation.value,
+            child: Container(
+              width: 200,
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: _shadowColorAnimation.value ??
+                        Colors.black.withOpacity(0.1),
+                    blurRadius: _elevationAnimation.value,
+                    offset: Offset(0, _elevationAnimation.value * 0.5),
+                  ),
+                ],
+              ),
               child: Column(
                 children: [
-                  // Photo ronde du prestataire
-                  Stack(
-                    children: [
-                      Container(
-                        width: 60,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: const Color(0xFF1CBF3F),
-                            width: 2,
-                          ),
-                          image: DecorationImage(
-                            image: AssetImage(provider['image'] as String),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      // Badge de vérification
-                      if (provider['verified'] as bool)
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: Container(
-                            width: 18,
-                            height: 18,
-                            decoration: const BoxDecoration(
-                              color: Color(0xFF1CBF3F),
-                              shape: BoxShape.circle,
-                            ),
-                            child: const Icon(
-                              Icons.verified,
-                              color: Colors.white,
-                              size: 12,
-                            ),
-                          ),
-                        ),
-                    ],
+                  // Icône avec animation
+                  AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    width: _isHovered ? 80 : 70,
+                    height: _isHovered ? 80 : 70,
+                    decoration: BoxDecoration(
+                      color: widget.color.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: _isHovered
+                          ? [
+                              BoxShadow(
+                                color: widget.color.withOpacity(0.3),
+                                blurRadius: 12,
+                                offset: const Offset(0, 4),
+                              ),
+                            ]
+                          : null,
+                    ),
+                    child: Icon(
+                      widget.icon,
+                      color: widget.color,
+                      size: _isHovered ? 36 : 32,
+                    ),
                   ),
-                  const SizedBox(height: 12),
-                  // Nom du prestataire
+
+                  const SizedBox(height: 20),
+
+                  // Titre
                   Text(
-                    provider['name'] as String,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF1E293B),
+                    widget.title,
+                      style: TextStyle(
+                      fontSize: _isHovered ? 20 : 18,
+                      fontWeight: FontWeight.w700,
+                      color: const Color(0xFF1E293B),
+                      letterSpacing: -0.2,
                     ),
                     textAlign: TextAlign.center,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 3),
-                  // Service
+
+                  const SizedBox(height: 8),
+
+                  // Description
                   Text(
-                    provider['service'] as String,
+                    widget.description,
                     style: const TextStyle(
-                      fontSize: 12,
+                      fontSize: 14,
                       color: Color(0xFF64748B),
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w400,
                     ),
                     textAlign: TextAlign.center,
-                    maxLines: 1,
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 6),
-                  // Localisation
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.location_on,
-                          size: 12, color: Color(0xFF64748B)),
-                      const SizedBox(width: 3),
-                      Expanded(
-                        child: Text(
-                          provider['location'] as String,
-                          style: const TextStyle(
-                            fontSize: 10,
-                            color: Color(0xFF64748B),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+// 🛠️ MÉTHODES POUR LA SECTION "NOS MÉTIERS"
+Widget _buildModernMetierCard(
+    String title, IconData icon, Color color, int index) {
+  return TweenAnimationBuilder<double>(
+    duration: Duration(milliseconds: 600 + (index * 150)),
+    tween: Tween(begin: 0.0, end: 1.0),
+    builder: (context, value, child) {
+      return Transform.translate(
+        offset: Offset(0, 30 * (1 - value)),
+        child: Opacity(
+          opacity: value,
+          child: _AnimatedMetierCard(
+            title: title,
+            icon: icon,
+            color: color,
+            index: index,
+          ),
+        ),
+      );
+    },
+  );
+}
+
+// 🎨 WIDGET ANIMÉ POUR LES CARTES DE MÉTIERS
+class _AnimatedMetierCard extends StatefulWidget {
+  final String title;
+  final IconData icon;
+  final Color color;
+  final int index;
+
+  const _AnimatedMetierCard({
+    required this.title,
+    required this.icon,
+    required this.color,
+    required this.index,
+  });
+
+  @override
+  State<_AnimatedMetierCard> createState() => _AnimatedMetierCardState();
+}
+
+class _AnimatedMetierCardState extends State<_AnimatedMetierCard>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _scaleAnimation;
+  late Animation<double> _elevationAnimation;
+  late Animation<Color?> _shadowColorAnimation;
+
+  bool _isHovered = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 200),
+      vsync: this,
+    );
+
+    _scaleAnimation = Tween<double>(
+      begin: 1.0,
+      end: 1.08,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOutCubic,
+    ));
+
+    _elevationAnimation = Tween<double>(
+      begin: 8.0,
+      end: 24.0,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOutCubic,
+    ));
+
+    _shadowColorAnimation = ColorTween(
+      begin: Colors.black.withOpacity(0.1),
+      end: Colors.black.withOpacity(0.3),
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOutCubic,
+    ));
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  void _onHoverEnter() {
+    _animationController.forward();
+  }
+
+  void _onHoverExit() {
+    _animationController.reverse();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => _onHoverEnter(),
+      onExit: (_) => _onHoverExit(),
+      child: AnimatedBuilder(
+        animation: _animationController,
+        builder: (context, child) {
+          return Transform.scale(
+            scale: _scaleAnimation.value,
+            child: Container(
+              width: 160,
+              height: 140,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: _shadowColorAnimation.value ??
+                        Colors.black.withOpacity(0.1),
+                    blurRadius: _elevationAnimation.value,
+                    offset: Offset(0, _elevationAnimation.value * 0.5),
+                  ),
+                ],
+              ),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(20),
+                  onTap: () => context.go('/prestataire'),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                        // Icône avec animation
+                        AnimatedContainer(
+                          duration: const Duration(milliseconds: 200),
+                          width: _isHovered ? 60 : 50,
+                          height: _isHovered ? 60 : 50,
+                          decoration: BoxDecoration(
+                            color: widget.color.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(16),
+                            boxShadow: _isHovered
+                                ? [
+                                    BoxShadow(
+                                      color: widget.color.withOpacity(0.3),
+                                      blurRadius: 12,
+                                      offset: const Offset(0, 4),
+                                    ),
+                                  ]
+                                : null,
+                          ),
+                          child: Icon(
+                            widget.icon,
+                            color: widget.color,
+                            size: _isHovered ? 28 : 24,
+                          ),
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        // Titre
+                        Text(
+                          widget.title,
+                          style: TextStyle(
+                            fontSize: _isHovered ? 16 : 15,
+                            fontWeight: FontWeight.w600,
+                            color: const Color(0xFF1E293B),
+                            letterSpacing: -0.2,
                           ),
                           textAlign: TextAlign.center,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+// 📱 MÉTHODES POUR LA SECTION "QUE VOUS RECHERCHIEZ UN DJ"
+Widget _buildModernHeroContent() {
+  return TweenAnimationBuilder<double>(
+    duration: const Duration(milliseconds: 800),
+    tween: Tween(begin: 0.0, end: 1.0),
+    builder: (context, value, child) {
+      return Transform.translate(
+        offset: Offset(0, 30 * (1 - value)),
+        child: Opacity(
+          opacity: value,
+                  child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+              // Titre principal
+              const Text(
+                'Que vous recherchiez un DJ, un plombier ou un avocat...',
+                style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xFF1E293B),
+                  letterSpacing: -0.5,
+                  height: 1.2,
+                ),
+              ),
+              const SizedBox(height: 16),
+
+              // Sous-titre
+              const Text(
+                            'Nous vous trouvons les meilleurs, gratuitement.',
+                            style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xFF1CBF3F),
+                  letterSpacing: -0.2,
+                ),
+              ),
+              const SizedBox(height: 24),
+
+              // Description
+              const Text(
+                            'Consultez les profils, discutez avec les professionnels, aussi depuis notre application mobile.',
+                            style: TextStyle(
+                  fontSize: 16,
+                  color: Color(0xFF64748B),
+                  height: 1.5,
+                ),
+              ),
+              const SizedBox(height: 40),
+
+              // Boutons de téléchargement
+              _buildModernDownloadButtons(),
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+
+Widget _buildModernAppImage() {
+  return TweenAnimationBuilder<double>(
+    duration: const Duration(milliseconds: 1000),
+    tween: Tween(begin: 0.0, end: 1.0),
+    builder: (context, value, child) {
+      return Transform.scale(
+        scale: value,
+        child: Opacity(
+          opacity: value,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 20,
+                  offset: const Offset(0, 10),
+                ),
+              ],
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Image.asset(
+                'assets/image2.png',
+                width: 400,
+                height: 300,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    width: 400,
+                    height: 300,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          const Color(0xFF1CBF3F).withOpacity(0.8),
+                          const Color(0xFF16A34A).withOpacity(0.9),
+                                    ],
+                                  ),
+                                ),
+                    child: const Center(
+                      child: Icon(
+                        Icons.phone_android,
+                        size: 80,
+                        color: Colors.white,
                       ),
-                    ],
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        ),
+      );
+    },
+  );
+}
+
+Widget _buildModernDownloadButtons() {
+  return Row(
+    children: [
+      Expanded(
+        child: _buildModernAppStoreButton(),
+      ),
+      const SizedBox(width: 16),
+      Expanded(
+        child: _buildModernPlayStoreButton(),
+      ),
+    ],
+  );
+}
+
+Widget _buildModernAppStoreButton() {
+  return _AnimatedDownloadButton(
+    icon: 'assets/apple.png',
+    title: 'Télécharger sur',
+    storeName: 'App Store',
+    color: Colors.black,
+    onTap: () {
+      // Navigation vers App Store
+    },
+  );
+}
+
+Widget _buildModernPlayStoreButton() {
+  return _AnimatedDownloadButton(
+    icon: 'assets/playstore.png',
+    title: 'Télécharger sur',
+    storeName: 'Play Store',
+    color: Colors.black,
+    onTap: () {
+      // Navigation vers Play Store
+    },
+  );
+}
+
+// 🎨 WIDGET ANIMÉ POUR LES BOUTONS DE TÉLÉCHARGEMENT
+class _AnimatedDownloadButton extends StatefulWidget {
+  final String icon;
+  final String title;
+  final String storeName;
+  final Color color;
+  final VoidCallback onTap;
+
+  const _AnimatedDownloadButton({
+    required this.icon,
+    required this.title,
+    required this.storeName,
+    required this.color,
+    required this.onTap,
+  });
+
+  @override
+  State<_AnimatedDownloadButton> createState() =>
+      _AnimatedDownloadButtonState();
+}
+
+class _AnimatedDownloadButtonState extends State<_AnimatedDownloadButton>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _scaleAnimation;
+  late Animation<double> _elevationAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 200),
+      vsync: this,
+    );
+
+    _scaleAnimation = Tween<double>(
+      begin: 1.0,
+      end: 1.05,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOutCubic,
+    ));
+
+    _elevationAnimation = Tween<double>(
+      begin: 8.0,
+      end: 16.0,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOutCubic,
+    ));
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  void _onHoverEnter() {
+    _animationController.forward();
+  }
+
+  void _onHoverExit() {
+    _animationController.reverse();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => _onHoverEnter(),
+      onExit: (_) => _onHoverExit(),
+      child: AnimatedBuilder(
+        animation: _animationController,
+        builder: (context, child) {
+          return Transform.scale(
+            scale: _scaleAnimation.value,
+            child: Container(
+                                  height: 80,
+                                  decoration: BoxDecoration(
+                color: widget.color,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    blurRadius: _elevationAnimation.value,
+                    offset: Offset(0, _elevationAnimation.value * 0.5),
+                  ),
+                ],
+              ),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(16),
+                  onTap: widget.onTap,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                                  child: Row(
+                                    children: [
+                        // Icône
+                                      Image.asset(
+                          widget.icon,
+                          width: 48,
+                          height: 48,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
+                              width: 48,
+                              height: 48,
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: const Icon(
+                                Icons.smartphone,
+                                color: Colors.white,
+                                size: 24,
+                              ),
+                            );
+                          },
+                        ),
+                        const SizedBox(width: 12),
+
+                        // Texte
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                widget.title,
+                                style: const TextStyle(
+                                                color: Colors.white,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                          ),
+                                          Text(
+                                widget.storeName,
+                                style: const TextStyle(
+                                                color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+// ⭐ MÉTHODES POUR LA SECTION "POURQUOI CHOISIR SOUTRALI DEALS"
+Widget _buildModernAdvantageCard({
+  required IconData icon,
+  required String title,
+  required String description,
+  required Color color,
+  required int index,
+}) {
+  return TweenAnimationBuilder<double>(
+    duration: Duration(milliseconds: 600 + (index * 150)),
+    tween: Tween(begin: 0.0, end: 1.0),
+    builder: (context, value, child) {
+      return Transform.translate(
+        offset: Offset(0, 30 * (1 - value)),
+        child: Opacity(
+          opacity: value,
+          child: _AnimatedAdvantageCard(
+            icon: icon,
+            title: title,
+            description: description,
+            color: color,
+            index: index,
+          ),
+        ),
+      );
+    },
+  );
+}
+
+// 🎨 WIDGET ANIMÉ POUR LES CARTES D'AVANTAGES
+class _AnimatedAdvantageCard extends StatefulWidget {
+  final IconData icon;
+  final String title;
+  final String description;
+  final Color color;
+  final int index;
+
+  const _AnimatedAdvantageCard({
+    required this.icon,
+    required this.title,
+    required this.description,
+    required this.color,
+    required this.index,
+  });
+
+  @override
+  State<_AnimatedAdvantageCard> createState() => _AnimatedAdvantageCardState();
+}
+
+class _AnimatedAdvantageCardState extends State<_AnimatedAdvantageCard>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _scaleAnimation;
+  late Animation<double> _elevationAnimation;
+  late Animation<Color?> _shadowColorAnimation;
+
+  bool _isHovered = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 200),
+      vsync: this,
+    );
+
+    _scaleAnimation = Tween<double>(
+      begin: 1.0,
+      end: 1.05,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOutCubic,
+    ));
+
+    _elevationAnimation = Tween<double>(
+      begin: 8.0,
+      end: 20.0,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOutCubic,
+    ));
+
+    _shadowColorAnimation = ColorTween(
+      begin: Colors.black.withOpacity(0.1),
+      end: Colors.black.withOpacity(0.25),
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOutCubic,
+    ));
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  void _onHoverEnter() {
+    _animationController.forward();
+  }
+
+  void _onHoverExit() {
+    _animationController.reverse();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => _onHoverEnter(),
+      onExit: (_) => _onHoverExit(),
+      child: AnimatedBuilder(
+        animation: _animationController,
+        builder: (context, child) {
+          return Transform.scale(
+            scale: _scaleAnimation.value,
+            child: Container(
+              width: 200,
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: _shadowColorAnimation.value ??
+                        Colors.black.withOpacity(0.1),
+                    blurRadius: _elevationAnimation.value,
+                    offset: Offset(0, _elevationAnimation.value * 0.5),
+                  ),
+                ],
+              ),
+              child: Column(
+                children: [
+                  // Icône avec animation
+                  AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    width: _isHovered ? 80 : 70,
+                    height: _isHovered ? 80 : 70,
+                    decoration: BoxDecoration(
+                      color: widget.color.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: _isHovered
+                          ? [
+                              BoxShadow(
+                                color: widget.color.withOpacity(0.3),
+                                blurRadius: 12,
+                                offset: const Offset(0, 4),
+                              ),
+                            ]
+                          : null,
+                    ),
+                    child: Icon(
+                      widget.icon,
+                      color: widget.color,
+                      size: _isHovered ? 36 : 32,
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  // Titre
+                  Text(
+                    widget.title,
+                    style: TextStyle(
+                      fontSize: _isHovered ? 20 : 18,
+                      fontWeight: FontWeight.w700,
+                      color: const Color(0xFF1E293B),
+                      letterSpacing: -0.2,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+
+                  const SizedBox(height: 8),
+
+                  // Description
+                  Text(
+                    widget.description,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Color(0xFF64748B),
+                      fontWeight: FontWeight.w400,
+                    ),
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),
             ),
-            // Divider
-            Container(
-              height: 1,
-              margin: const EdgeInsets.symmetric(horizontal: 16),
-              color: Colors.grey[200],
-            ),
-            // Footer avec note et actions
-            Container(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  // Note avec étoiles
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          );
+        },
+      ),
+    );
+  }
+}
+
+// 💳 MÉTHODES POUR LA SECTION SOUTRAPAY
+Widget _buildModernSoutraPaySection() {
+  return TweenAnimationBuilder<double>(
+    duration: const Duration(milliseconds: 1000),
+    tween: Tween(begin: 0.0, end: 1.0),
+    builder: (context, value, child) {
+      return Transform.translate(
+        offset: Offset(0, 30 * (1 - value)),
+        child: Opacity(
+          opacity: value,
+          child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(40.0),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF1CBF3F).withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(Icons.star, size: 12, color: Colors.amber),
-                        const SizedBox(width: 3),
-                        Text(
-                          '${provider['rating']}',
-                          style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF1E293B),
-                          ),
+                      color: Colors.white,
+              borderRadius: BorderRadius.circular(24),
+                      boxShadow: [
+                        BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 20,
+                          offset: const Offset(0, 8),
                         ),
-                        const SizedBox(width: 3),
-                        Text(
-                          '(${provider['reviews']} avis)',
-                          style: const TextStyle(
-                            fontSize: 10,
-                            color: Color(0xFF64748B),
+                      ],
+                    ),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                if (constraints.maxWidth < 768) {
+                  // Layout mobile : vertical
+                  return Column(
+                    children: [
+                      _buildSoutraPayContent(),
+                      const SizedBox(height: 32),
+                      _buildSoutraPayVisual(),
+                    ],
+                  );
+                } else {
+                  // Layout desktop : horizontal
+                  return Row(
+                      children: [
+                        Expanded(
+                          flex: 2,
+                        child: _buildSoutraPayContent(),
+                      ),
+                      const SizedBox(width: 40),
+                      Expanded(
+                        flex: 1,
+                        child: _buildSoutraPayVisual(),
+                      ),
+                    ],
+                  );
+                }
+              },
+            ),
+          ),
+        ),
+      );
+    },
+  );
+}
+
+Widget _buildSoutraPayContent() {
+  return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+      // Header avec icône
+                              Row(
+                                children: [
+                                  Container(
+            padding: const EdgeInsets.all(16),
+                                    decoration: BoxDecoration(
+              color: const Color(0xFF1CBF3F).withOpacity(0.1),
+              borderRadius: BorderRadius.circular(16),
+                                    ),
+            child: const Icon(
+                                      Icons.account_balance_wallet,
+              color: Color(0xFF1CBF3F),
+                                      size: 32,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 16),
+                                  const Text(
+                                    'SoutraPay',
+                                    style: TextStyle(
+              fontSize: 32,
+              fontWeight: FontWeight.w700,
+              color: Color(0xFF1E293B),
+              letterSpacing: -0.5,
+                                    ),
+                                  ),
+                                ],
+                              ),
+      const SizedBox(height: 24),
+
+      // Titre
+                              const Text(
+                                'Vos paiements sécurisés',
+                                style: TextStyle(
+          fontSize: 24,
+                                  fontWeight: FontWeight.w600,
+          color: Color(0xFF1E293B),
+          letterSpacing: -0.2,
+                                ),
+                              ),
+      const SizedBox(height: 16),
+
+      // Description
+                              const Text(
+                                'Avec SoutraPay, payez vos prestations et services en toute sécurité via mobile money ou carte bancaire. Vos transactions sont protégées et rapides.',
+                                style: TextStyle(
+                                  fontSize: 16,
+          color: Color(0xFF64748B),
+          height: 1.6,
+                                ),
+                              ),
+      const SizedBox(height: 24),
+
+      // Méthodes de paiement
+                              Row(
+                                children: [
+          _buildPaymentMethod(
+            icon: Icons.credit_card,
+            label: 'Cartes bancaires',
+            color: const Color(0xFF1CBF3F),
+          ),
+          const SizedBox(width: 32),
+          _buildPaymentMethod(
+            icon: Icons.phone_android,
+            label: 'Mobile Money',
+            color: const Color(0xFF1CBF3F),
+                              ),
+                            ],
+                          ),
+    ],
+  );
+}
+
+Widget _buildSoutraPayVisual() {
+  return Container(
+                            height: 200,
+                            decoration: BoxDecoration(
+      gradient: LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [
+          const Color(0xFF1CBF3F).withOpacity(0.1),
+          const Color(0xFF16A34A).withOpacity(0.1),
+        ],
+      ),
+      borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: const Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.payment,
+            size: 64,
+            color: Color(0xFF1CBF3F),
+                                  ),
+          SizedBox(height: 16),
+                                  Text(
+                                    'Paiement Sécurisé',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF1E293B),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget _buildPaymentMethod({
+  required IconData icon,
+  required String label,
+  required Color color,
+}) {
+  return Row(
+    children: [
+      Icon(icon, color: color, size: 20),
+      const SizedBox(width: 8),
+      Text(
+        label,
+        style: const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
+          color: Color(0xFF1E293B),
+        ),
+      ),
+    ],
+  );
+}
+
+// 📋 MÉTHODES POUR LA SECTION SERVICES
+Widget _buildModernLoadingState() {
+  return Container(
+    height: 280,
+    child: Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: const Color(0xFF1CBF3F).withOpacity(0.1),
+              shape: BoxShape.circle,
+            ),
+            child: const CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF1CBF3F)),
+              strokeWidth: 3,
+            ),
+          ),
+          const SizedBox(height: 24),
+          const Text(
+            'Chargement des services...',
+                                    style: TextStyle(
+                                      fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF1E293B),
+            ),
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            'Récupération des services populaires',
+            style: TextStyle(
+              fontSize: 14,
+              color: Color(0xFF64748B),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+  );
+}
+
+Widget _buildEmptyState() {
+  return Container(
+    height: 280,
+    child: Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.grey.shade100,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              Icons.work_outline,
+              size: 48,
+              color: Colors.grey.shade400,
+            ),
+          ),
+          const SizedBox(height: 24),
+          const Text(
+            'Aucun service disponible',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF1E293B),
+            ),
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            'Les services seront bientôt disponibles',
+            style: TextStyle(
+              fontSize: 14,
+              color: Color(0xFF64748B),
                           ),
                         ),
                       ],
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  // Bouton d'action
-                  Container(
-                    width: double.infinity,
-                    height: 32,
-                    decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        colors: [Color(0xFF1CBF3F), Color(0xFF16A34A)],
-                        begin: Alignment.centerLeft,
-                        end: Alignment.centerRight,
-                      ),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        borderRadius: BorderRadius.circular(20),
-                        onTap: () {
-                          context.go('/prestataire');
-                        },
-                        child: const Center(
-                          child: Text(
-                            'Voir le profil',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+    ),
+  );
+}
+
+Widget _buildServicesList(List<dynamic> services) {
+  return SizedBox(
+    height: 280,
+    child: ListView.builder(
+      scrollDirection: Axis.horizontal,
+      itemCount: services.length,
+      itemBuilder: (context, index) {
+        final service = services[index];
+        return _buildModernServiceCard(service, index);
+      },
+    ),
+  );
+}
+
+Widget _buildModernServiceCard(dynamic service, int index) {
+  return TweenAnimationBuilder<double>(
+    duration: Duration(milliseconds: 400 + (index * 100)),
+    tween: Tween(begin: 0.0, end: 1.0),
+    builder: (context, value, child) {
+      return Transform.translate(
+        offset: Offset(0, 30 * (1 - value)),
+        child: Opacity(
+          opacity: value,
+          child: Container(
+            width: 200,
+            margin: const EdgeInsets.only(right: 24),
+            child: _AnimatedServiceCard(
+              service: service,
+              index: index,
+              onTap: () {
+                // Navigation vers prestataire
+              },
+            ),
+          ),
+        ),
+      );
+    },
+  );
+}
+
+// 🎨 WIDGET ANIMÉ POUR LES CARTES DE SERVICES
+class _AnimatedServiceCard extends StatefulWidget {
+  final dynamic service;
+  final int index;
+  final VoidCallback onTap;
+
+  const _AnimatedServiceCard({
+    required this.service,
+    required this.index,
+    required this.onTap,
+  });
+
+  @override
+  State<_AnimatedServiceCard> createState() => _AnimatedServiceCardState();
+}
+
+class _AnimatedServiceCardState extends State<_AnimatedServiceCard>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _scaleAnimation;
+  late Animation<double> _elevationAnimation;
+  late Animation<Color?> _shadowColorAnimation;
+
+  bool _isHovered = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 200),
+      vsync: this,
+    );
+
+    _scaleAnimation = Tween<double>(
+      begin: 1.0,
+      end: 1.05,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOutCubic,
+    ));
+
+    _elevationAnimation = Tween<double>(
+      begin: 8.0,
+      end: 20.0,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOutCubic,
+    ));
+
+    _shadowColorAnimation = ColorTween(
+      begin: Colors.black.withOpacity(0.1),
+      end: Colors.black.withOpacity(0.25),
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOutCubic,
+    ));
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  void _onHoverEnter() {
+    _animationController.forward();
+  }
+
+  void _onHoverExit() {
+    _animationController.reverse();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => _onHoverEnter(),
+      onExit: (_) => _onHoverExit(),
+      child: AnimatedBuilder(
+        animation: _animationController,
+        builder: (context, child) {
+          return Transform.scale(
+            scale: _scaleAnimation.value,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: _shadowColorAnimation.value ??
+                        Colors.black.withOpacity(0.1),
+                    blurRadius: _elevationAnimation.value,
+                    offset: Offset(0, _elevationAnimation.value * 0.5),
                   ),
                 ],
               ),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: widget.onTap,
+                  borderRadius: BorderRadius.circular(20),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Stack(
+                      children: [
+                        // Image du service
+                        Positioned.fill(
+                          child: Image.network(
+                            widget.service.imageservice,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Container(
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    colors: [
+                                      const Color(0xFF1CBF3F).withOpacity(0.8),
+                                      const Color(0xFF16A34A).withOpacity(0.9),
+                                    ],
+                                  ),
+                                ),
+                                child: const Center(
+                                  child: Icon(
+                                    Icons.work,
+                                    size: 40,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+
+                        // Gradient overlay
+                        Positioned.fill(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  Colors.transparent,
+                                  Colors.black
+                                      .withOpacity(_isHovered ? 0.8 : 0.7),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        // Badge "Populaire" pour les premiers services
+                        if (widget.index < 3)
+                          Positioned(
+                            top: 12,
+                            right: 12,
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 200),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: _isHovered ? 10 : 8,
+                                vertical: _isHovered ? 6 : 4,
+                              ),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF1CBF3F),
+                                borderRadius: BorderRadius.circular(12),
+                                boxShadow: _isHovered
+                                    ? [
+                                        BoxShadow(
+                                          color: const Color(0xFF1CBF3F)
+                                              .withOpacity(0.3),
+                                          blurRadius: 8,
+                                          offset: const Offset(0, 2),
+                                        ),
+                                      ]
+                                    : null,
+                              ),
+                              child: Text(
+                                'Populaire',
+                                style: TextStyle(
+                                  fontSize: _isHovered ? 11 : 10,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+
+                        // Contenu de la carte
+                        Positioned(
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 200),
+                            padding: EdgeInsets.all(_isHovered ? 20 : 16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                // Nom du service
+                                Text(
+                                  widget.service.nomservice,
+                                  style: TextStyle(
+                                    fontSize: _isHovered ? 18 : 16,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white,
+                                    letterSpacing: -0.2,
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                const SizedBox(height: 4),
+
+                                // Indicateur d'action avec animation
+                                AnimatedContainer(
+                                  duration: const Duration(milliseconds: 200),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        'Découvrir',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: _isHovered
+                                              ? Colors.white
+                                              : Colors.white70,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 4),
+                                      AnimatedRotation(
+                                        duration:
+                                            const Duration(milliseconds: 200),
+                                        turns: _isHovered ? 0.25 : 0.0,
+                                        child: Icon(
+                                          Icons.arrow_forward,
+                                          size: 12,
+                                          color: _isHovered
+                                              ? Colors.white
+                                              : Colors.white.withOpacity(0.8),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+
+                        // Overlay de hover avec animation
+                        if (_isHovered)
+                          Positioned.fill(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                  color:
+                                      const Color(0xFF1CBF3F).withOpacity(0.5),
+                                  width: 2,
+                                ),
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
+}
+
+Widget _buildLocationFeature({
+    required IconData icon,
+    required String title,
+    required String description,
+    required Color color,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+      borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+          color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+          offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Container(
+          width: 60,
+          height: 60,
+            decoration: BoxDecoration(
+              color: color.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(16),
+            ),
+            child: Icon(
+              icon,
+              color: color,
+            size: 28,
+            ),
+          ),
+        const SizedBox(height: 16),
+          Text(
+            title,
+            style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: Color(0xFF1E293B),
+          ),
+          textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            description,
+            style: const TextStyle(
+              fontSize: 14,
+            color: Color(0xFF64748B),
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+Widget _buildStepCard({
+    required IconData icon,
+    required String title,
+    required String description,
+    required Color color,
+  }) {
+    return Container(
+      width: 200,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(15),
+            decoration: BoxDecoration(
+              color: color.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(50),
+            ),
+            child: Icon(
+              icon,
+              size: 40,
+              color: color,
+            ),
+          ),
+          const SizedBox(height: 15),
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            description,
+            style: const TextStyle(
+              fontSize: 14,
+              color: Colors.grey,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+Widget _buildStepArrow() {
+  return Container(
+    padding: const EdgeInsets.symmetric(horizontal: 10),
+    child: Icon(
+      Icons.arrow_forward,
+      color: Colors.grey.shade400,
+      size: 30,
+    ),
+  );
+}
+
+Widget _buildAdvantageCard({
+  required IconData icon,
+  required String title,
+  required String description,
+  required Color color,
+}) {
+  return Container(
+    width: 200,
+    padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              blurRadius: 10,
+              offset: const Offset(0, 5),
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+        Container(
+          padding: const EdgeInsets.all(15),
+                decoration: BoxDecoration(
+            color: color.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(50),
+          ),
+          child: Icon(
+            icon,
+            size: 40,
+            color: color,
+          ),
+        ),
+        const SizedBox(height: 15),
+                    Text(
+          title,
+                      style: const TextStyle(
+            fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                    ),
+        const SizedBox(height: 8),
+                    Text(
+          description,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey,
+                      ),
+                      textAlign: TextAlign.center,
+        ),
+      ],
+      ),
+    );
+  }
+
+// 👥 MÉTHODE POUR LES PRESTATAIRES POPULAIRES
+Widget _buildModernProviderCard(int index) {
+  return _AnimatedProviderCard(
+    index: index,
+    onTap: () {
+      // Navigation vers prestataire
+    },
+  );
+}
 
   // 🛠️ MÉTHODE POUR LES MÉTIERS
   Widget _buildMetierCard(String title, IconData icon, Color color) {
@@ -1468,5 +4216,4 @@ class _HomePageScreenState extends State<HomePageScreen> {
         ],
       ),
     );
-  }
 }

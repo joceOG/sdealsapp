@@ -14,7 +14,7 @@ class ApiClient {
   // final String baseUrl='http://180.149.197.115:3000/api';
   // URL configurable selon la plateforme
 
-  var apiUrl = 'http://localhost:3000/api';
+  var apiUrl = dotenv.env['API_URL'] ?? 'http://localhost:3000/api';
 
   // Vérifier la connectivité de l'API
   Future<bool> checkApiConnectivity() async {
@@ -725,6 +725,29 @@ extension ServiceRequestsApi on ApiClient {
       return jsonDecode(res.body) as Map<String, dynamic>;
     }
     throw Exception('Erreur updatePrestation: ${res.statusCode} ${res.body}');
+  }
+
+  // ✅ Créer un prestataire
+  Future<Map<String, dynamic>> createPrestataire(
+      Map<String, dynamic> data) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$apiUrl/prestataire'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(data),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return jsonDecode(response.body) as Map<String, dynamic>;
+      } else {
+        throw Exception(
+            'Erreur createPrestataire: ${response.statusCode} - ${response.body}');
+      }
+    } catch (e) {
+      throw Exception('Erreur de connexion createPrestataire: $e');
+    }
   }
 }
 

@@ -7,6 +7,7 @@ class Utilisateur {
   String telephone;
   String genre;
   String? note;
+  String? role; // Nouveau champ pour le rôle
 
   Utilisateur({
     required this.idutilisateur,
@@ -17,6 +18,7 @@ class Utilisateur {
     required this.telephone,
     required this.genre,
     this.note,
+    this.role,
   });
 
   /// Convertir en Map / JSON
@@ -30,6 +32,7 @@ class Utilisateur {
       'telephone': telephone,
       'genre': genre,
       'note': note,
+      'role': role,
     };
   }
 
@@ -47,9 +50,11 @@ class Utilisateur {
       telephone: json['telephone'] ?? '',
       genre: json['genre'] ?? '',
       note: json['note'],
+      role: json['role'],
     );
   }
 
   /// Alias fromMap pour compatibilité
-  factory Utilisateur.fromMap(Map<String, dynamic> map) => Utilisateur.fromJson(map);
+  factory Utilisateur.fromMap(Map<String, dynamic> map) =>
+      Utilisateur.fromJson(map);
 }

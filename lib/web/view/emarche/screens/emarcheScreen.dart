@@ -65,45 +65,94 @@ class _EmarcheScreenState extends State<EmarcheScreen> {
     );
   }
 
-  // 🎯 HERO SECTION
+  // 🎯 HERO SECTION MODERNE 2025
   Widget _buildHeroSection() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 60.0, horizontal: 40.0),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            Colors.red.shade50,
-            Colors.orange.shade50,
-          ],
-        ),
-      ),
-      child: Column(
-        children: [
-          const Text(
-            'Découvrez notre e-marché',
-            style: TextStyle(
-              fontSize: 36,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
-              height: 1.2,
+    return TweenAnimationBuilder<double>(
+      duration: const Duration(milliseconds: 1000),
+      tween: Tween(begin: 0.0, end: 1.0),
+      builder: (context, value, child) {
+        return Transform.translate(
+          offset: Offset(0, 30 * (1 - value)),
+          child: Opacity(
+            opacity: value,
+            child: Container(
+              width: double.infinity,
+              padding:
+                  const EdgeInsets.symmetric(vertical: 80.0, horizontal: 40.0),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Colors.red.shade50,
+                    Colors.orange.shade50,
+                    Colors.pink.shade50,
+                  ],
+                ),
+              ),
+              child: Column(
+                children: [
+                  const Text(
+                    'Découvrez notre e-marché',
+                    style: TextStyle(
+                      fontSize: 42,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xFF1E293B),
+                      letterSpacing: -0.5,
+                      height: 1.2,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 24),
+                  const Text(
+                    'Trouvez les meilleurs produits aux meilleurs prix',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Color(0xFF64748B),
+                      fontWeight: FontWeight.w400,
+                      letterSpacing: -0.2,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 40),
+                  // Badge de confiance
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 24, vertical: 12),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFDC2626).withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(30),
+                      border: Border.all(
+                        color: const Color(0xFFDC2626).withOpacity(0.3),
+                        width: 1,
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.verified,
+                          color: const Color(0xFFDC2626),
+                          size: 20,
+                        ),
+                        const SizedBox(width: 8),
+                        const Text(
+                          'Plus de 1000 produits vérifiés',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFFDC2626),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-            textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 20),
-          const Text(
-            'Trouvez les meilleurs produits aux meilleurs prix',
-            style: TextStyle(
-              fontSize: 18,
-              color: Colors.grey,
-              fontWeight: FontWeight.w400,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -162,69 +211,161 @@ class _EmarcheScreenState extends State<EmarcheScreen> {
     );
   }
 
-  // 📂 TOP CATÉGORIES EMARCHE
+  // 📂 TOP CATÉGORIES EMARCHE MODERNE 2025
   Widget _buildTopCategoriesSection() {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 40.0, horizontal: 40.0),
+      padding: const EdgeInsets.symmetric(vertical: 64.0, horizontal: 40.0),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Colors.white,
+            Colors.grey.shade50,
+          ],
+        ),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Header moderne
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                width: 20,
-                height: 30,
-                decoration: BoxDecoration(
-                  color: Colors.red,
-                  borderRadius: BorderRadius.circular(4),
-                ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Badge moderne
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFDC2626).withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: const Color(0xFFDC2626).withOpacity(0.3),
+                        width: 1,
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          width: 8,
+                          height: 8,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFDC2626),
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        const Text(
+                          'Catégories',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFFDC2626),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Top Catégories',
+                    style: TextStyle(
+                      fontSize: 36,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xFF1E293B),
+                      letterSpacing: -0.5,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'Explorez nos catégories de produits',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Color(0xFF64748B),
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(width: 10),
-              const Text(
-                'Catégories',
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.red,
-                ),
+              // Bouton "Voir tout" moderne
+              TweenAnimationBuilder<double>(
+                duration: const Duration(milliseconds: 800),
+                tween: Tween(begin: 0.0, end: 1.0),
+                builder: (context, value, child) {
+                  return Transform.scale(
+                    scale: value,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [Color(0xFFDC2626), Color(0xFFB91C1C)],
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xFFDC2626).withOpacity(0.3),
+                            blurRadius: 8,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: TextButton.icon(
+                        onPressed: () => context.go('/detailsarticle'),
+                        style: TextButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 12),
+                        ),
+                        icon: const Icon(Icons.arrow_forward, size: 18),
+                        label: const Text(
+                          'Voir tout',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
               ),
             ],
           ),
-          const SizedBox(height: 20),
-          const Text(
-            'Top Catégories',
-            style: TextStyle(
-              fontSize: 32,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
-            ),
-          ),
-          const SizedBox(height: 10),
-          const Text(
-            'Explorez nos catégories de produits',
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.grey,
-            ),
-          ),
-          const SizedBox(height: 30),
-          Container(
-            height: 280,
+          const SizedBox(height: 40),
+          // Liste des catégories avec loading moderne
+          SizedBox(
+            height: 200,
             child: BlocBuilder<EmarcheBloc, EmarcheState>(
               builder: (context, state) {
-                if (state.listItems == null) {
-                  return const Center(
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
-                    ),
-                  );
+                if (state.isLoading == true) {
+                  return _buildModernLoadingState();
+                }
+
+                if (state.listItems == null || state.listItems!.isEmpty) {
+                  return _buildEmptyState();
                 }
 
                 return ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: state.listItems!.length,
                   itemBuilder: (context, index) {
-                    return _buildCategoryCard(state.listItems![index]);
+                    return TweenAnimationBuilder<double>(
+                      duration: Duration(milliseconds: 600 + (index * 100)),
+                      tween: Tween(begin: 0.0, end: 1.0),
+                      builder: (context, value, child) {
+                        return Transform.translate(
+                          offset: Offset(0, 20 * (1 - value)),
+                          child: Opacity(
+                            opacity: value,
+                            child: _buildModernCategoryCard(
+                                state.listItems![index], index),
+                          ),
+                        );
+                      },
+                    );
                   },
                 );
               },
@@ -235,91 +376,161 @@ class _EmarcheScreenState extends State<EmarcheScreen> {
     );
   }
 
-  // 🛍️ MEILLEURS PRODUITS
+  // 🛍️ MEILLEURS PRODUITS MODERNE 2025
   Widget _buildBestProductsSection() {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 40.0, horizontal: 40.0),
+      padding: const EdgeInsets.symmetric(vertical: 64.0, horizontal: 40.0),
       decoration: BoxDecoration(
-        color: Colors.grey.shade50,
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Colors.grey.shade50,
+            Colors.white,
+          ],
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Header moderne
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                width: 20,
-                height: 30,
-                decoration: BoxDecoration(
-                  color: Colors.red,
-                  borderRadius: BorderRadius.circular(4),
-                ),
-              ),
-              const SizedBox(width: 10),
-              const Text(
-                'Ce mois',
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.red,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          Row(
-            children: [
-              const Text(
-                'Meilleurs Produits',
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
-                ),
-              ),
-              const Spacer(),
-              ElevatedButton(
-                onPressed: () {
-                  context.go('/connexion');
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 15,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Badge moderne
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFDC2626).withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: const Color(0xFFDC2626).withOpacity(0.3),
+                        width: 1,
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          width: 8,
+                          height: 8,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFDC2626),
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        const Text(
+                          'Ce mois',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFFDC2626),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Meilleurs Produits',
+                    style: TextStyle(
+                      fontSize: 36,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xFF1E293B),
+                      letterSpacing: -0.5,
+                    ),
                   ),
-                ),
-                child: const Text(
-                  'Voir tout',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
+                  const SizedBox(height: 8),
+                  const Text(
+                    'Découvrez nos produits les plus vendus',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Color(0xFF64748B),
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
-                ),
+                ],
               ),
-            ],
-          ),
-          const SizedBox(height: 30),
-          Container(
-            height: 400,
-            child: BlocBuilder<EmarcheBloc, EmarcheState>(
-              builder: (context, state) {
-                if (state.listItems2 == null) {
-                  return const Center(
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
+              // Bouton "Voir tout" moderne
+              TweenAnimationBuilder<double>(
+                duration: const Duration(milliseconds: 800),
+                tween: Tween(begin: 0.0, end: 1.0),
+                builder: (context, value, child) {
+                  return Transform.scale(
+                    scale: value,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [Color(0xFFDC2626), Color(0xFFB91C1C)],
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xFFDC2626).withOpacity(0.3),
+                            blurRadius: 8,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: TextButton.icon(
+                        onPressed: () => context.go('/connexion'),
+                        style: TextButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 12),
+                        ),
+                        icon: const Icon(Icons.arrow_forward, size: 18),
+                        label: const Text(
+                          'Voir tout',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
                     ),
                   );
+                },
+              ),
+            ],
+          ),
+          const SizedBox(height: 40),
+          // Liste des produits avec loading moderne
+          SizedBox(
+            height: 300,
+            child: BlocBuilder<EmarcheBloc, EmarcheState>(
+              builder: (context, state) {
+                if (state.isLoading2 == true) {
+                  return _buildModernProductsLoadingState();
+                }
+
+                if (state.listItems2 == null || state.listItems2!.isEmpty) {
+                  return _buildEmptyProductsState();
                 }
 
                 return ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: state.listItems2!.length,
                   itemBuilder: (context, index) {
-                    return _buildProductCard(state.listItems2![index]);
+                    return TweenAnimationBuilder<double>(
+                      duration: Duration(milliseconds: 600 + (index * 100)),
+                      tween: Tween(begin: 0.0, end: 1.0),
+                      builder: (context, value, child) {
+                        return Transform.translate(
+                          offset: Offset(0, 20 * (1 - value)),
+                          child: Opacity(
+                            opacity: value,
+                            child: _buildModernProductCard(
+                                state.listItems2![index], index),
+                          ),
+                        );
+                      },
+                    );
                   },
                 );
               },
@@ -617,195 +828,246 @@ class _EmarcheScreenState extends State<EmarcheScreen> {
     );
   }
 
-  // 📂 CARTE DE CATÉGORIE
-  Widget _buildCategoryCard(dynamic category) {
-    return GestureDetector(
-      onTap: () {
-        context.go('/detailsarticle');
-      },
-      child: Container(
-        width: 250,
-        margin: const EdgeInsets.only(right: 20),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.3),
-              blurRadius: 10,
-              offset: const Offset(0, 5),
-            ),
-          ],
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(15),
-          child: Stack(
-            children: [
-              // Image de fond
-              Positioned.fill(
-                child: Image.network(
-                  category.imagecategorie,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      color: Colors.red.shade100,
-                      child: const Icon(
-                        Icons.category,
-                        size: 50,
-                        color: Colors.red,
-                      ),
-                    );
-                  },
-                ),
-              ),
-              // Overlay avec gradient
-              Positioned.fill(
+  // 📂 CARTE DE CATÉGORIE MODERNE 2025
+  Widget _buildModernCategoryCard(dynamic category, int index) {
+    return _AnimatedCategoryCard(
+      category: category,
+      index: index,
+      onTap: () => context.go('/detailsarticle'),
+    );
+  }
+
+  // 🎨 ÉTAT DE CHARGEMENT MODERNE
+  Widget _buildModernLoadingState() {
+    return ListView.builder(
+      scrollDirection: Axis.horizontal,
+      itemCount: 4,
+      itemBuilder: (context, index) {
+        return TweenAnimationBuilder<double>(
+          duration: Duration(milliseconds: 600 + (index * 100)),
+          tween: Tween(begin: 0.0, end: 1.0),
+          builder: (context, value, child) {
+            return Transform.translate(
+              offset: Offset(0, 20 * (1 - value)),
+              child: Opacity(
+                opacity: value,
                 child: Container(
+                  width: 200,
+                  height: 200,
+                  margin: const EdgeInsets.only(right: 20),
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Colors.transparent,
-                        Colors.black.withOpacity(0.7),
-                      ],
-                    ),
+                    color: Colors.grey.shade200,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 60,
+                        height: 60,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade300,
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Container(
+                        width: 120,
+                        height: 16,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade300,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Container(
+                        width: 80,
+                        height: 12,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade300,
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-              // Nom de la catégorie
-              Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: Container(
-                  padding: const EdgeInsets.all(16),
-                  child: Text(
-                    category.nomcategorie,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-            ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  // 📭 ÉTAT VIDE
+  Widget _buildEmptyState() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.category_outlined,
+            size: 64,
+            color: Colors.grey.shade400,
           ),
-        ),
+          const SizedBox(height: 16),
+          Text(
+            'Aucune catégorie disponible',
+            style: TextStyle(
+              fontSize: 18,
+              color: Colors.grey.shade600,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Les catégories seront bientôt disponibles',
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.grey.shade500,
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  // 🛍️ CARTE DE PRODUIT
-  Widget _buildProductCard(dynamic article) {
-    return GestureDetector(
-      onTap: () {
-        context.push(
-          '/detailsarticle',
-          extra: article,
-        );
-      },
-      child: Container(
-        width: 220,
-        margin: const EdgeInsets.only(right: 20),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(15),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.3),
-              blurRadius: 10,
-              offset: const Offset(0, 5),
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Image du produit
-            Expanded(
-              flex: 3,
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius:
-                      const BorderRadius.vertical(top: Radius.circular(15)),
-                  image: DecorationImage(
-                    image: NetworkImage(article.photoArticle),
-                    fit: BoxFit.cover,
-                    onError: (exception, stackTrace) {
-                      // Gestion d'erreur pour l'image
-                    },
+  // 🛍️ CARTE DE PRODUIT MODERNE 2025
+  Widget _buildModernProductCard(dynamic article, int index) {
+    return _AnimatedProductCard(
+      article: article,
+      index: index,
+      onTap: () => context.push('/detailsarticle', extra: article),
+    );
+  }
+
+  // 🎨 ÉTAT DE CHARGEMENT MODERNE POUR PRODUITS
+  Widget _buildModernProductsLoadingState() {
+    return ListView.builder(
+      scrollDirection: Axis.horizontal,
+      itemCount: 4,
+      itemBuilder: (context, index) {
+        return TweenAnimationBuilder<double>(
+          duration: Duration(milliseconds: 600 + (index * 100)),
+          tween: Tween(begin: 0.0, end: 1.0),
+          builder: (context, value, child) {
+            return Transform.translate(
+              offset: Offset(0, 20 * (1 - value)),
+              child: Opacity(
+                opacity: value,
+                child: Container(
+                  width: 250,
+                  height: 300,
+                  margin: const EdgeInsets.only(right: 20),
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade200,
+                    borderRadius: BorderRadius.circular(16),
                   ),
-                ),
-                child: article.photoArticle.isEmpty
-                    ? Container(
-                        color: Colors.red.shade100,
-                        child: const Icon(
-                          Icons.shopping_bag,
-                          size: 50,
-                          color: Colors.red,
-                        ),
-                      )
-                    : null,
-              ),
-            ),
-            // Informations du produit
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.all(12),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      article.nomArticle,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      article.prixArticle,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.red,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        Row(
-                          children: List.generate(5, (index) {
-                            return Icon(
-                              index < 4 ? Icons.star : Icons.star_border,
-                              color: Colors.amber,
-                              size: 16,
-                            );
-                          }),
-                        ),
-                        const SizedBox(width: 8),
-                        const Text(
-                          '(65)',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey,
+                  child: Column(
+                    children: [
+                      // Image placeholder
+                      Expanded(
+                        flex: 3,
+                        child: Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade300,
+                            borderRadius: const BorderRadius.vertical(
+                                top: Radius.circular(16)),
                           ),
                         ),
-                      ],
-                    ),
-                  ],
+                      ),
+                      // Content placeholder
+                      Expanded(
+                        flex: 2,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                width: 150,
+                                height: 16,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.shade300,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Container(
+                                width: 80,
+                                height: 20,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.shade300,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Row(
+                                children: [
+                                  Container(
+                                    width: 100,
+                                    height: 12,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey.shade300,
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                  ),
+                                  const Spacer(),
+                                  Container(
+                                    width: 40,
+                                    height: 12,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey.shade300,
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  // 📭 ÉTAT VIDE POUR PRODUITS
+  Widget _buildEmptyProductsState() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.shopping_bag_outlined,
+            size: 64,
+            color: Colors.grey.shade400,
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'Aucun produit disponible',
+            style: TextStyle(
+              fontSize: 18,
+              color: Colors.grey.shade600,
+              fontWeight: FontWeight.w500,
             ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Les produits seront bientôt disponibles',
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.grey.shade500,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -1024,6 +1286,513 @@ class _EmarcheScreenState extends State<EmarcheScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+// 🎨 CARTE DE CATÉGORIE ANIMÉE MODERNE 2025
+class _AnimatedCategoryCard extends StatefulWidget {
+  final dynamic category;
+  final int index;
+  final VoidCallback onTap;
+
+  const _AnimatedCategoryCard({
+    required this.category,
+    required this.index,
+    required this.onTap,
+  });
+
+  @override
+  State<_AnimatedCategoryCard> createState() => _AnimatedCategoryCardState();
+}
+
+class _AnimatedCategoryCardState extends State<_AnimatedCategoryCard>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _scaleAnimation;
+  late Animation<double> _elevationAnimation;
+  late Animation<Color?> _shadowColorAnimation;
+  late Animation<BorderRadius?> _borderAnimation;
+  bool _isHovered = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 200),
+      vsync: this,
+    );
+
+    _scaleAnimation = Tween<double>(
+      begin: 1.0,
+      end: 1.05,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    ));
+
+    _elevationAnimation = Tween<double>(
+      begin: 8.0,
+      end: 16.0,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    ));
+
+    _shadowColorAnimation = ColorTween(
+      begin: Colors.grey.withOpacity(0.2),
+      end: Colors.grey.withOpacity(0.4),
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    ));
+
+    _borderAnimation = BorderRadiusTween(
+      begin: BorderRadius.circular(16),
+      end: BorderRadius.circular(20),
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    ));
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  void _onHoverEnter() {
+    setState(() {
+      _isHovered = true;
+    });
+    _animationController.forward();
+  }
+
+  void _onHoverExit() {
+    setState(() {
+      _isHovered = false;
+    });
+    _animationController.reverse();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => _onHoverEnter(),
+      onExit: (_) => _onHoverExit(),
+      child: AnimatedBuilder(
+        animation: _animationController,
+        builder: (context, child) {
+          return Transform.scale(
+            scale: _scaleAnimation.value,
+            child: GestureDetector(
+              onTap: widget.onTap,
+              child: Container(
+                width: 200,
+                height: 200,
+                margin: const EdgeInsets.only(right: 20),
+                decoration: BoxDecoration(
+                  borderRadius: _borderAnimation.value,
+                  boxShadow: [
+                    BoxShadow(
+                      color: _shadowColorAnimation.value ??
+                          Colors.grey.withOpacity(0.2),
+                      blurRadius: _elevationAnimation.value,
+                      offset: const Offset(0, 8),
+                    ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius:
+                      _borderAnimation.value ?? BorderRadius.circular(16),
+                  child: Stack(
+                    children: [
+                      // Image de fond
+                      Positioned.fill(
+                        child: Image.network(
+                          widget.category.imagecategorie,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: [
+                                    Colors.red.shade100,
+                                    Colors.orange.shade100,
+                                  ],
+                                ),
+                              ),
+                              child: const Icon(
+                                Icons.category,
+                                size: 50,
+                                color: Colors.red,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      // Overlay avec gradient moderne
+                      Positioned.fill(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Colors.transparent,
+                                Colors.black.withOpacity(0.7),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      // Badge "Populaire" en haut à droite
+                      if (_isHovered)
+                        Positioned(
+                          top: 12,
+                          right: 12,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFDC2626),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: const Text(
+                              'Populaire',
+                              style: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      // Nom de la catégorie
+                      Positioned(
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                widget.category.nomcategorie,
+                                style: TextStyle(
+                                  fontSize: _isHovered ? 18 : 16,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white,
+                                  letterSpacing: -0.2,
+                                ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              const SizedBox(height: 4),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.arrow_forward,
+                                    size: _isHovered ? 16 : 14,
+                                    color: Colors.white.withOpacity(0.8),
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    'Explorer',
+                                    style: TextStyle(
+                                      fontSize: _isHovered ? 12 : 11,
+                                      color: Colors.white.withOpacity(0.8),
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+// 🛍️ CARTE DE PRODUIT ANIMÉE MODERNE 2025
+class _AnimatedProductCard extends StatefulWidget {
+  final dynamic article;
+  final int index;
+  final VoidCallback onTap;
+
+  const _AnimatedProductCard({
+    required this.article,
+    required this.index,
+    required this.onTap,
+  });
+
+  @override
+  State<_AnimatedProductCard> createState() => _AnimatedProductCardState();
+}
+
+class _AnimatedProductCardState extends State<_AnimatedProductCard>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _scaleAnimation;
+  late Animation<double> _elevationAnimation;
+  late Animation<Color?> _shadowColorAnimation;
+  late Animation<BorderRadius?> _borderAnimation;
+  bool _isHovered = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 200),
+      vsync: this,
+    );
+
+    _scaleAnimation = Tween<double>(
+      begin: 1.0,
+      end: 1.05,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    ));
+
+    _elevationAnimation = Tween<double>(
+      begin: 8.0,
+      end: 16.0,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    ));
+
+    _shadowColorAnimation = ColorTween(
+      begin: Colors.grey.withOpacity(0.2),
+      end: Colors.grey.withOpacity(0.4),
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    ));
+
+    _borderAnimation = BorderRadiusTween(
+      begin: BorderRadius.circular(16),
+      end: BorderRadius.circular(20),
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    ));
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  void _onHoverEnter() {
+    setState(() {
+      _isHovered = true;
+    });
+    _animationController.forward();
+  }
+
+  void _onHoverExit() {
+    setState(() {
+      _isHovered = false;
+    });
+    _animationController.reverse();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => _onHoverEnter(),
+      onExit: (_) => _onHoverExit(),
+      child: AnimatedBuilder(
+        animation: _animationController,
+        builder: (context, child) {
+          return Transform.scale(
+            scale: _scaleAnimation.value,
+            child: GestureDetector(
+              onTap: widget.onTap,
+              child: Container(
+                width: 250,
+                height: 300,
+                margin: const EdgeInsets.only(right: 20),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: _borderAnimation.value,
+                  boxShadow: [
+                    BoxShadow(
+                      color: _shadowColorAnimation.value ??
+                          Colors.grey.withOpacity(0.2),
+                      blurRadius: _elevationAnimation.value,
+                      offset: const Offset(0, 8),
+                    ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius:
+                      _borderAnimation.value ?? BorderRadius.circular(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Image du produit
+                      Expanded(
+                        flex: 3,
+                        child: Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            borderRadius: const BorderRadius.vertical(
+                                top: Radius.circular(16)),
+                            image: DecorationImage(
+                              image: NetworkImage(widget.article.photoArticle),
+                              fit: BoxFit.cover,
+                              onError: (exception, stackTrace) {
+                                // Gestion d'erreur pour l'image
+                              },
+                            ),
+                          ),
+                          child: widget.article.photoArticle.isEmpty
+                              ? Container(
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                      colors: [
+                                        Colors.red.shade100,
+                                        Colors.orange.shade100,
+                                      ],
+                                    ),
+                                  ),
+                                  child: const Icon(
+                                    Icons.shopping_bag,
+                                    size: 50,
+                                    color: Colors.red,
+                                  ),
+                                )
+                              : Stack(
+                                  children: [
+                                    // Badge "Populaire" en haut à droite
+                                    if (_isHovered)
+                                      Positioned(
+                                        top: 8,
+                                        right: 8,
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 6, vertical: 3),
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xFFDC2626),
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          ),
+                                          child: const Text(
+                                            'Populaire',
+                                            style: TextStyle(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                        ),
+                      ),
+                      // Informations du produit
+                      Expanded(
+                        flex: 2,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                widget.article.nomArticle,
+                                style: TextStyle(
+                                  fontSize: _isHovered ? 16 : 15,
+                                  fontWeight: FontWeight.w700,
+                                  color: const Color(0xFF1E293B),
+                                  letterSpacing: -0.2,
+                                ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                widget.article.prixArticle,
+                                style: TextStyle(
+                                  fontSize: _isHovered ? 18 : 16,
+                                  fontWeight: FontWeight.w700,
+                                  color: const Color(0xFFDC2626),
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Row(
+                                children: [
+                                  Row(
+                                    children: List.generate(5, (index) {
+                                      return Icon(
+                                        index < 4
+                                            ? Icons.star
+                                            : Icons.star_border,
+                                        color: Colors.amber,
+                                        size: _isHovered ? 16 : 14,
+                                      );
+                                    }),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    '(65)',
+                                    style: TextStyle(
+                                      fontSize: _isHovered ? 14 : 13,
+                                      color: const Color(0xFF64748B),
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  const Spacer(),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 6, vertical: 2),
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFFDC2626)
+                                          .withOpacity(0.1),
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                    child: Text(
+                                      'E-marché',
+                                      style: TextStyle(
+                                        fontSize: _isHovered ? 11 : 10,
+                                        color: const Color(0xFFDC2626),
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
       ),
     );
   }
