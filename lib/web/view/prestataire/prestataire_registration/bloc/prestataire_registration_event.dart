@@ -123,3 +123,58 @@ class CancelRegistration extends PrestataireRegistrationEvent {
   const CancelRegistration();
 }
 
+// ✅ SAUVEGARDER LES INFORMATIONS SIMPLIFIÉES (MODÈLE MOBILE)
+class SavePersonalInfoSimplified extends PrestataireRegistrationEvent {
+  final String fullName;
+  final String phone;
+  final String? email;
+  final String category;
+  final String service;
+  final List<String> serviceAreas;
+  final dynamic position; // LatLng
+  final String address;
+
+  const SavePersonalInfoSimplified({
+    required this.fullName,
+    required this.phone,
+    this.email,
+    required this.category,
+    required this.service,
+    required this.serviceAreas,
+    required this.position,
+    required this.address,
+  });
+
+  @override
+  List<Object?> get props => [
+        fullName,
+        phone,
+        email,
+        category,
+        service,
+        serviceAreas,
+        position,
+        address,
+      ];
+}
+
+// 💰 SAUVEGARDER LES TARIFS SIMPLIFIÉS (MODÈLE MOBILE)
+class SavePricingSimplified extends PrestataireRegistrationEvent {
+  final int dailyRate;
+  final String paymentMode;
+  final List<String> availableDays;
+
+  const SavePricingSimplified({
+    required this.dailyRate,
+    required this.paymentMode,
+    required this.availableDays,
+  });
+
+  @override
+  List<Object?> get props => [dailyRate, paymentMode, availableDays];
+}
+
+
+
+
+

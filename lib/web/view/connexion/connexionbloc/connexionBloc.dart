@@ -38,12 +38,57 @@ class ConnexionBloc extends Bloc<ConnexionEvent, ConnexionState> {
       final utilisateur = Utilisateur.fromJson(result['utilisateur']);
       final token = result['token'];
 
-      // 🎯 Mettre à jour l'AuthCubit global
+      // 🎯 RÉCUPÉRER TOUS LES RÔLES DEPUIS L'API
+      print('🔄 Récupération des rôles complets pour l\'utilisateur...');
+      
+      List<String> userRoles = ['CLIENT']; // Rôle de base
+      String activeRole = 'CLIENT'; // Rôle par défaut
+      
+      try {
+        // Appeler l'endpoint pour récupérer tous les rôles
+        final rolesResponse = await _apiClient.getUserRoles(utilisateur.idutilisateur);
+        print('📥 Réponse rôles API: $rolesResponse');
+        
+        if (rolesResponse['roles'] != null) {
+          final rolesList = List<String>.from(rolesResponse['roles']);
+          userRoles = rolesList.map((role) => role.toUpperCase()).toList();
+          
+          // Normaliser les rôles (enlever les doublons, s'assurer que CLIENT est présent)
+          userRoles = userRoles.toSet().toList();
+          if (!userRoles.contains('CLIENT')) {
+            userRoles.insert(0, 'CLIENT');
+          }
+          
+          // Définir le rôle actif (priorité: CLIENT si présent, sinon le premier)
+          activeRole = userRoles.contains('CLIENT') ? 'CLIENT' : userRoles.first;
+          
+          print('✅ Rôles complets récupérés: $userRoles');
+          print('✅ Rôle actif défini: $activeRole');
+        } else {
+          print('⚠️ Aucun rôle trouvé dans la réponse API, utilisation du rôle de base');
+        }
+      } catch (e) {
+        print('❌ Erreur lors de la récupération des rôles: $e');
+        print('🔄 Utilisation du rôle de base uniquement');
+        
+        // Fallback: utiliser le rôle de l'utilisateur si disponible
+        if (utilisateur.role != null && utilisateur.role!.isNotEmpty) {
+          final userRole = utilisateur.role!.toUpperCase();
+          if (userRole != 'CLIENT') {
+            userRoles.add(userRole);
+          }
+          activeRole = userRole;
+        }
+      }
+      
+      print('🔍 Rôles finaux assignés: $userRoles');
+      print('🔍 Rôle actif final: $activeRole');
+      
       _authCubit.setAuthenticated(
         token: token,
         utilisateur: utilisateur,
-        roles: [utilisateur.role ?? 'CLIENT'],
-        activeRole: utilisateur.role ?? 'CLIENT',
+        roles: userRoles,
+        activeRole: activeRole,
       );
 
       emit(state.copyWith(

@@ -8,6 +8,10 @@ class Utilisateur {
   String genre;
   String? note;
   String? role; // Nouveau champ pour le rôle
+  String? adresse;
+  String? ville;
+  String? dateNaissance;
+  String? photoProfil;
 
   Utilisateur({
     required this.idutilisateur,
@@ -19,6 +23,10 @@ class Utilisateur {
     required this.genre,
     this.note,
     this.role,
+    this.adresse,
+    this.ville,
+    this.dateNaissance,
+    this.photoProfil,
   });
 
   /// Convertir en Map / JSON
@@ -33,6 +41,10 @@ class Utilisateur {
       'genre': genre,
       'note': note,
       'role': role,
+      'adresse': adresse,
+      'ville': ville,
+      'dateNaissance': dateNaissance,
+      'photoProfil': photoProfil,
     };
   }
 
@@ -51,10 +63,47 @@ class Utilisateur {
       genre: json['genre'] ?? '',
       note: json['note'],
       role: json['role'],
+      adresse: json['adresse'],
+      ville: json['ville'],
+      dateNaissance: json['dateNaissance'],
+      photoProfil: json['photoProfil'],
     );
   }
 
   /// Alias fromMap pour compatibilité
   factory Utilisateur.fromMap(Map<String, dynamic> map) =>
       Utilisateur.fromJson(map);
+
+  /// Méthode copyWith pour créer une copie modifiée
+  Utilisateur copyWith({
+    String? idutilisateur,
+    String? nom,
+    String? prenom,
+    String? email,
+    String? password,
+    String? telephone,
+    String? genre,
+    String? note,
+    String? role,
+    String? adresse,
+    String? ville,
+    String? dateNaissance,
+    String? photoProfil,
+  }) {
+    return Utilisateur(
+      idutilisateur: idutilisateur ?? this.idutilisateur,
+      nom: nom ?? this.nom,
+      prenom: prenom ?? this.prenom,
+      email: email ?? this.email,
+      password: password ?? this.password,
+      telephone: telephone ?? this.telephone,
+      genre: genre ?? this.genre,
+      note: note ?? this.note,
+      role: role ?? this.role,
+      adresse: adresse ?? this.adresse,
+      ville: ville ?? this.ville,
+      dateNaissance: dateNaissance ?? this.dateNaissance,
+      photoProfil: photoProfil ?? this.photoProfil,
+    );
+  }
 }

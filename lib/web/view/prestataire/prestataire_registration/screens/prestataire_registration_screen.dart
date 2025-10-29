@@ -4,9 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../../data/services/api_client.dart';
 import '../bloc/prestataire_registration.dart';
 import 'steps/personal_info_step.dart';
-import 'steps/service_selection_step.dart';
 import 'steps/pricing_step.dart';
-import 'steps/verification_step.dart';
 
 // 🎯 ÉCRAN D'INSCRIPTION PRESTATAIRE MODERNE 2025
 class PrestataireRegistrationScreen extends StatelessWidget {
@@ -212,11 +210,7 @@ class _PrestataireRegistrationView extends StatelessWidget {
       case 1:
         return const PersonalInfoStep();
       case 2:
-        return const ServiceSelectionStep();
-      case 3:
         return const PricingStep();
-      case 4:
-        return const VerificationStep();
       default:
         return const Center(
           child: Text('Étape non trouvée'),
@@ -315,11 +309,7 @@ class _PrestataireRegistrationView extends StatelessWidget {
       case 1:
         return 'Informations personnelles';
       case 2:
-        return 'Sélection des services';
-      case 3:
         return 'Tarifs et disponibilités';
-      case 4:
-        return 'Vérification et documents';
       default:
         return 'Étape $step';
     }

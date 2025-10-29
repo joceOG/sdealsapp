@@ -27,10 +27,16 @@ import 'package:sdealsapp/web/view/prestataire/screens/prestataireScreen.dart';
 import 'package:sdealsapp/web/view/prestataire/prestatairebloc/prestataireEvent.dart';
 import 'package:sdealsapp/web/view/prestataire/prestataire_registration/bloc/prestataire_registration.dart';
 import 'package:sdealsapp/web/view/prestataire/prestataire_registration/screens/prestataire_welcome_screen.dart';
+import 'package:sdealsapp/web/view/prestataire/prestataire_registration/screens/prestataire_registration_screen.dart';
+import 'package:sdealsapp/web/view/prestataire/prestataire_dashboard/bloc/prestataire_dashboard.dart';
+import 'package:sdealsapp/web/view/prestataire/prestataire_dashboard/screens/prestataire_main_screen.dart';
+import 'package:sdealsapp/web/view/profile/profile.dart';
+import 'package:sdealsapp/web/view/settings/settings.dart';
 import 'package:sdealsapp/data/services/api_client.dart';
 import 'package:sdealsapp/web/view/splashcreen/screens/splashScreen.dart';
 import 'package:sdealsapp/web/view/splashcreen/splashscreenbloc/splashscreenBloc.dart';
 import 'package:sdealsapp/web/view/splashcreen/splashscreenbloc/splashscreenEvent.dart';
+import 'package:sdealsapp/web/router/route_guards.dart';
 import 'data/services/authCubit.dart';
 import 'mobile/view/home.dart';
 import 'mobile/view/loginpagem/loginpageblocm/loginPageBlocM.dart';
@@ -104,10 +110,23 @@ class MyApp extends StatelessWidget {
       ),
       GoRoute(
         path: '/prestataire/inscription',
+        redirect: AuthGuard.redirectIfNotAuthenticated,
         builder: (context, state) {
           return BlocProvider(
-            create: (context) => PrestataireRegistrationBloc(apiClient: ApiClient()),
+            create: (context) =>
+                PrestataireRegistrationBloc(apiClient: ApiClient()),
             child: const PrestataireWelcomeScreen(),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/prestataire/registration',
+        redirect: AuthGuard.redirectIfNotAuthenticated,
+        builder: (context, state) {
+          return BlocProvider(
+            create: (context) =>
+                PrestataireRegistrationBloc(apiClient: ApiClient()),
+            child: const PrestataireRegistrationScreen(),
           );
         },
       ),
@@ -177,6 +196,41 @@ class MyApp extends StatelessWidget {
               appBar: AppBarWidget(),
               body: const AproposScreen(),
             ),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/profile',
+        redirect: AuthGuard.redirectIfNotAuthenticated,
+        builder: (context, state) {
+          return BlocProvider(
+            create: (context) => ProfileBloc(
+              apiClient: ApiClient(),
+              authCubit: context.read<AuthCubit>(),
+            ),
+            child: const ProfileScreen(),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/settings',
+        redirect: AuthGuard.redirectIfNotAuthenticated,
+        builder: (context, state) {
+          return BlocProvider(
+            create: (context) => SettingsBloc(),
+            child: const SettingsScreen(),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/prestataire/dashboard',
+        redirect: PrestataireGuard.redirectIfNotPrestataire,
+        builder: (context, state) {
+          return BlocProvider(
+            create: (context) => PrestataireDashboardBloc(
+              apiClient: ApiClient(),
+            )..add(const LoadDashboard()),
+            child: const PrestataireMainScreen(),
           );
         },
       ),

@@ -14,7 +14,7 @@ class ApiClient {
   // final String baseUrl='http://180.149.197.115:3000/api';
   // URL configurable selon la plateforme
 
-  var apiUrl = dotenv.env['API_URL'] ?? 'http://localhost:3000/api';
+  var apiUrl = 'http://localhost:3000/api'; // Temporaire pour test
 
   // Vérifier la connectivité de l'API
   Future<bool> checkApiConnectivity() async {
@@ -747,6 +747,67 @@ extension ServiceRequestsApi on ApiClient {
       }
     } catch (e) {
       throw Exception('Erreur de connexion createPrestataire: $e');
+    }
+  }
+
+  // 👤 Mettre à jour le profil utilisateur
+  Future<Map<String, dynamic>> updateUserProfile(
+      Map<String, dynamic> data) async {
+    try {
+      final response = await http.put(
+        Uri.parse('$apiUrl/user/profile'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(data),
+      );
+
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body) as Map<String, dynamic>;
+      } else {
+        throw Exception(
+            'Erreur updateUserProfile: ${response.statusCode} - ${response.body}');
+      }
+    } catch (e) {
+      throw Exception('Erreur de connexion updateUserProfile: $e');
+    }
+  }
+
+  // 🔐 Changer le mot de passe
+  Future<Map<String, dynamic>> changePassword(
+      Map<String, dynamic> data) async {
+    try {
+      final response = await http.put(
+        Uri.parse('$apiUrl/user/change-password'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(data),
+      );
+
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body) as Map<String, dynamic>;
+      } else {
+        throw Exception(
+            'Erreur changePassword: ${response.statusCode} - ${response.body}');
+      }
+    } catch (e) {
+      throw Exception('Erreur de connexion changePassword: $e');
+    }
+  }
+
+  // 📸 Télécharger une photo de profil
+  Future<Map<String, dynamic>> uploadProfilePicture(String imagePath) async {
+    try {
+      // TODO: Implémenter l'upload de fichier
+      // Pour l'instant, on simule une réponse
+      return {
+        'success': true,
+        'photoUrl': 'https://via.placeholder.com/150',
+        'message': 'Photo de profil mise à jour'
+      };
+    } catch (e) {
+      throw Exception('Erreur de connexion uploadProfilePicture: $e');
     }
   }
 }

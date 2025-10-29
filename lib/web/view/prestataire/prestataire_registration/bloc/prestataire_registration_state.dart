@@ -103,3 +103,8 @@ class PrestataireRegistrationValidating extends PrestataireRegistrationState {
   List<Object?> get props => [currentStep];
 }
 
+
+
+
+
+
