@@ -187,7 +187,7 @@ class _RegisterPageScreenMState extends State<RegisterPageScreenM>
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text('Vous avez déjà un compte ?'),
+                      const Text('Déjà un compte ?'),
                       TextButton(
                         onPressed: () {
                           // Logique pour aller à la page de connexion

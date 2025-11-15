@@ -219,6 +219,7 @@ class _HomePageScreenStateM extends State<HomePageScreenM> with TickerProviderSt
     }
   }
 
+<<<<<<< Updated upstream
   // Méthode pour naviguer vers la page de recherche
   void _toggleSearch() {
     // Navigation vers SearchPageScreenM
@@ -306,6 +307,17 @@ class _HomePageScreenStateM extends State<HomePageScreenM> with TickerProviderSt
     ];
   }
   
+=======
+  final List<Map<String, dynamic>> tabsData = [
+    {"label": "Métiers", "icon": Icons.work, "page": JobPageScreenM()},
+    {"label": "Freelance", "icon": Icons.person, "page": FreelancePageScreen()},
+    {
+      "label": "Marketplace",
+      "icon": Icons.shopping_cart,
+      "page": ShoppingPageScreenM()
+    },
+  ];
+>>>>>>> Stashed changes
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<HomePageBlocM, HomePageStateM>(

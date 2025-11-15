@@ -22,6 +22,7 @@ class _ProfilPageScreenStateM extends State<ProfilPageScreenM> {
     BlocProvider.of<ProfilPageBlocM>(context);
     super.initState();
   }
+<<<<<<< Updated upstream
   
   // Affiche la feuille des tarifs SoutraPay
   void _showSoutraPayTarificationSheet(BuildContext context) {
@@ -184,20 +185,77 @@ class _ProfilPageScreenStateM extends State<ProfilPageScreenM> {
   }
   
   @override
+=======
+
+>>>>>>> Stashed changes
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green,
         elevation: 0,
+<<<<<<< Updated upstream
         title: const Text("Mon Profil"),
         centerTitle: true,
+=======
+        title: const Text(
+          'Mon Profil',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+            letterSpacing: 1.1,
+          ),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: CircleAvatar(
+              radius: 22,
+              backgroundColor: Colors.green.withOpacity(0.13),
+              backgroundImage: const AssetImage('assets/profile_picture.jpg'),
+              child: Align(
+                alignment: Alignment.bottomRight,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.green,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.white, width: 1.5),
+                  ),
+                  padding: const EdgeInsets.all(2),
+                  child:
+                      const Icon(Icons.verified, size: 14, color: Colors.white),
+                ),
+              ),
+            ),
+          ),
+        ],
+>>>>>>> Stashed changes
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+<<<<<<< Updated upstream
             // En-tête du profil
             _buildProfileHeader(),
+=======
+            const SizedBox(height: 20),
+            // Avatar et nom d'utilisateur
+            const CircleAvatar(
+              radius: 50,
+              backgroundImage: AssetImage(
+                  'assets/profile_picture.jpg'), // Remplacez par votre image
+            ),
+            const SizedBox(height: 10),
+            const Text(
+              'Afisu yussuf',
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
+>>>>>>> Stashed changes
             const SizedBox(height: 20),
             
             // Section "Mon activité"
@@ -443,6 +501,7 @@ class _ProfilPageScreenStateM extends State<ProfilPageScreenM> {
               },
               child: const Text("Se déconnecter", style: TextStyle(color: Colors.red)),
             ),
+            const SizedBox(height: 30),
           ],
         );
       },

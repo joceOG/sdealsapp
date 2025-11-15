@@ -190,7 +190,7 @@ class _LoginPageScreenMState extends State<LoginPageScreenM>
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text('Vous n\'avez pas de compte?'),
+                      const Text('Pas de compte?'),
                       TextButton(
                         onPressed: () {
                           // Navigate to the registration screen

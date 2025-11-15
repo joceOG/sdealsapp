@@ -70,7 +70,7 @@ class JobPageScreenM extends StatelessWidget {
 
   static const List<Map<String, dynamic>> topPrestataires = [
     {
-      "image": "assets/categories/Image1.png",
+      "image": "assets/prestataires/Image1.jpeg",
       "title": "Électricien",
       "subtitle": "Disponible 24h/24",
       "location": "Abidjan",
@@ -79,7 +79,7 @@ class JobPageScreenM extends StatelessWidget {
       "online": true
     },
     {
-      "image": "assets/categories/Image2.png",
+      "image": "assets/prestataires/Image2.jpg",
       "title": "Maçon",
       "subtitle": "Spécialiste rénovation",
       "location": "yamoussoukro",
@@ -88,7 +88,7 @@ class JobPageScreenM extends StatelessWidget {
       "online": false
     },
     {
-      "image": "assets/categories/Image3.png",
+      "image": "assets/prestataires/Image3.jpg",
       "title": "Peintre",
       "subtitle": "Peinture intérieure/extérieure",
       "location": "Abobo PK18",
@@ -97,7 +97,7 @@ class JobPageScreenM extends StatelessWidget {
       "online": true
     },
     {
-      "image": "assets/categories/Image4.png",
+      "image": "assets/prestataires/Image4.jpg",
       "title": "Jardinier",
       "subtitle": "Entretien & aménagement",
       "location": "Cocody",
@@ -106,7 +106,7 @@ class JobPageScreenM extends StatelessWidget {
       "online": true
     },
     {
-      "image": "assets/categories/Image5.png",
+      "image": "assets/prestataires/Image5.jpg",
       "title": "Cuisinier",
       "subtitle": "Cuisine africaine & européenne",
       "location": "Plateau",

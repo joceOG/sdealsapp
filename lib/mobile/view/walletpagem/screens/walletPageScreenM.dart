@@ -82,6 +82,7 @@ class _WalletPageScreenMState extends State<WalletPageScreenM> {
 
   @override
   Widget build(BuildContext context) {
+<<<<<<< Updated upstream
     return BlocProvider(
       create: (context) => _soutraWalletBloc,
       child: BlocConsumer<SoutraWalletBloc, SoutraWalletState>(
@@ -123,6 +124,41 @@ class _WalletPageScreenMState extends State<WalletPageScreenM> {
                   fontWeight: FontWeight.bold,
                   fontSize: 22,
                   letterSpacing: 1.1,
+=======
+    return Scaffold(
+      backgroundColor: Colors.white,
+      // AppBar personnalisée avec photo de profil à droite
+      appBar: AppBar(
+        backgroundColor: Colors.green,
+        elevation: 0,
+        title: const Text(
+          'Mon Compte SD',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+            letterSpacing: 1.1,
+          ),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: CircleAvatar(
+              radius: 22,
+              backgroundColor: Colors.green.withOpacity(0.13),
+              backgroundImage: const AssetImage('assets/profile_picture.jpg'),
+              child: Align(
+                alignment: Alignment.bottomRight,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.green,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.white, width: 1.5),
+                  ),
+                  padding: const EdgeInsets.all(2),
+                  child:
+                      const Icon(Icons.verified, size: 14, color: Colors.white),
+>>>>>>> Stashed changes
                 ),
               ),
               actions: [
