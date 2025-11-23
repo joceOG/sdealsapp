@@ -183,8 +183,10 @@ class _EmarcheScreenState extends State<EmarcheScreen> {
   Widget _buildNavigationChips() {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 40.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: Wrap(
+        alignment: WrapAlignment.center,
+        spacing: 20,
+        runSpacing: 10,
         children: [
           _buildNavigationChip(
             'Produits',
@@ -192,14 +194,12 @@ class _EmarcheScreenState extends State<EmarcheScreen> {
             true,
             () {},
           ),
-          const SizedBox(width: 20),
           _buildNavigationChip(
             'Vendeurs',
             Icons.storefront_outlined,
             false,
             () {},
           ),
-          const SizedBox(width: 20),
           _buildNavigationChip(
             'Panier',
             Icons.shopping_cart,
@@ -589,18 +589,29 @@ class _EmarcheScreenState extends State<EmarcheScreen> {
                 );
               }
 
-              return GridView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 20,
-                  mainAxisSpacing: 20,
-                  childAspectRatio: 1.2,
-                ),
-                itemCount: state.listItems3!.length,
-                itemBuilder: (context, index) {
-                  return _buildVendeurCard(state.listItems3![index]);
+              return LayoutBuilder(
+                builder: (context, constraints) {
+                  int crossAxisCount = 3;
+                  if (constraints.maxWidth < 800) {
+                    crossAxisCount = 1;
+                  } else if (constraints.maxWidth < 1200) {
+                    crossAxisCount = 2;
+                  }
+
+                  return GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: crossAxisCount,
+                      crossAxisSpacing: 20,
+                      mainAxisSpacing: 20,
+                      childAspectRatio: 1.2,
+                    ),
+                    itemCount: state.listItems3!.length,
+                    itemBuilder: (context, index) {
+                      return _buildVendeurCard(state.listItems3![index]);
+                    },
+                  );
                 },
               );
             },
@@ -665,28 +676,59 @@ class _EmarcheScreenState extends State<EmarcheScreen> {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 40),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _buildSpecialOfferCard(
-                title: 'Réduction 50%',
-                description: 'Sur tous les produits électroniques',
-                color: Colors.red,
-                icon: Icons.electrical_services,
-              ),
-              _buildSpecialOfferCard(
-                title: 'Livraison Gratuite',
-                description: 'Pour toute commande supérieure à 50,000 FCFA',
-                color: Colors.green,
-                icon: Icons.local_shipping,
-              ),
-              _buildSpecialOfferCard(
-                title: 'Nouveautés',
-                description: 'Découvrez nos derniers produits',
-                color: Colors.blue,
-                icon: Icons.new_releases,
-              ),
-            ],
+          LayoutBuilder(
+            builder: (context, constraints) {
+              if (constraints.maxWidth < 900) {
+                return Column(
+                  children: [
+                    _buildSpecialOfferCard(
+                      title: 'Réduction 50%',
+                      description: 'Sur tous les produits électroniques',
+                      color: Colors.red,
+                      icon: Icons.electrical_services,
+                    ),
+                    const SizedBox(height: 20),
+                    _buildSpecialOfferCard(
+                      title: 'Livraison Gratuite',
+                      description: 'Pour toute commande supérieure à 50,000 FCFA',
+                      color: Colors.green,
+                      icon: Icons.local_shipping,
+                    ),
+                    const SizedBox(height: 20),
+                    _buildSpecialOfferCard(
+                      title: 'Nouveautés',
+                      description: 'Découvrez nos derniers produits',
+                      color: Colors.blue,
+                      icon: Icons.new_releases,
+                    ),
+                  ],
+                );
+              } else {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _buildSpecialOfferCard(
+                      title: 'Réduction 50%',
+                      description: 'Sur tous les produits électroniques',
+                      color: Colors.red,
+                      icon: Icons.electrical_services,
+                    ),
+                    _buildSpecialOfferCard(
+                      title: 'Livraison Gratuite',
+                      description: 'Pour toute commande supérieure à 50,000 FCFA',
+                      color: Colors.green,
+                      icon: Icons.local_shipping,
+                    ),
+                    _buildSpecialOfferCard(
+                      title: 'Nouveautés',
+                      description: 'Découvrez nos derniers produits',
+                      color: Colors.blue,
+                      icon: Icons.new_releases,
+                    ),
+                  ],
+                );
+              }
+            },
           ),
         ],
       ),
@@ -708,122 +750,248 @@ class _EmarcheScreenState extends State<EmarcheScreen> {
           ],
         ),
       ),
-      child: Row(
-        children: [
-          Expanded(
-            flex: 2,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final isMobile = constraints.maxWidth < 900;
+
+          if (isMobile) {
+            return Column(
               children: [
-                const Text(
-                  'Commencez vos achats dès maintenant !',
-                  style: TextStyle(
-                    fontFamily: 'Krona One',
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
+                // Image (optionnel sur mobile, ou en premier)
+                Container(
+                  height: 200,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.3),
+                        blurRadius: 15,
+                        offset: const Offset(0, 8),
+                      ),
+                    ],
                   ),
-                ),
-                const SizedBox(height: 20),
-                const Text(
-                  'Découvrez des milliers de produits de qualité aux meilleurs prix.',
-                  style: TextStyle(
-                    fontFamily: 'Krona One',
-                    fontSize: 20,
-                    color: Colors.red,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                const Text(
-                  'Livraison rapide et sécurisée partout en Côte d\'Ivoire.',
-                  style: TextStyle(
-                    fontFamily: 'Kumbh Sans',
-                    fontSize: 16,
-                    color: Colors.grey,
-                    height: 1.5,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Image.asset(
+                      'assets/emarche.png',
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 40),
-                Row(
+                
+                // Texte et Boutons
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        context.go('/connexion');
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 30,
-                          vertical: 15,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                      ),
-                      child: const Text(
-                        'Commencer les achats',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    const Text(
+                      'Commencez vos achats dès maintenant !',
+                      style: TextStyle(
+                        fontFamily: 'Krona One',
+                        fontSize: 24, // Plus petit sur mobile
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
                       ),
                     ),
-                    const SizedBox(width: 20),
-                    OutlinedButton(
-                      onPressed: () {
-                        context.go('/connexion');
-                      },
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: Colors.red,
-                        side: const BorderSide(color: Colors.red, width: 2),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 30,
-                          vertical: 15,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25),
-                        ),
+                    const SizedBox(height: 20),
+                    const Text(
+                      'Découvrez des milliers de produits de qualité aux meilleurs prix.',
+                      style: TextStyle(
+                        fontFamily: 'Krona One',
+                        fontSize: 18,
+                        color: Colors.red,
+                        fontWeight: FontWeight.w600,
                       ),
-                      child: const Text(
-                        'Vendre sur la plateforme',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    ),
+                    const SizedBox(height: 20),
+                    const Text(
+                      'Livraison rapide et sécurisée partout en Côte d\'Ivoire.',
+                      style: TextStyle(
+                        fontFamily: 'Kumbh Sans',
+                        fontSize: 16,
+                        color: Colors.grey,
+                        height: 1.5,
                       ),
+                    ),
+                    const SizedBox(height: 40),
+                    Column( // Boutons empilés sur mobile
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            context.go('/connexion');
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 30,
+                              vertical: 15,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                          ),
+                          child: const Text(
+                            'Commencer les achats',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 16), // Espace vertical
+                        OutlinedButton(
+                          onPressed: () {
+                            context.go('/connexion');
+                          },
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: Colors.red,
+                            side: const BorderSide(color: Colors.red, width: 2),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 30,
+                              vertical: 15,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                          ),
+                          child: const Text(
+                            'Vendre sur la plateforme',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ],
-            ),
-          ),
-          const SizedBox(width: 40),
-          Expanded(
-            flex: 1,
-            child: Container(
-              height: 300,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.3),
-                    blurRadius: 15,
-                    offset: const Offset(0, 8),
+            );
+          } else {
+            // Desktop Layout (Original)
+            return Row(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Commencez vos achats dès maintenant !',
+                        style: TextStyle(
+                          fontFamily: 'Krona One',
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      const Text(
+                        'Découvrez des milliers de produits de qualité aux meilleurs prix.',
+                        style: TextStyle(
+                          fontFamily: 'Krona One',
+                          fontSize: 20,
+                          color: Colors.red,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      const Text(
+                        'Livraison rapide et sécurisée partout en Côte d\'Ivoire.',
+                        style: TextStyle(
+                          fontFamily: 'Kumbh Sans',
+                          fontSize: 16,
+                          color: Colors.grey,
+                          height: 1.5,
+                        ),
+                      ),
+                      const SizedBox(height: 40),
+                      Row(
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              context.go('/connexion');
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red,
+                              foregroundColor: Colors.white,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 30,
+                                vertical: 15,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25),
+                              ),
+                            ),
+                            child: const Text(
+                              'Commencer les achats',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 20),
+                          OutlinedButton(
+                            onPressed: () {
+                              context.go('/connexion');
+                            },
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: Colors.red,
+                              side: const BorderSide(color: Colors.red, width: 2),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 30,
+                                vertical: 15,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25),
+                              ),
+                            ),
+                            child: const Text(
+                              'Vendre sur la plateforme',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Image.asset(
-                  'assets/emarche.png',
-                  fit: BoxFit.cover,
                 ),
-              ),
-            ),
-          ),
-        ],
+                const SizedBox(width: 40),
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    height: 300,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.3),
+                          blurRadius: 15,
+                          offset: const Offset(0, 8),
+                        ),
+                      ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Image.asset(
+                        'assets/emarche.png',
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }
+        },
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sdealsapp/web/widget/Footer.dart';
+import '../../../widget/BreadcrumbWidget.dart';
 
 import '../../../widget/appbarwIdget/screens/AppBarWidget.dart';
 import '../detailsprestatairebloc/detailsprestataireBloc.dart';
@@ -21,6 +22,14 @@ class DetailsPrestataireScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            // Fil d'ariane
+            const BreadcrumbWidget(
+              items: [
+                BreadcrumbItem(label: 'Accueil', route: '/'),
+                BreadcrumbItem(label: 'Prestataires', route: '/prestataire'),
+                BreadcrumbItem(label: 'Détails Prestataire'),
+              ],
+            ),
             Container(
               margin: EdgeInsets.only(
                 top: 50.0,

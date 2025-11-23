@@ -76,3 +76,4 @@ class ProfileSaved extends ProfileState {
   @override
   List<Object?> get props => [utilisateur, message];
 }
+

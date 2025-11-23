@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../widget/Footer.dart';
 import '../../../widget/appbarwIdget/screens/AppBarWidget.dart';
+import '../../../widget/BreadcrumbWidget.dart';
 import '../prestatairebloc/prestataireBloc.dart';
 import '../prestatairebloc/prestataireEvent.dart';
 import '../prestatairebloc/prestataireState.dart';
@@ -51,6 +52,14 @@ class _PrestataireScreenState extends State<PrestataireScreen> {
       appBar: AppBarWidget(),
       body: Column(
         children: [
+          // Fil d'ariane
+          const BreadcrumbWidget(
+            items: [
+              BreadcrumbItem(label: 'Accueil', route: '/'),
+              BreadcrumbItem(label: 'Prestataires'),
+            ],
+          ),
+          
           // Header moderne
           _buildHeader(),
 

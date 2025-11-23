@@ -51,149 +51,198 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
           }
         },
         builder: (context, state) {
-          return Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color(0xFFF8FAFC),
-                  Color(0xFFE2E8F0),
-                ],
-              ),
+          return LayoutBuilder(
+            builder: (context, constraints) {
+              if (constraints.maxWidth < 1000) {
+                return _buildMobileLayout(state);
+              } else {
+                return _buildDesktopLayout(state);
+              }
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  // 📱 LAYOUT MOBILE
+  Widget _buildMobileLayout(InscriptionState state) {
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Color(0xFFF8FAFC),
+            Color(0xFFE2E8F0),
+          ],
+        ),
+      ),
+      child: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Container(
+            constraints: const BoxConstraints(maxWidth: 500),
+            padding: const EdgeInsets.all(24.0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(24),
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.08),
+                  blurRadius: 20,
+                  offset: const Offset(0, 10),
+                ),
+              ],
             ),
-            child: SingleChildScrollView(
-              child: Column(
+            child: _buildFormContent(state),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // 💻 LAYOUT DESKTOP
+  Widget _buildDesktopLayout(InscriptionState state) {
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Color(0xFFF8FAFC),
+            Color(0xFFE2E8F0),
+          ],
+        ),
+      ),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.only(top: 40.0, bottom: 40.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  // Image de gauche avec effet moderne
                   Container(
-                    padding: const EdgeInsets.only(top: 40.0, bottom: 40.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // Image de gauche avec effet moderne
-                        Container(
-                          width: 600,
-                          height: 600,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                blurRadius: 20,
-                                offset: const Offset(0, 10),
-                              ),
-                            ],
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: Image.asset(
-                              'assets/inscript.jpg',
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 60.0),
-
-                        // Formulaire moderne
-                        Container(
-                          width: 520,
-                          constraints: const BoxConstraints(
-                            minHeight: 700,
-                            maxHeight: 900,
-                          ),
-                          padding: const EdgeInsets.all(40.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(24),
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.08),
-                                blurRadius: 30,
-                                offset: const Offset(0, 15),
-                              ),
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.05),
-                                blurRadius: 10,
-                                offset: const Offset(0, 5),
-                              ),
-                            ],
-                          ),
-                          child: SingleChildScrollView(
-                            child: Form(
-                              key: _formKey,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  // Header moderne
-                                  Center(
-                                    child: Column(
-                                      children: [
-                                        Container(
-                                          width: 60,
-                                          height: 60,
-                                          decoration: BoxDecoration(
-                                            gradient: const LinearGradient(
-                                              colors: [
-                                                Color(0xFF1CBF3F),
-                                                Color(0xFF16A34A)
-                                              ],
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(16),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: const Color(0xFF1CBF3F)
-                                                    .withOpacity(0.3),
-                                                blurRadius: 12,
-                                                offset: const Offset(0, 4),
-                                              ),
-                                            ],
-                                          ),
-                                          child: const Icon(
-                                            Icons.person_add_outlined,
-                                            color: Colors.white,
-                                            size: 28,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 24),
-                                        const Text(
-                                          'Créer un compte',
-                                          style: TextStyle(
-                                            fontSize: 32,
-                                            color: Color(0xFF1E293B),
-                                            fontWeight: FontWeight.bold,
-                                            letterSpacing: -0.5,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 8),
-                                        Text(
-                                          'Rejoignez-nous et découvrez nos services',
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.grey[600],
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(height: 40),
-
-                                  // Champs du formulaire
-                                  _buildFormFields(state),
-                                ],
-                              ),
-                            ),
-                          ),
+                    width: 600,
+                    height: 600,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 20,
+                          offset: const Offset(0, 10),
                         ),
                       ],
                     ),
-                  )
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Image.asset(
+                        'assets/inscript.jpg',
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 60.0),
+
+                  // Formulaire moderne
+                  Container(
+                    width: 520,
+                    constraints: const BoxConstraints(
+                      minHeight: 700,
+                      maxHeight: 900,
+                    ),
+                    padding: const EdgeInsets.all(40.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(24),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.08),
+                          blurRadius: 30,
+                          offset: const Offset(0, 15),
+                        ),
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.05),
+                          blurRadius: 10,
+                          offset: const Offset(0, 5),
+                        ),
+                      ],
+                    ),
+                    child: SingleChildScrollView(
+                      child: _buildFormContent(state),
+                    ),
+                  ),
                 ],
               ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFormContent(InscriptionState state) {
+    return Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          // Header moderne
+          Center(
+            child: Column(
+              children: [
+                Container(
+                  width: 60,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Color(0xFF1CBF3F), Color(0xFF16A34A)],
+                    ),
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFF1CBF3F).withOpacity(0.3),
+                        blurRadius: 12,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: const Icon(
+                    Icons.person_add_outlined,
+                    color: Colors.white,
+                    size: 28,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                const Text(
+                  'Créer un compte',
+                  style: TextStyle(
+                    fontSize: 32,
+                    color: Color(0xFF1E293B),
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: -0.5,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Rejoignez-nous et découvrez nos services',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.grey[600],
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ],
             ),
-          );
-        },
+          ),
+          const SizedBox(height: 40),
+
+          // Champs du formulaire
+          _buildFormFields(state),
+        ],
       ),
     );
   }

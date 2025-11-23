@@ -419,30 +419,38 @@ class _HomePageScreenState extends State<HomePageScreen> {
                       int crossAxisCount = 3;
                       double crossAxisSpacing = 24;
                       double mainAxisSpacing = 24;
+                      double childAspectRatio = 1.05; // Ratio plus compact (presque carré)
 
-                      // Responsive breakpoints
-                      if (constraints.maxWidth < 768) {
+                      // Responsive breakpoints "Pro Expert"
+                      if (constraints.maxWidth < 700) {
                         crossAxisCount = 1;
                         crossAxisSpacing = 16;
                         mainAxisSpacing = 16;
-                      } else if (constraints.maxWidth < 1024) {
+                        childAspectRatio = 1.2; // Plus large sur mobile
+                      } else if (constraints.maxWidth < 1100) {
                         crossAxisCount = 2;
                         crossAxisSpacing = 20;
                         mainAxisSpacing = 20;
+                        childAspectRatio = 0.95;
+                      } else if (constraints.maxWidth < 1400) {
+                        crossAxisCount = 3;
+                        childAspectRatio = 0.9;
+                      } else {
+                        crossAxisCount = 4; // 4 colonnes sur grands écrans
+                        childAspectRatio = 1.0;
                       }
 
                       return GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: crossAxisCount,
                           crossAxisSpacing: crossAxisSpacing,
                           mainAxisSpacing: mainAxisSpacing,
-                          childAspectRatio:
-                              0.85, // Plus compact pour réduire la hauteur
+                          childAspectRatio: childAspectRatio,
                         ),
                         itemCount: 6,
-                    itemBuilder: (context, index) {
+                        itemBuilder: (context, index) {
                           return _buildModernProviderCard(index);
                         },
                       );
@@ -1688,23 +1696,23 @@ class _AnimatedProviderCardState extends State<_AnimatedProviderCard>
                   return Transform.scale(
                     scale: _scaleAnimation.value,
                     child: Container(
-              decoration: BoxDecoration(
+                      decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(24), // Coins plus arrondis
                         border: Border.all(
                           color: Color.lerp(
-                            Colors.transparent,
-                            const Color(0xFF1CBF3F).withOpacity(0.3),
+                            Colors.grey.shade200,
+                            const Color(0xFF1CBF3F),
                             _borderAnimation.value,
                           )!,
-                          width: 2,
+                          width: _isHovered ? 2 : 1,
                         ),
                         boxShadow: [
                           BoxShadow(
                             color: _shadowColorAnimation.value ??
-                                Colors.black.withOpacity(0.1),
+                                Colors.black.withOpacity(0.05),
                             blurRadius: _elevationAnimation.value,
-                            offset: Offset(0, _elevationAnimation.value * 0.5),
+                            offset: Offset(0, _elevationAnimation.value * 0.4),
                           ),
                         ],
                       ),
@@ -1712,309 +1720,188 @@ class _AnimatedProviderCardState extends State<_AnimatedProviderCard>
                         color: Colors.transparent,
                         child: InkWell(
                           onTap: widget.onTap,
-                          borderRadius: BorderRadius.circular(20),
-              child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                              // Header avec photo et badges
-                              Container(
-                                padding: const EdgeInsets.all(16),
-                                child: Column(
-                                  children: [
-                                    // Photo ronde avec animation
-                                    Stack(
-                                      children: [
-                                        AnimatedContainer(
-                                          duration:
-                                              const Duration(milliseconds: 200),
-                                          width: _isHovered ? 55 : 50,
-                                          height: _isHovered ? 55 : 50,
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            border: Border.all(
-                                              color: const Color(0xFF1CBF3F),
-                                              width: _isHovered ? 3 : 2,
-                                            ),
-                                            image: DecorationImage(
-                                              image: AssetImage(
-                                                  provider['image'] as String),
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
+                          borderRadius: BorderRadius.circular(24),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center, // Centré pour le look "Pro"
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              // Photo et Badge
+                              Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  AnimatedContainer(
+                                    duration: const Duration(milliseconds: 200),
+                                    width: _isHovered ? 85 : 80, // Photo plus grande
+                                    height: _isHovered ? 85 : 80,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                        color: const Color(0xFF1CBF3F),
+                                        width: _isHovered ? 3 : 2,
+                                      ),
+                                      image: DecorationImage(
+                                        image: AssetImage(
+                                            provider['image'] as String),
+                                        fit: BoxFit.cover,
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.1),
+                                          blurRadius: 10,
+                                          offset: const Offset(0, 5),
                                         ),
-                                        // Badge de vérification
-                                        if (provider['verified'] as bool)
-                                          Positioned(
-                                            bottom: 0,
-                                            right: 0,
-                                            child: AnimatedContainer(
-                                              duration: const Duration(
-                                                  milliseconds: 200),
-                                              width: _isHovered ? 18 : 16,
-                                              height: _isHovered ? 18 : 16,
-                                              decoration: BoxDecoration(
-                                                color: const Color(0xFF1CBF3F),
-                                                shape: BoxShape.circle,
-                                                boxShadow: _isHovered
-                                                    ? [
-                                                        BoxShadow(
-                                                          color: const Color(
-                                                                  0xFF1CBF3F)
-                                                              .withOpacity(0.4),
-                                                          blurRadius: 8,
-                                                          offset: const Offset(
-                                                              0, 2),
-                                                        ),
-                                                      ]
-                                                    : null,
-                                              ),
-                                              child: Icon(
-                                                Icons.verified,
-                                                color: Colors.white,
-                                                size: _isHovered ? 12 : 10,
-                                              ),
-                                            ),
-                                          ),
                                       ],
                                     ),
-                                    const SizedBox(height: 12),
+                                  ),
+                                  if (provider['verified'] as bool)
+                                    Positioned(
+                                      bottom: 0,
+                                      right: 0,
+                                      child: Container(
+                                        padding: const EdgeInsets.all(4),
+                                        decoration: const BoxDecoration(
+                                          color: Colors.white,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: const Icon(
+                                          Icons.verified,
+                                          color: Color(0xFF1CBF3F),
+                                          size: 20,
+                                        ),
+                                      ),
+                                    ),
+                                ],
+                              ),
+                              const SizedBox(height: 16),
 
-                                    // Nom du prestataire
+                              // Nom et Service
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 12),
+                                child: Column(
+                                  children: [
                                     Text(
                                       provider['name'] as String,
-                    style: TextStyle(
-                                        fontSize: _isHovered ? 18 : 16,
-                                        fontWeight: FontWeight.w700,
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
                                         color: const Color(0xFF1E293B),
-                                        letterSpacing: -0.2,
+                                        letterSpacing: -0.5,
                                       ),
                                       textAlign: TextAlign.center,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                     const SizedBox(height: 4),
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 10,
+                                        vertical: 4,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xFFF1F5F9),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: Text(
+                                        provider['service'] as String,
+                                        style: const TextStyle(
+                                          fontSize: 12,
+                                          color: Color(0xFF64748B),
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
 
-                                    // Service
-                                    Text(
-                                      provider['service'] as String,
-                    style: TextStyle(
-                                        fontSize: 14,
-                                        color: const Color(0xFF64748B),
-                                        fontWeight: FontWeight.w500,
-                    ),
-                    textAlign: TextAlign.center,
-                                      maxLines: 1,
+                              const SizedBox(height: 12),
+
+                              // Infos (Note & Localisation)
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Icon(Icons.star_rounded,
+                                      size: 16, color: Colors.amber),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    '${provider['rating']}',
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: const EdgeInsets.symmetric(horizontal: 8),
+                                    width: 4,
+                                    height: 4,
+                                    decoration: const BoxDecoration(
+                                      color: Color(0xFFCBD5E1),
+                                      shape: BoxShape.circle,
+                                    ),
+                                  ),
+                                  const Icon(Icons.location_on,
+                                      size: 14, color: Color(0xFF94A3B8)),
+                                  const SizedBox(width: 2),
+                                  Flexible(
+                                    child: Text(
+                                      (provider['location'] as String).split(',')[1].trim(), // Juste la ville/quartier
+                                      style: const TextStyle(
+                                        fontSize: 13,
+                                        color: Color(0xFF64748B),
+                                      ),
                                       overflow: TextOverflow.ellipsis,
-                  ),
-                                    const SizedBox(height: 8),
+                                    ),
+                                  ),
+                                ],
+                              ),
 
-                                    // Localisation avec icône
-                  Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                    children: [
-                                        Icon(
-                                          Icons.location_on,
-                                          size: 14,
-                                          color: const Color(0xFF64748B),
-                                        ),
-                                        const SizedBox(width: 4),
-                                        Expanded(
-                                          child: Text(
-                                            provider['location'] as String,
-                                            style: const TextStyle(
-                                              fontSize: 12,
-                                              color: Color(0xFF64748B),
-                                            ),
-                                            textAlign: TextAlign.center,
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
+                              const SizedBox(height: 16),
 
-                              // Divider avec animation
-                              AnimatedContainer(
+                              // Bouton "Voir Profil" (Apparaît au survol ou discret)
+                              AnimatedOpacity(
                                 duration: const Duration(milliseconds: 200),
-                                height: 1,
-                                margin: EdgeInsets.symmetric(
-                                    horizontal: _isHovered ? 12 : 16),
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      Colors.transparent,
-                                      _isHovered
-                                          ? const Color(0xFF1CBF3F)
-                                              .withOpacity(0.3)
-                                          : Colors.grey[200]!,
-                                      Colors.transparent,
-                                    ],
-                                  ),
-                                ),
-                              ),
-
-                              // Footer avec note et actions
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(16),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      // Note avec étoiles
-            Container(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 12,
-                                          vertical: 6,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: const Color(0xFF1CBF3F)
-                                              .withOpacity(0.1),
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                        ),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            const Icon(Icons.star,
-                                                size: 14, color: Colors.amber),
-                                            const SizedBox(width: 4),
-                                            Text(
-                                              '${provider['rating']}',
-                                              style: const TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w700,
-                                                color: Color(0xFF1E293B),
-                                              ),
-                                            ),
-                                            const SizedBox(width: 4),
-                                            Text(
-                                              '(${provider['reviews']} avis)',
-                                              style: const TextStyle(
-                                                fontSize: 12,
-                                                color: Color(0xFF64748B),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-
-                                      const SizedBox(height: 8),
-
-                                      // Prix et temps de réponse
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            child: Text(
-                                              provider['price'] as String,
-                                              style: const TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w600,
-                                                color: Color(0xFF1CBF3F),
-                                              ),
-                                            ),
-                                          ),
-                                          Container(
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 8,
-                                              vertical: 4,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color: const Color(0xFF64748B)
-                                                  .withOpacity(0.1),
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                            ),
-                                            child: Text(
-                                              'Répond en ${provider['responseTime']}',
-                                              style: const TextStyle(
-                                                fontSize: 10,
-                                                color: Color(0xFF64748B),
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-
-                                      const Spacer(),
-
-                                      // Bouton d'action avec animation
-                                      AnimatedContainer(
-                                        duration:
-                                            const Duration(milliseconds: 200),
-              width: double.infinity,
-                                        height: _isHovered ? 36 : 32,
-                                        decoration: BoxDecoration(
-                                          gradient: LinearGradient(
-                                            colors: [
-                                              const Color(0xFF1CBF3F),
-                                              const Color(0xFF16A34A),
-                                            ],
-                                            begin: Alignment.centerLeft,
-                                            end: Alignment.centerRight,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          boxShadow: _isHovered
-                                              ? [
-                                                  BoxShadow(
-                                                    color:
-                                                        const Color(0xFF1CBF3F)
-                                                            .withOpacity(0.4),
-                                                    blurRadius: 12,
-                                                    offset: const Offset(0, 4),
-                                                  ),
-                                                ]
-                                              : null,
-                                        ),
-                                        child: Material(
-                                          color: Colors.transparent,
-                                          child: InkWell(
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                            onTap: widget.onTap,
-                                            child: Center(
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Text(
-                                                    'Voir le profil',
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize:
-                                                          _isHovered ? 14 : 13,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(width: 6),
-                                                  AnimatedRotation(
-                                                    duration: const Duration(
-                                                        milliseconds: 200),
-                                                    turns:
-                                                        _isHovered ? 0.25 : 0.0,
-                                                    child: const Icon(
-                                                      Icons.arrow_forward,
-                                                      size: 14,
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
+                                opacity: _isHovered ? 1.0 : 0.0, // Visible seulement au survol
+                                child: Container(
+                                  margin: const EdgeInsets.symmetric(horizontal: 24),
+                                  padding: const EdgeInsets.symmetric(vertical: 8),
+                                  decoration: BoxDecoration(
+                                    gradient: const LinearGradient(
+                                      colors: [Color(0xFF1CBF3F), Color(0xFF16A34A)],
+                                    ),
+                                    borderRadius: BorderRadius.circular(20),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: const Color(0xFF1CBF3F).withOpacity(0.3),
+                                        blurRadius: 8,
+                                        offset: const Offset(0, 4),
                                       ),
                                     ],
                                   ),
+                                  child: const Center(
+                                    child: Text(
+                                      'Voir le profil',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
+                              // Si pas survolé, afficher le prix à la place
+                              if (!_isHovered)
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 8.0),
+                                  child: Text(
+                                    provider['price'] as String,
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600,
+                                      color: Color(0xFF1CBF3F),
+                                    ),
+                                  ),
+                                ),
                             ],
                           ),
                         ),

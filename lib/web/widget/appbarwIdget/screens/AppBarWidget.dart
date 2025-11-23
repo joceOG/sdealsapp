@@ -3,23 +3,29 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import 'NavigationItem.dart';
-import 'NavigationItem2.dart';
+import 'NavigationItem.dart';
 import 'package:sdealsapp/data/services/authCubit.dart';
 
 class NavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
+    return SizedBox(
       height: 80.0,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          NavigationItem(title: 'Métiers'),
-          NavigationItem(title: 'Freelance'),
-          NavigationItem(title: 'Emarche'),
-          NavigationItem2(title: 'Autres'),
-          NavigationItem2(title: 'A propos'),
+          const NavigationItem(title: 'Métiers'),
+          const NavigationItem(title: 'Freelance'),
+          const NavigationItem(title: 'Emarche'),
+          NavigationItem(
+            title: 'Autres',
+            onTap: () => context.go('/autre'),
+          ),
+          NavigationItem(
+            title: 'A propos',
+            onTap: () => context.go('/apropos'),
+          ),
         ],
       ),
     );
@@ -69,22 +75,22 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
           ),
         ),
 
-        // Barre de recherche moderne - Centrée verticalement
+        // Barre de recherche moderne - Agrandie
         Flexible(
           child: Container(
-            width: 180,
-            height: 40,
-            margin: const EdgeInsets.only(right: 5),
+            width: 300, // Largeur augmentée pour plus de confort
+            height: 44, // Hauteur légèrement augmentée
+            margin: const EdgeInsets.only(right: 16),
             decoration: BoxDecoration(
               color: const Color(0xFFF8FAFC),
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(24), // Plus arrondi
               border: Border.all(
                 color: const Color(0xFFE2E8F0),
                 width: 1,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.1),
+                  color: Colors.grey.withOpacity(0.05),
                   blurRadius: 8,
                   spreadRadius: 0,
                   offset: const Offset(0, 2),
@@ -93,7 +99,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
             ),
             child: TextField(
               decoration: InputDecoration(
-                hintText: 'Rechercher des services, produits...',
+                hintText: 'Rechercher un service...',
                 hintStyle: const TextStyle(
                   color: Color(0xFF94A3B8),
                   fontSize: 14,
@@ -109,7 +115,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
                     gradient: const LinearGradient(
                       colors: [Color(0xFF1CBF3F), Color(0xFF16A34A)],
                     ),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(20),
                   ),
                   child: const Icon(
                     Icons.tune,

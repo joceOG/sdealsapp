@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sdealsapp/web/widget/Footer.dart';
 import 'package:sdealsapp/data/models/article.dart';
 import '../../../widget/appbarwIdget/screens/AppBarWidget.dart';
+import '../../../widget/BreadcrumbWidget.dart';
 
 class DetailsArticleScreen extends StatefulWidget {
   final Article article;
@@ -25,6 +26,15 @@ class _DetailsArticleScreenState extends State<DetailsArticleScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            // Fil d'ariane
+            const BreadcrumbWidget(
+              items: [
+                BreadcrumbItem(label: 'Accueil', route: '/'),
+                BreadcrumbItem(label: 'E-marché', route: '/emarche'),
+                BreadcrumbItem(label: 'Détails Article'),
+              ],
+            ),
+
             // 🎯 HERO SECTION MODERNE
             _buildHeroSection(),
 
@@ -85,32 +95,58 @@ class _DetailsArticleScreenState extends State<DetailsArticleScreen> {
 
   // 📱 CONTENU PRINCIPAL
   Widget _buildMainContent() {
-    return Container(
-      padding: const EdgeInsets.all(24.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // 🖼️ GALERIE D'IMAGES
-          Expanded(
-            flex: 2,
-            child: _buildImageGallery(),
-          ),
-          const SizedBox(width: 24),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isMobile = constraints.maxWidth < 1000;
 
-          // 📋 INFORMATIONS PRODUIT
-          Expanded(
-            flex: 2,
-            child: _buildProductInfo(),
-          ),
-          const SizedBox(width: 24),
+        if (isMobile) {
+          return Container(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                // 🖼️ GALERIE D'IMAGES
+                _buildImageGallery(),
+                const SizedBox(height: 24),
 
-          // 🛒 ACTIONS ET COMMANDE
-          Expanded(
-            flex: 1,
-            child: _buildActionPanel(),
-          ),
-        ],
-      ),
+                // 📋 INFORMATIONS PRODUIT
+                _buildProductInfo(),
+                const SizedBox(height: 24),
+
+                // 🛒 ACTIONS ET COMMANDE
+                _buildActionPanel(),
+              ],
+            ),
+          );
+        } else {
+          return Container(
+            padding: const EdgeInsets.all(24.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // 🖼️ GALERIE D'IMAGES
+                Expanded(
+                  flex: 2,
+                  child: _buildImageGallery(),
+                ),
+                const SizedBox(width: 24),
+
+                // 📋 INFORMATIONS PRODUIT
+                Expanded(
+                  flex: 2,
+                  child: _buildProductInfo(),
+                ),
+                const SizedBox(width: 24),
+
+                // 🛒 ACTIONS ET COMMANDE
+                Expanded(
+                  flex: 1,
+                  child: _buildActionPanel(),
+                ),
+              ],
+            ),
+          );
+        }
+      },
     );
   }
 

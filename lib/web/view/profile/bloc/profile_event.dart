@@ -84,3 +84,4 @@ class RefreshProfile extends ProfileEvent {
 class ClearProfileError extends ProfileEvent {
   const ClearProfileError();
 }
+

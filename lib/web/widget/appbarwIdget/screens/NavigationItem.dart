@@ -3,7 +3,13 @@ import 'package:sdealsapp/web/widget/appbarwIdget/screens/appbarItem.dart';
 
 class NavigationItem extends StatefulWidget {
   final String title;
-  const NavigationItem({required this.title, super.key});
+  final VoidCallback? onTap; // Optionnel : Si présent, c'est un lien simple
+
+  const NavigationItem({
+    required this.title,
+    this.onTap,
+    super.key,
+  });
 
   @override
   State<NavigationItem> createState() => _NavigationItemState();
@@ -40,7 +46,7 @@ class _NavigationItemState extends State<NavigationItem>
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0), // Espacement réduit mais constant
       child: MouseRegion(
         onEnter: (_) {
           setState(() => _isHovered = true);
@@ -72,7 +78,33 @@ class _NavigationItemState extends State<NavigationItem>
                         )
                       : null,
                 ),
-                child: AppbarItem(title: widget.title),
+                child: widget.onTap != null
+                    ? GestureDetector(
+                        onTap: widget.onTap,
+                        child: Text(
+                          widget.title,
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold, // Harmonisé avec AppbarItem
+                            color: _isHovered
+                                ? const Color(0xFF1CBF3F)
+                                : const Color(0xFF1E293B),
+                          ),
+                        ),
+                      )
+                    : AppbarItem(
+                        title: widget.title,
+                        child: Text(
+                          widget.title,
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold, // Harmonisé
+                            color: _isHovered
+                                ? const Color(0xFF1CBF3F)
+                                : const Color(0xFF1E293B),
+                          ),
+                        ),
+                      ),
               ),
             );
           },

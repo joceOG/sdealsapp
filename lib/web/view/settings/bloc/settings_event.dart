@@ -94,3 +94,4 @@ class ResetSettings extends SettingsEvent {
 class ClearSettingsError extends SettingsEvent {
   const ClearSettingsError();
 }
+
