@@ -256,10 +256,13 @@ class ApiClient {
     }
   }
 
-  Future<Map<String, dynamic>> registerUser(
-      {required String fullName,
-      required String phone,
-      required String password}) async {
+  Future<Map<String, dynamic>> registerUser({
+    required String fullName,
+    required String phone,
+    required String password,
+    String? genre,  // ✅ Ajout du genre
+    String? role,   // ✅ Ajout du rôle
+  }) async {
     final url = Uri.parse("$apiUrl/register");
 
     // Découper le fullName en nom et prénom
@@ -272,14 +275,15 @@ class ApiClient {
 
     print("🌍 Appel API: $url");
     print("📤 Contact: $phone (${isEmail ? 'email' : 'téléphone'})");
-    print(
-        "📤 Données envoyées: { nom: $nom, prenom: $prenom, password: ***** }");
+    print("📤 Données envoyées: { nom: $nom, prenom: $prenom, password: *****, genre: $genre, role: $role }");
 
     // Préparer les données selon le type de contact
     final requestData = {
       "nom": nom,
       "prenom": prenom,
       "password": password,
+      "genre": genre ?? "Homme",        // ✅ Genre par défaut
+      "role": role ?? "Client",         // ✅ Rôle par défaut CLIENT
     };
 
     if (isEmail) {

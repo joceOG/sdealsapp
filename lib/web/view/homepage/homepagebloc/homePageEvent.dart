@@ -12,8 +12,21 @@ abstract class HomePageEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadCategorieData extends HomePageEvent {}
+class LoadCategorieData extends HomePageEvent {
+  final bool forceRefresh;
+  const LoadCategorieData({this.forceRefresh = false});
+  
+  @override
+  List<Object> get props => [forceRefresh];
+}
 
-class LoadServiceData extends HomePageEvent {}
+class LoadServiceData extends HomePageEvent {
+  final bool forceRefresh;
+  const LoadServiceData({this.forceRefresh = false});
+  
+  @override
+  List<Object> get props => [forceRefresh];
+}
+
 
 

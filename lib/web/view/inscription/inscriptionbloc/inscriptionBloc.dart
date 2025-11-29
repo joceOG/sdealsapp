@@ -30,6 +30,8 @@ class InscriptionBloc extends Bloc<InscriptionEvent, InscriptionState> {
         fullName: '${event.nom} ${event.prenom}',
         phone: contactInfo, // Email ou téléphone
         password: event.password,
+        genre: event.genre,    // ✅ Ajout du genre
+        role: event.role,      // ✅ Ajout du rôle
       );
 
       print('✅ Inscription réussie: ${result.keys}');

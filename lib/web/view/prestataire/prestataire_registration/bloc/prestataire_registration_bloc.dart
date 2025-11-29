@@ -269,14 +269,21 @@ class PrestataireRegistrationBloc
           'service': personalInfo['service'] ?? '',
           'zonesIntervention': personalInfo['serviceAreas'] ?? [],
           
-          // Position (si disponible)
+          // Localisation (String format: ville + adresse)
+          'localisation': personalInfo['serviceAreas']?.isNotEmpty == true
+              ? '${personalInfo['serviceAreas'][0]}${personalInfo['address']?.isNotEmpty == true ? ", ${personalInfo['address']}" : ""}'
+              : personalInfo['address'] ?? '',
+          
+          // Coordonnées GPS (localisationmaps)
           if (personalInfo['position'] != null) ...{
-            'latitude': personalInfo['position']['latitude'],
-            'longitude': personalInfo['position']['longitude'],
+            'localisationmaps': {
+              'latitude': personalInfo['position']['latitude'],
+              'longitude': personalInfo['position']['longitude'],
+            },
           },
           
           // Tarifs et disponibilités
-          'tarifJournalier': pricingInfo['dailyRate'] ?? 0,
+          'prixprestataire': pricingInfo['dailyRate'] ?? 0,
           'modePaiement': pricingInfo['paymentMode'] ?? 'mobile_money',
           'joursDisponibles': pricingInfo['availableDays'] ?? [],
           

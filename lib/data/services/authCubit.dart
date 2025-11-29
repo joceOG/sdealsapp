@@ -1,4 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 import '../models/utilisateur.dart';
 
 abstract class AuthState {}
@@ -27,14 +29,57 @@ class AuthError extends AuthState {
 }
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit() : super(AuthInitial());
+  AuthCubit() : super(AuthInitial()) {
+    _checkSavedAuth();
+  }
 
-  void setAuthenticated(
+  Future<void> _checkSavedAuth() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('auth_token');
+      final userDataStr = prefs.getString('user_data');
+      final rolesStr = prefs.getString('user_roles');
+
+      if (token != null && userDataStr != null) {
+        final userData = jsonDecode(userDataStr);
+        final roles = rolesStr != null
+            ? List<String>.from(jsonDecode(rolesStr))
+            : ['CLIENT'];
+
+        final utilisateur = Utilisateur.fromJson(userData);
+
+        emit(AuthAuthenticated(
+          token: token,
+          utilisateur: utilisateur,
+          roles: roles,
+          activeRole: roles.isNotEmpty ? roles.first : 'CLIENT',
+        ));
+        print('✅ Session restaurée depuis SharedPreferences');
+      }
+    } catch (e) {
+      print('❌ Erreur restauration session: $e');
+      emit(AuthInitial());
+    }
+  }
+
+  Future<void> setAuthenticated(
       {required String token,
       required Utilisateur utilisateur,
       List<String> roles = const ['CLIENT'],
       String? activeRole,
-      Map<String, dynamic>? roleDetails}) {
+      Map<String, dynamic>? roleDetails}) async {
+    
+    // Persister les données
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('auth_token', token);
+      await prefs.setString('user_data', jsonEncode(utilisateur.toJson()));
+      await prefs.setString('user_roles', jsonEncode(roles));
+      print('✅ Token sauvegardé dans SharedPreferences');
+    } catch (e) {
+      print('❌ Erreur sauvegarde token: $e');
+    }
+
     emit(AuthAuthenticated(
       token: token,
       utilisateur: utilisateur,
@@ -50,6 +95,7 @@ class AuthCubit extends Cubit<AuthState> {
       Map<String, dynamic>? roleDetails}) {
     final current = state;
     if (current is AuthAuthenticated) {
+      // Mettre à jour la persistance si nécessaire (optionnel pour l'instant)
       emit(AuthAuthenticated(
         token: current.token,
         utilisateur: current.utilisateur,
@@ -73,7 +119,16 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  void logout() {
+  Future<void> logout() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove('auth_token');
+      await prefs.remove('user_data');
+      await prefs.remove('user_roles');
+      print('✅ Session nettoyée');
+    } catch (e) {
+      print('❌ Erreur nettoyage session: $e');
+    }
     emit(AuthInitial());
   }
 }

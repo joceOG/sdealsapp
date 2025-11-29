@@ -8,6 +8,10 @@ import 'package:sdealsapp/data/models/categorie.dart';
 import 'package:sdealsapp/data/services/api_client.dart';
 
 class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
+  // ✅ Cache flags pour éviter les rechargements inutiles
+  bool _categoriesLoaded = false;
+  bool _servicesLoaded = false;
+  
   HomePageBloc() : super(HomePageState.initial()) {
     on<LoadCategorieData>(_onLoadCategorieData);
     on<LoadServiceData>(_onLoadServiceData);
@@ -17,6 +21,12 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     LoadCategorieData event,
     Emitter<HomePageState> emit,
   ) async {
+    // ✅ GARDE: Ne pas recharger si déjà chargé (sauf si forcé)
+    if (_categoriesLoaded && state.listItems != null && !event.forceRefresh) {
+      print("⏭️ Catégories déjà chargées, skip (${state.listItems!.length} items)");
+      return;
+    }
+    
     emit(state.copyWith(isLoading: true));
     ApiClient apiClient = ApiClient();
     print("🔄 Chargement des catégories...");
@@ -25,10 +35,11 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       List<Categorie> list_categorie =
           await apiClient.fetchCategorie(nomgroupe);
       print("✅ Catégories chargées: ${list_categorie.length}");
+      _categoriesLoaded = true;  // ✅ Marquer comme chargé
       emit(state.copyWith(listItems: list_categorie, isLoading: false));
 
-      // 🔧 CHARGEMENT AUTOMATIQUE DES SERVICES APRÈS LES CATÉGORIES (SEULEMENT SI PAS DÉJÀ CHARGÉS)
-      if (state.listItems2 == null) {
+      // 🔧 CHARGEMENT AUTOMATIQUE DES SERVICES APRÈS LES CATÉGORIES
+      if (!_servicesLoaded && state.listItems2 == null) {
         print("🔄 Chargement automatique des services...");
         await _loadServicesAutomatically(emit);
       }
@@ -46,6 +57,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       var nomGroupe = "Métiers";
       List<Service> list_service = await apiClient.fetchServices(nomGroupe);
       print("✅ Services chargés: ${list_service.length}");
+      _servicesLoaded = true;  // ✅ Marquer comme chargé
       emit(state.copyWith(listItems2: list_service, isLoading2: false));
     } catch (error) {
       print("❌ Erreur services: $error");
@@ -57,6 +69,12 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     LoadServiceData event,
     Emitter<HomePageState> emit,
   ) async {
+    // ✅ GARDE: Ne pas recharger si déjà chargé (sauf si forcé)
+    if (_servicesLoaded && state.listItems2 != null && !event.forceRefresh) {
+      print("⏭️ Services déjà chargés, skip (${state.listItems2!.length} items)");
+      return;
+    }
+    
     emit(state.copyWith(isLoading2: true));
     ApiClient apiClient = ApiClient();
     print("🔄 Chargement manuel des services...");
@@ -64,6 +82,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       var nomGroupe = "Métiers";
       List<Service> list_service = await apiClient.fetchServices(nomGroupe);
       print("✅ Services chargés manuellement: ${list_service.length}");
+      _servicesLoaded = true;  // ✅ Marquer comme chargé
       emit(state.copyWith(listItems2: list_service, isLoading2: false));
     } catch (error) {
       print("❌ Erreur services manuel: $error");

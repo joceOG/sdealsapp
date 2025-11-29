@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:sdealsapp/web/view/inscription/inscriptionbloc/inscriptionBloc.dart';
 import 'package:sdealsapp/web/view/inscription/inscriptionbloc/inscriptionEvent.dart';
 import 'package:sdealsapp/web/view/inscription/inscriptionbloc/inscriptionState.dart';
+import 'package:sdealsapp/data/services/authCubit.dart';  // ✅ Import AuthCubit
 import '../../../widget/appbarwIdget/screens/AppBarWidget.dart';
 
 class InscriptionScreen extends StatefulWidget {
@@ -34,9 +35,33 @@ class _InscriptionScreenState extends State<InscriptionScreen> {
       appBar: AppBarWidget(),
       body: BlocConsumer<InscriptionBloc, InscriptionState>(
         listener: (context, state) {
-          if (state.isRegistered) {
-            context.go('/connexion');
+          // ✅ AUTO-LOGIN après inscription réussie
+          if (state.isRegistered && state.token != null && state.utilisateur != null) {
+            print('🎉 Inscription réussie ! Auto-connexion en cours...');
+            
+            // 1️⃣ Sauvegarder dans AuthCubit
+            final userRole = state.utilisateur!.role ?? 'Client';  // ✅ Fallback si null
+            context.read<AuthCubit>().setAuthenticated(
+              token: state.token!,
+              utilisateur: state.utilisateur!,
+              roles: [userRole],  // ✅ Liste non-nullable
+            );
+            
+            print('✅ Token sauvegardé. Redirection selon rôle: $userRole');
+            
+            // 2️⃣ Redirection intelligente selon le rôle
+            if (userRole == 'Prestataire') {
+              context.go('/prestataire/inscription');  // Compléter profil prestataire
+            } else if (userRole == 'Vendeur') {
+              context.go('/vendeur/inscription');  // Compléter profil vendeur
+            } else if (userRole == 'Freelance') {
+              context.go('/freelance/inscription');  // Compléter profil freelance
+            } else {
+              context.go('/homepage');  // Client → page d'accueil
+            }
           }
+          
+          // ❌ Afficher erreur si échec
           if (state.error != null) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
